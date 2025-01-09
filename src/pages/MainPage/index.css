@@ -1,0 +1,533 @@
+/* DashboardLayout.css */
+.dashboard-layout {
+  padding: 80px;
+  min-height: 100vh;
+  background-color: #191a20;
+  margin: 0px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 64px;
+  top: 0;
+  background-color: transparent;
+}
+
+.CompanyTitle{
+  color: white;
+  font-size: 36px;
+  font-weight: 500;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  height: 52px;
+}
+
+.logo img {
+  height: 42px;
+}
+
+.header-icon {
+  color: #fff;
+  font-size: 28px;
+  height: 42px;
+  width: 42px;
+  background-color: #3f3c3c;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  margin: 0;
+  padding: 0;
+}
+
+.ant-badge {
+  display: flex;
+  align-items: center;
+}
+
+.company-avatar {
+  background: #00b96b;
+  height: 32px;
+  width: 32px;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #3f3c3c;
+  border-radius: 24px;
+  height: 42px;
+  padding: 2px 8px;
+}
+
+.user-info h3 {
+  color: #fff;
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.main-content {
+  display: flex;
+  padding: 24px 0px;
+  gap: 24px;
+}
+
+.left-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  height: calc(100vh - 112px); /* 100vh - (header height + padding) */
+}
+
+.workshops-header {
+  flex: 0 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  z-index: 2;
+}
+
+.workshops-header h2 {
+  font-size: 24px;
+  font-weight: 500;
+  color: #fff;
+}
+
+.workshop-banner {
+  position: relative;
+  height: 40%;
+  min-height: 380px;
+  background: linear-gradient(180deg, #2D2F39 0%, #191A20 100%) !important;
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+
+.workshop-image {
+  flex: 1;
+  position: relative;
+  width: 100%;
+  height: 300%;
+  border-radius: 10%;
+}
+
+.workshop-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.workshop-info {
+  position: absolute;
+  bottom: 24px;
+  left: 24px;
+  color: white;
+  z-index: 1;
+}
+
+.bottom-cards {
+  display: flex;
+  gap: 24px;
+  height: calc(60% - 48px);
+}
+
+.rewards-card {
+  flex: 1;
+  background: linear-gradient(180deg, #2D2F39 0%, #191A20 100%) !important;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.rewards-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 24px;
+}
+
+.rewards-content h3 {
+  font-size: 24px;
+  font-weight: 500;
+  color: #fff;
+}
+
+.right-cards {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  height: 100%;
+}
+
+.WinnerImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.reward-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 16px;
+  border-bottom: 1px solid #2c2c2c;
+}
+
+.announcement-card,
+.support-card {
+  background: linear-gradient(180deg, #2D2F39 0%, #191A20 100%) !important;
+  height: calc(50% - 12px);
+}
+
+.announcement-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.announcement-content h3 {
+  font-size: 24px;
+  font-weight: 500;
+  color: #fff !important;
+}
+
+.support-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.support-content h3 {
+  font-size: 24px;
+  font-weight: 500;
+  color: #fff !important;
+}
+
+.right-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  height: calc(100vh - 112px); /* 100vh - (header height + padding) */
+}
+
+.metrics-cards {
+  display: flex;
+  gap: 34px;
+  height: 30%;
+  min-height: 300px;
+}
+
+.metric-card {
+  flex: 1;
+  text-align: center;
+  background: linear-gradient(180deg, #2D2F39 0%, #191A20 100%) !important;
+  min-height: 100%;
+}
+
+.metric-card h3 {
+  font-size: 24px;
+  font-weight: 500;
+  padding-top: 14px;
+}
+
+.metric-status {
+  font-size: 20px;
+  font-weight: 500;
+  margin: 8px 0 4px;
+  font-weight: bold;
+}
+
+.last-check {
+  color: #8c8c8c;
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.roi-card {
+  flex: 1;
+  background: linear-gradient(180deg, #2D2F39 0%, #191A20 100%) !important;
+  height: calc(50% - 12px); /* Subtracting half of gap */
+  min-height: 250px;
+  display: flex;
+  flex-direction: column;
+}
+
+.roi-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  height: auto;
+}
+
+.roi-header h3 {
+  font-size: 24px;
+  font-weight: 500;
+}
+
+.roi-header span {
+  font-size: 14px;
+  font-weight: 300;
+}
+
+.roi-metrics {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  height: auto;
+}
+
+.roi-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  background: transparent;
+  border: 1px solid #3f3c3c;
+  padding: 12px;
+  border-radius: 8px;
+  height: 100px;
+}
+
+.roi-item span {
+  font-size: 14px;
+  font-weight: 300;
+}
+
+.percentage {
+  font-weight: 500;
+  font-size: 24px;
+}
+
+.articles-card {
+  height: calc(15% - 12px); /* Subtracting half of gap */
+  min-height: 100px;
+  background: transparent;
+  display: flex;
+  justify-content: space-between;
+}
+
+.articles-header h3 {
+  font-size: 24px;
+  font-weight: 500;
+}
+
+.article-card-icon {
+  color: #00b96b;
+  height: 80px;
+  width: auto;
+}
+
+.view-all {
+  color: #00b96b !important;
+  white-space: nowrap;
+  font-size: 16px;
+  font-weight: 500;
+  padding-left: 0%;
+}
+
+.dropdown-btn {
+  border: none;
+  background: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 4px 80px 4px 4px;
+  cursor: pointer;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.dropdown-btn:hover {
+  background-color: #3d4153;
+  border-radius: 4px;
+}
+
+.ant-dropdown .ant-dropdown-menu {
+  background-color: #2d2f39;
+  padding: 8px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  margin-top: 14px;
+  margin-right: none;
+}
+
+.ant-dropdown-menu-item {
+  padding: 0 !important;
+}
+
+/* Add this new class after your existing card styles */
+.ant-card {
+  background: linear-gradient(180deg, #2D2F39 0%, #191A20 100%) !important;
+}
+
+/* Mobile Responsiveness */
+@media screen and (max-width: 1024px) {
+  .metrics-cards {
+    flex-direction: column;
+  }
+
+  .roi-metrics {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Tablet Breakpoint (768px - 1024px) */
+@media screen and (max-width: 1024px) {
+  .main-content {
+    flex-direction: column;
+    padding: 20px;
+    gap: 20px;
+  }
+
+  .left-section, .right-section {
+    height: auto;
+  }
+
+  .metrics-cards {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    height: auto;
+  }
+
+  .bottom-cards {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    height: auto;
+  }
+
+  .right-cards {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+
+  .workshop-banner {
+    min-height: 300px;
+  }
+
+  .roi-metrics {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Mobile Breakpoint (< 768px) */
+@media screen and (max-width: 767px) {
+  .main-content {
+    padding: 16px;
+    gap: 16px;
+  }
+
+  .metrics-cards,
+  .bottom-cards,
+  .right-cards,
+  .roi-metrics {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .workshop-banner {
+    min-height: 200px;
+  }
+
+  .header {
+    padding: 0 16px;
+    height: 56px;
+  }
+
+  .logo img {
+    height: 32px;
+  }
+
+  .header-icon {
+    height: 36px;
+    width: 36px;
+    font-size: 20px;
+  }
+
+  .user-info {
+    padding: 2px 6px;
+    height: 36px;
+  }
+
+  .user-info h3 {
+    font-size: 14px;
+  }
+
+  .workshops-header h2,
+  .roi-header h3,
+  .articles-header h3 {
+    font-size: 18px;
+  }
+
+  .metric-card h3 {
+    font-size: 18px;
+    padding-top: 10px;
+  }
+
+  .metric-status {
+    font-size: 16px;
+  }
+
+  .roi-item {
+    height: 80px;
+    padding: 10px;
+  }
+
+  .percentage {
+    font-size: 20px;
+  }
+}
+
+/* Small Mobile Breakpoint (< 480px) */
+@media screen and (max-width: 479px) {
+  .main-content {
+    padding: 12px;
+    gap: 12px;
+  }
+
+  .header {
+    padding: 0 12px;
+    height: 48px;
+  }
+
+  .workshop-banner {
+    min-height: 160px;
+  }
+
+  .workshops-header,
+  .roi-header {
+    padding: 12px;
+  }
+
+  .workshops-header h2,
+  .roi-header h3,
+  .articles-header h3 {
+    font-size: 16px;
+  }
+
+  .view-all {
+    font-size: 14px;
+  }
+
+  .roi-item {
+    height: 70px;
+    padding: 8px;
+  }
+}

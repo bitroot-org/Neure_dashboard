@@ -1,0 +1,249 @@
+/* Base container styles */
+.profile-container {
+  background-color: #191A20;
+  min-height: 100vh;
+  padding: 80px;
+  color: #ffffff;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+/* Header Styles */
+.header-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 48px;
+}
+
+.company-avatar {
+  padding: 42px;
+  color: #EEE420;
+  font-size: 70px;
+  font-weight: 500;
+  flex-shrink: 0;
+  height: 100px;
+  width: 100px;
+}
+
+.header-text {
+  margin-left: 12px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.company-name {
+  color: #ffffff !important;
+  font-size: 24px;
+  font-weight: 400;
+  margin-bottom: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.company-email {
+  color: #8c8c8c !important;
+  font-size: 20px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Form Styles */
+.form-container {
+  max-width: 100%;
+  background-color: transparent;
+}
+
+.form-section {
+  margin-bottom: 32px;
+  padding: 24px;
+
+}
+
+.section-title {
+  color: #ffffff !important;
+  font-size: 24px;
+  font-weight: 400;
+  display: block;
+}
+
+.form-group {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.input-label {
+  color: #8c8c8c;
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+/* Input Styles */
+.custom-input {
+  background-color: transparent !important;
+  border: 1px solid #333333 !important;
+  border-radius: 4px;
+  color: #ffffff !important;
+  height: 40px;
+  padding: 8px 12px;
+}
+
+.custom-input:hover,
+.custom-input:focus {
+  border-color: #40a9ff !important;
+}
+
+/* Select Styles */
+.custom-select {
+  width: 100%;
+  background-color: transparent !important;
+}
+
+.ant-select-selector {
+  background-color: transparent !important;
+  border: 1px solid #333333 !important;
+  height: 40px !important;
+  padding: 4px 12px !important;
+}
+
+.ant-select-selection-item {
+  color: #ffffff !important;
+  line-height: 32px !important;
+}
+
+.select-arrow {
+  color: #8c8c8c;
+  font-size: 12px;
+}
+
+/* Size Buttons */
+.size-section {
+  margin-top: 24px;
+}
+
+.size-buttons {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+
+.size-btn {
+  background-color: transparent;
+  border: 1px solid #333333;
+  border-radius: 8px;
+  color: #ffffff;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.3s;
+  flex: 1;
+  min-width: 80px;
+  text-align: center;
+}
+
+.size-btn.active {
+  border-color: #2b4c32;
+  color: #00D885;
+}
+
+/* Divider */
+.divider {
+  height: 1px;
+  background-color: #333333;
+  margin: 32px 0;
+}
+
+/* Responsive Breakpoints */
+@media screen and (max-width: 768px) {
+  .profile-container {
+    padding: 16px;
+  }
+
+  .form-group {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .size-buttons {
+    gap: 8px;
+  }
+
+  .size-btn {
+    padding: 8px 12px;
+    font-size: 13px;
+    min-width: 70px;
+  }
+
+  .section-title {
+    font-size: 16px;
+    margin-bottom: 20px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .profile-container {
+    padding: 12px;
+  }
+
+  .header-container {
+    margin-bottom: 32px;
+  }
+
+  .company-avatar {
+    size: 40px;
+  }
+
+  .company-name {
+    font-size: 14px;
+  }
+
+  .company-email {
+    font-size: 12px;
+  }
+
+  .size-buttons {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
+  .size-btn {
+    width: 100%;
+    min-width: unset;
+  }
+
+  .input-label {
+    font-size: 13px;
+  }
+
+  .divider {
+    margin: 24px 0;
+  }
+}
+
+/* Override ant-design default styles */
+.ant-select-dropdown {
+  background-color: #1a1a1a !important;
+}
+
+.ant-select-item {
+  color: #ffffff !important;
+}
+
+.ant-select-item-option-selected {
+  background-color: #2b4c32 !important;
+}
+
+.ant-select-item-option:hover {
+  background-color: #333333 !important;
+}

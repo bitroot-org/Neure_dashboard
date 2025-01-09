@@ -1,0 +1,212 @@
+/* Modal Base Styles */
+.feedback-modal {
+  border-radius: 20px;
+}
+
+.ant-modal-mask {
+  backdrop-filter: blur(8px) !important;
+  background-color: rgba(0, 0, 0, 0.45) !important;
+}
+
+.ant-modal-wrap {
+  backdrop-filter: blur(1px) !important;
+}
+
+/* Modal Content Styles */
+.modal-content {
+  width: 100%;
+  padding: 24px;
+}
+
+/* Modal Header Styles */
+.modal-header {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  padding-bottom: 16px !important;
+  border-bottom: 0.1px solid rgb(51, 48, 48) !important;
+}
+
+.modal-header h2 {
+  color: white;
+  font-size: 24px;
+  font-weight: 400;
+  margin: 0 !important;
+}
+
+/* Close Button Styles */
+.feedback-modal .ant-modal-close {
+  top: 24px !important;
+  right: 24px !important;
+  color: white !important;
+}
+
+/* Modal Content Override Styles */
+.feedback-modal .ant-modal-content {
+  background: #000000 !important;
+  border: 2px solid #2c2a2a !important;
+  border-radius: 20px !important;
+  padding: 0 !important;
+  
+}
+
+.feedback-modal .ant-modal-header {
+  background: transparent !important;
+}
+
+/* Feedback Section Styles */
+.feedback-section {
+  margin-top: 24px;
+  font-size: 16px;
+  color: white;
+  width: 100%;
+}
+
+.feedback-section .section-label {
+  margin-bottom: 8px;
+  color: white;
+}
+
+.feedback-section:nth-child(3) {
+  border-bottom: 1px solid rgb(193, 42, 42) !important;
+  padding-bottom: 24px !important;
+  margin-bottom: 24px !important;
+}
+
+/* Button Group Styles */
+.button-group {
+  display: flex !important;
+  justify-content: space-between;
+  gap: 12px !important;
+  width: 100% !important;
+  flex-wrap: wrap !important;
+}
+
+/* Feedback Type Button Styles */
+.feedback-type-btn {
+  flex: 1 1 calc(33.33% - 8px) !important;
+  min-width: 120px !important;
+  height: 48px !important;
+  white-space: nowrap !important;
+  background-color: black;
+  color: rgb(255, 255, 255);
+  border: 0.2px solid rgb(57, 55, 55);
+  border-radius: 8px !important;
+  transition: all 0.3s ease;
+}
+
+.feedback-type-btn.active,
+.feedback-type-btn.active:hover,
+.feedback-type-btn.active:focus {
+  background-color: black !important;
+  border: 1px solid #2E9879 !important;
+  color: #2E9879 !important;
+}
+
+.ant-btn.feedback-type-btn:hover,
+.ant-btn.feedback-type-btn:focus {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  border-color: rgb(152, 159, 152) !important;
+  color: white !important;
+}
+
+/* Textarea Styles */
+.feedback-textarea {
+  height: 120px !important;
+  background-color: black !important;
+  color: white !important;
+  border: 0.5px solid #302e2e !important;
+  border-radius: 8px !important;
+  resize: none !important;
+  font-size: 16px;
+  padding: 12px;
+}
+
+.feedback-textarea::placeholder {
+  color: rgba(255, 255, 255, 0.5) !important;
+}
+
+.feedback-textarea:focus,
+.feedback-textarea:hover {
+  border: 0.5px solid #ffffff !important;
+  box-shadow: none !important;
+}
+
+.feedback-section:nth-child(3) {
+  border-bottom: 1px solid white !important;
+  padding-bottom: 24px !important;
+  margin-bottom: 24px !important;
+}
+
+/* Form Validation Styles */
+.ant-form-item-explain-error {
+  color: #ff4d4f !important;
+  margin-top: 4px;
+  font-size: 14px;
+}
+
+/* Submit Section Styles */
+.submit-section {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 24px;
+}
+
+.submit-button {
+  background: white !important;
+  color: black !important;
+  height: 48px !important;
+  border-radius: 50px !important;
+  padding: 0 40px !important;
+  border: none !important;
+  font-weight: 500;
+  transition: all 0.3s ease !important;
+}
+
+.submit-button:hover {
+  background: rgba(255, 255, 255, 0.9) !important;
+  transform: translateY(-1px);
+}
+
+.submit-button:active {
+  transform: translateY(1px);
+}
+
+/* Loading State Styles */
+.submit-button.ant-btn-loading {
+  opacity: 0.8;
+  pointer-events: none;
+}
+
+/* Responsive Styles */
+@media screen and (max-width: 768px) {
+  .feedback-type-btn {
+    flex: 1 1 calc(50% - 12px) !important;
+  }
+  
+  .modal-content {
+    padding: 20px;
+  }
+  
+  .modal-header h2 {
+    font-size: 20px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .feedback-type-btn {
+    flex: 1 1 100% !important;
+  }
+  
+  .modal-content {
+    padding: 16px;
+  }
+  
+  .submit-button {
+    width: 100%;
+  }
+  
+  .submit-section {
+    margin-top: 16px;
+  }
+}

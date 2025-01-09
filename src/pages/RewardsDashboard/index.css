@@ -1,0 +1,236 @@
+/* src/pages/RewardsDashboard/index.css */
+.dashboard-container {
+  padding: 24px;
+  background-color: #191A20;
+  min-height: 100vh;
+}
+
+.metrics-section {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+/* Base styles remain the same */
+.happiness-card {
+  background-color: #065f46 !important;
+  border: 1px solid #4B5563;
+}
+
+.happiness-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  color: white;
+}
+
+.happiness-content h2 {
+  font-size: 36px;
+  font-weight: 400;
+}
+
+.happiness-content p {
+  font-size: 20px;
+  font-weight: 300;
+}
+
+.stats-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.stat-card {
+  background: linear-gradient(to bottom, #373738, #191A20) !important;
+  border: 1px solid #4B5563;
+}
+
+.stat-content {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.stat-icon {
+  width: 64px;
+  height: 64px;
+}
+
+.stat-info p {
+  color: #6b7280;
+  margin-bottom: 4px;
+  font-size: 18px;
+  font-weight: 400;
+}
+
+.stat-info h3 {
+  color: white;
+  font-size: 24px;
+  margin: 0;
+}
+
+.employees-card {
+  background: linear-gradient(to bottom, #373738, #191A20) !important;
+  border: 1px solid #4B5563;
+}
+
+.employees-card h3 {
+  color: white;
+  margin-bottom: 16px;
+  font-size: 24px;
+  font-weight: 500;
+}
+
+.employees-list {
+  margin-top: 16px;
+}
+
+.employee-item {
+  display: flex;
+  flex-direction: column ;
+  justify-content: space-between;
+  padding: 8px 0;
+  position: relative;
+  padding-left: 12px;
+}
+
+.employee-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px; 
+  border-radius: 2px;
+  height: 90%;
+}
+
+/* Use nth-child to set the colors for the vertical bar */
+.employee-item:nth-child(1)::before {
+  background-color: #00FF00; /* Green */
+}
+
+.employee-item:nth-child(2)::before {
+  background-color: #FFD700; /* Yellow */
+}
+
+.employee-item:nth-child(3)::before {
+  background-color: #4B0082; /* Indigo */
+}
+
+.employee-name {
+  color: white;
+  font-size: 20px;
+  font-weight: 300;
+}
+
+.employee-points {
+  color: white;
+  font-size: 16px;
+  font-weight: 300;
+}
+
+.metrics-graph {
+  background-color: transparent !important;
+  border: 1px solid #4B5563;
+  height: 700px;
+}
+
+.graph-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  padding: 0 16px;
+}
+
+.graph-header h3 {
+  color: white;
+  margin: 0;
+}
+
+.time-selector {
+  background-color: transparent;
+  color: white;
+  border: 1px solid #4B5563;
+  padding: 8px 16px;
+  border-radius: 8px;
+}
+
+.custom-tooltip {
+  background-color: #374151;
+  border: 1px solid #4B5563;
+  padding: 8px 12px;
+  border-radius: 4px;
+}
+
+.custom-tooltip .label {
+  color: #D1D5DB;
+  margin: 0;
+  margin-bottom: 4px;
+}
+
+.custom-tooltip .value {
+  color: #10B981;
+  font-weight: 600;
+  margin: 0;
+}
+
+/* Responsive styles */
+@media screen and (max-width: 1024px) {
+  .metrics-section {
+    grid-template-columns: 1fr 1fr;
+  }
+  
+  .employees-card {
+    grid-column: span 2;
+    height: 350px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .dashboard-container {
+    padding: 16px;
+  }
+
+  .metrics-section {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  
+  .employees-card {
+    grid-column: auto;
+  }
+  
+  .happiness-content h2 {
+    font-size: 36px;
+  }
+  
+  .graph-header {
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  
+  .stat-content {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .stat-info {
+    text-align: center;
+  }
+}
+
+/* Adjust container padding for very small screens */
+@media screen and (max-width: 480px) {
+  .dashboard-container {
+    padding: 12px;
+  }
+  
+  .metrics-section {
+    gap: 12px;
+  }
+}

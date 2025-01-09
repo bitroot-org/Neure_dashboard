@@ -1,0 +1,28 @@
+
+
+/* Adjust tabs container for mobile responsiveness */
+.notifications-tabs .ant-tabs-nav-list {
+  display: flex !important;
+  justify-content: space-between !important;
+  flex-wrap: wrap !important;
+  width: 100% !important;
+}
+
+/* Mobile styles */
+@media (max-width: 768px) {
+  .notifications-tabs .ant-tabs-tab {
+    margin: 0 12px !important;
+    padding: 8px 0 !important;
+    font-size: 14px !important;
+    width: 100px !important; /* Adjusted width for smaller screens */
+  }
+}
+
+@media (max-width: 480px) {
+  .notifications-tabs .ant-tabs-tab {
+    margin: 0 8px !important;
+    padding: 6px 0 !important;
+    font-size: 12px !important;
+    width: 80px !important; /* Further adjust width for very small screens */
+  }
+}

@@ -1,0 +1,60 @@
+.gauge-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: linear-gradient(145deg, #2D2F39 0%, #191A20 100%);
+  border-radius: 12px;
+  width: 100%;
+  height: 100%;
+  color: white;
+  border: 1px solid #2c2c2c;
+}
+
+.gauge-container h2 {
+  color: #ffffff;
+  font-size: 24px;
+  font-weight: 500;
+  margin: 8px;
+  padding-top: 20px;
+}
+
+.gauge-canvas {
+  display: block;
+  margin: 0 auto;
+  width: 100%;
+  height: calc(100% - 40px); /* Account for header */
+}
+
+
+@media screen and (max-width: 768px) {
+  .gauge-container {
+    height: 300px; /* Fixed height for mobile */
+    min-height: 300px;
+  }
+  
+  .gauge-canvas {
+    height: 260px; /* Fixed height minus header space */
+  }
+}
+
+@media screen and (max-width: 479px){
+  .gauge-container {
+    height: 300px; /* Fixed height for mobile */
+    min-height: 300px;
+  }
+  
+  .gauge-canvas {
+    height: 260px; /* Fixed height minus header space */
+  }
+}
+
+@media screen and (max-width: 1024px){
+  .gauge-container {
+    height: 300px; /* Fixed height for mobile */
+    min-height: 300px;
+  }
+  
+  .gauge-canvas {
+    height: 260px; /* Fixed height minus header space */
+  }
+}

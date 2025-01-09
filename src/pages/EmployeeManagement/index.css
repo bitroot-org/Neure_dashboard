@@ -1,0 +1,255 @@
+.employee-dashboard {
+  padding: 80px;
+  background-color: #191A20;
+  min-height: 100vh;
+}
+
+.dashboard-section {
+  padding-top: 18px;
+  margin: 24px 0;
+}
+
+.section-title {
+  color: #ffffff !important;
+  margin-bottom: 16px !important;
+}
+
+.metrics-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+/* Responsive grid adjustments */
+@media screen and (max-width: 1200px) {
+  .metrics-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .metrics-container {
+    grid-template-columns: 1fr;
+  }
+  
+  .employee-dashboard {
+    padding: 16px;
+  }
+
+  .dashboard-section {
+    margin: 16px 0;
+  }
+
+  .section-title {
+    font-size: 18px !important;
+  }
+}
+
+.metric-card {
+  background: linear-gradient(180deg, rgba(90, 114, 150, 0.2) 0%, rgba(0, 0, 0, 0) 100%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 20px;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.5) !important;
+
+}
+
+.metric-card:hover {
+  transform: translateY(-2px);
+}
+
+.metric-card .ant-card-body {
+  padding: 16px;
+}
+
+.metric-title {
+  color: #8c8c8c !important;
+  margin: 0 !important;
+  font-size: 18px;
+}
+
+.metric-value {
+  font-size: 36px;
+  font-weight: 600;
+  color: #ffffff;
+  margin-top: 8px;
+  margin-bottom: -4px;
+}
+
+@media screen and (max-width: 768px) {
+  .metric-value {
+    font-size: 24px;
+  }
+}
+
+.metric-change {
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.metric-change.positive {
+  color: #52c41a;
+}
+
+.metric-change.negative {
+  color: #ff4d4f;
+}
+
+.metric-change.neutral {
+  color: #8c8c8c;
+}
+
+.employee-table {
+  background-color: transparent;
+  border-radius: 8px;
+  overflow-x: auto;
+  width: 100%;
+}
+.ant-table-wrapper {
+  overflow-x: auto !important;
+}
+
+.employee-table .ant-table {
+  background-color: transparent;
+}
+
+.ant-table-body {
+  overflow-x: auto !important;
+}
+
+.employee-table .ant-table-thead > tr > th {
+  background-color: transparent !important;
+  color: #ffffff !important;
+  border-bottom: 1px solid #434343;
+  white-space: nowrap;
+  font-weight: normal;
+  padding: 16px;
+}
+
+.employee-table .ant-table-tbody > tr > td {
+  background-color: transparent !important;
+  border-bottom: 1px solid #434343;
+  color: #ffffff;
+  padding: 8px;
+}
+
+.employee-table .ant-table-tbody > tr:hover > td {
+  background-color: rgba(255, 255, 255, 0.04) !important;
+}
+
+/* Fix for filter icons */
+.employee-table .ant-table-filter-trigger {
+  color: #ffffff;
+  background: transparent;
+}
+
+
+
+/* Fix for sort icons */
+.employee-table .ant-table-column-sorter {
+  color: #ffffff;
+}
+
+
+/* Mobile-specific table styles */
+@media screen and (max-width: 768px) {
+  .employee-table .ant-table-thead > tr > th,
+  .employee-table .ant-table-tbody > tr > td {
+    padding: 8px 12px;
+  }
+  
+  .employee-table .ant-pagination {
+    padding: 0 12px;
+  }
+}
+
+.status-badge {
+  padding: 4px 12px;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  display: inline-block;
+}
+
+.status-badge.active {
+  background-color: white;
+  color: #000000;
+}
+
+.status-badge.inactive {
+  background-color: #434343;
+  color: #ffffff;
+}
+
+/* Fix for even/odd rows */
+.employee-table .ant-table-tbody > tr:nth-child(odd) > td {
+  background-color: rgba(255, 255, 255, 0.02) !important;
+}
+
+.employee-table .ant-table-tbody > tr:nth-child(even) > td {
+  background-color: transparent !important;
+}
+
+
+/* Touch-friendly adjustments for mobile */
+@media (hover: none) {
+  .metric-card:hover {
+    transform: none;
+  }
+}
+
+/* Fix for dropdown menus */
+.ant-dropdown-menu {
+  background-color: #25262b;
+  border: 1px solid #434343;
+}
+
+.ant-dropdown-menu-item {
+  color: #ffffff;
+}
+
+.ant-dropdown-menu-item:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+/* Fix for empty state */
+.employee-table .ant-empty {
+  color: #ffffff;
+}
+
+/* Fix for loading state */
+.employee-table .ant-spin-container {
+  background-color: transparent;
+}
+
+/* Loading states for better mobile experience */
+.employee-table .ant-table-placeholder {
+  background-color: #25262b;
+}
+
+.employee-table .ant-empty-description {
+  color: #ffffff;
+}
+
+.three-dots-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 8px;
+}
+
+.dot {
+  width: 4px;
+  height: 4px;
+  background-color: #ffffff;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.three-dots-btn:hover .dot {
+  background-color: #8c8c8c;
+}

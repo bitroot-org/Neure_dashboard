@@ -1,0 +1,39 @@
+/* CustomHeader.css */
+.custom-header {
+  background-color: transparent;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 12px;
+  width: 100%;
+}
+
+.header-main {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.back-button {
+  font-size: larger;
+}
+
+.header-title {
+  font-size: 24px;
+  font-weight: 500;
+  color: #ffffff;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+}
+
+
+.header-filters {
+  margin-top: 16px;
+}

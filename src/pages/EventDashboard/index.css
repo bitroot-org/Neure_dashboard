@@ -1,0 +1,63 @@
+.workshop-page {
+  min-height: 100vh;
+  width: 100%;
+  background-color: #191A20;
+  padding: 80px;
+  margin: 0 auto;
+}
+
+.workshop-content{
+  padding-top: 18px;
+}
+
+.calendar-wrapper {
+  background: #242424;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.month-selector {
+  padding: 16px;
+  background: #242424;
+}
+
+.month-selector h5 {
+  color: #ffffff;
+  margin: 0;
+}
+
+.workshops-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+}
+
+.workshop-item {
+  height: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+@media (max-width: 768px) {
+  .workshop-content {
+    padding: 16px;
+  }
+
+  .workshops-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .workshop-item {
+    height: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .workshop-content {
+    padding: 12px;
+  }
+
+  .workshop-item {
+    height: 100%;
+  }
+}
