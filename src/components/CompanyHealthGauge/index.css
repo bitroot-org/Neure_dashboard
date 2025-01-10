@@ -28,7 +28,7 @@
 
 @media screen and (max-width: 768px) {
   .gauge-container {
-    height: 300px; /* Fixed height for mobile */
+
     min-height: 300px;
   }
   
@@ -39,7 +39,7 @@
 
 @media screen and (max-width: 479px){
   .gauge-container {
-    height: 300px; /* Fixed height for mobile */
+ /* Fixed height for mobile */
     min-height: 300px;
   }
   
@@ -50,7 +50,7 @@
 
 @media screen and (max-width: 1024px){
   .gauge-container {
-    height: 300px; /* Fixed height for mobile */
+/* Fixed height for mobile */
     min-height: 300px;
   }
   

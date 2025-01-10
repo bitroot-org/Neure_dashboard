@@ -25,6 +25,7 @@ import CompanyHealthGauge from "../../components/CompanyHealthGauge";
 import { UserDataContext } from "../../context/UserContext";
 import axios from "axios";
 import PresentationSlide from "../../components/PresentationSlide";
+import UserStats from "../../components/UserStats";
 
 const { Header, Content } = Layout;
 
@@ -39,6 +40,13 @@ const DashboardLayout = () => {
     return user.fullName.firstName
       ? user.fullName.firstName[0].toUpperCase()
       : "U";
+  };
+
+  const data = {
+    totalUsers: 512,
+    activeUsers: 500,
+    inactiveUsers: 12,
+    lastUpdated: '21 Apr'
   };
 
   const menuItems = [
@@ -134,7 +142,7 @@ const DashboardLayout = () => {
             </Badge>
             <SettingOutlined className="header-icon" />
             <div className="user-info">
-              <Avatar className="company-avatar">{getInitial()}</Avatar>
+              {/* <Avatar className="company-avatar">{getInitial()}</Avatar> */}
               <h3 className="user-name">
                 {`${user.fullName.firstName} ${user.fullName.lastName}`}
                 <Dropdown
@@ -165,11 +173,12 @@ const DashboardLayout = () => {
                   View All <RightOutlined />
                 </Button>
               </div>
+              <div className="workshops-image-card">
               <PresentationSlide
                 title="Building Resilience: Strategies for Stress Management"
                 date="Mumbai | 15 Oct '24"
-                backgroundImage="./workshop.png"
-              />
+                backgroundImage="https://images.pexels.com/photos/3183197/pexels-photo-3183197.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+              /></div>              
             </Card>
 
             <div className="bottom-cards">
@@ -213,7 +222,7 @@ const DashboardLayout = () => {
               lastCheckDate="31 Jan"
               status="Average"
             />
-            <CompanyHealthGauge className="metric-card" />
+            <UserStats data={data} />
           </div>
 
           <Card className="roi-card">
@@ -248,9 +257,9 @@ const DashboardLayout = () => {
                 View All <RightOutlined />
               </Button>
             </div>
-            {/* <div className="articles-image-container">
+            <div className="articles-image-container">
               <img src="./problemSolving.png" alt="Problem solving" />
-            </div> */}
+            </div>
           </Card>
         </div>
       </Content>

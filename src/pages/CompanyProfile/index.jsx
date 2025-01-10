@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Avatar, Typography, Select, Input, Button, Space, DatePicker } from 'antd';
 import './index.css';
 import CustomHeader from '../../components/CustomHeader';
@@ -35,7 +35,7 @@ const CompanyHeader = ({ company }) => (
   </div>
 );
 
-const CompanyForm = ({ companyInfo, contactInfo }) => {
+const CompanyForm = ({ companyInfo, contactInfo, disabled }) => {
   const sizeOptions = ["10-50", "51-200", "201-500", "500+"];
 
   return (
@@ -49,7 +49,7 @@ const CompanyForm = ({ companyInfo, contactInfo }) => {
             <Input 
               className="custom-input"
               value={companyInfo.companyName}
-              disabled
+              disabled={disabled}
             />
           </div>
           
@@ -59,7 +59,7 @@ const CompanyForm = ({ companyInfo, contactInfo }) => {
               className="custom-select"
               value={companyInfo.industry}
               suffixIcon={<span className="select-arrow">▼</span>}
-              disabled
+              disabled={disabled}
             >
               <Select.Option value="Technology">Technology</Select.Option>
             </Select>
@@ -73,6 +73,7 @@ const CompanyForm = ({ companyInfo, contactInfo }) => {
               <button 
                 key={size}
                 className={`size-btn ${size === companyInfo.size ? 'active' : ''}`}
+                disabled={disabled}
               >
                 {size}
               </button>
@@ -92,7 +93,7 @@ const CompanyForm = ({ companyInfo, contactInfo }) => {
             <Input 
               className="custom-input"
               value={contactInfo.fullName}
-              disabled
+              disabled={disabled}
             />
           </div>
           
@@ -101,7 +102,7 @@ const CompanyForm = ({ companyInfo, contactInfo }) => {
             <Input 
               className="custom-input"
               value={contactInfo.jobTitle}
-              disabled
+              disabled={disabled}
             />
           </div>
         </div>
@@ -112,7 +113,7 @@ const CompanyForm = ({ companyInfo, contactInfo }) => {
             <Input 
               className="custom-input"
               value={contactInfo.email}
-              disabled
+              disabled={disabled}
             />
           </div>
           
@@ -121,7 +122,7 @@ const CompanyForm = ({ companyInfo, contactInfo }) => {
             <Input 
               className="custom-input"
               value={contactInfo.phone}
-              disabled
+              disabled={disabled}
             />
           </div>
         </div>
@@ -131,14 +132,28 @@ const CompanyForm = ({ companyInfo, contactInfo }) => {
 };
 
 const CompanyProfile = () => {
+  const [isEditable, setIsEditable] = useState(false);
+
+  const handleEditClick = () => {
+    setIsEditable(!isEditable);
+  };
+
   return (
     <div className="profile-container">
-      <CustomHeader title="Company Profile"   rightContent={<Button>Edit</Button>}
+      <CustomHeader 
+        title="Dashboard"
+        showBackButton={true}
+        showEditButton={true}
+        showFilterButton={false}
+        onEditClick={handleEditClick}
+        defaultFilterValue="Monthly"
+        buttonText={isEditable ? "Save" : "Edit"}
       />
       <CompanyHeader company={dummyData.company} />
       <CompanyForm 
         companyInfo={dummyData.company.info}
         contactInfo={dummyData.contact}
+        disabled={!isEditable}
       />
     </div>
   );

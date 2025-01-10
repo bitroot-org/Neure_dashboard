@@ -2,6 +2,7 @@ import React from 'react';
 import { Typography, Button } from 'antd';
 import { CalendarOutlined, EnvironmentOutlined, ClockCircleOutlined } from '@ant-design/icons';
 import './index.css';
+import CustomHeader from '../../components/CustomHeader';
 
 const { Title, Text, Paragraph } = Typography;
 
@@ -28,6 +29,7 @@ const WorkshopCard = () => {
 
   return (
     <div className="workshop-container">
+      <CustomHeader title="Workshop Details" />
       <div className="workshop-card">
         <div className="image-container">
           <img 
@@ -38,7 +40,7 @@ const WorkshopCard = () => {
         </div>
         
         <div className="content-container">
-          <Title level={2} className="workshop-title">
+          <Title  className="workshop-title">
             Boosting Mental Resilience in the Workplace
           </Title>
 

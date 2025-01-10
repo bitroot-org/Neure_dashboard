@@ -3,6 +3,7 @@
   padding: 80px;
   min-height: 100vh;
   background-color: #191a20;
+  overflow-x: hidden;
   margin: 0px;
 }
 
@@ -53,8 +54,6 @@
 
 .company-avatar {
   background: #00b96b;
-  height: 32px;
-  width: 32px;
 }
 
 .user-info {
@@ -77,6 +76,7 @@
   display: flex;
   padding: 24px 0px;
   gap: 24px;
+  height: auto;
 }
 
 .left-section {
@@ -105,18 +105,32 @@
 .workshop-banner {
   position: relative;
   height: 40%;
-  min-height: 380px;
+  min-height: 400px;
   background: linear-gradient(180deg, #2D2F39 0%, #191A20 100%) !important;
   overflow: hidden;
   margin-bottom: 24px;
 }
 
-.workshop-image {
+.workshop-banner::before {
+  content: '';
+  position: absolute;
+
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+    circle at 70% 100%,
+    rgba(68, 74, 250, 0.4) 0%,
+    rgba(23, 209, 101, 0) 60%
+  );
+  z-index: 1;
+  pointer-events: none;
+}
+
+.workshops-image-card {
   flex: 1;
   position: relative;
-  width: 100%;
-  height: 300%;
   border-radius: 10%;
+  padding: 0px 40px 20px 40px ;
 }
 
 .workshop-image img {
@@ -140,8 +154,8 @@
 }
 
 .rewards-card {
-  flex: 1;
   background: linear-gradient(180deg, #2D2F39 0%, #191A20 100%) !important;
+  min-height: 350px;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -162,9 +176,9 @@
 }
 
 .right-cards {
-  flex: 1;
   display: flex;
   flex-direction: column;
+  flex: 1;
   gap: 24px;
   height: 100%;
 }
@@ -188,6 +202,8 @@
 .support-card {
   background: linear-gradient(180deg, #2D2F39 0%, #191A20 100%) !important;
   height: calc(50% - 12px);
+  flex: 1;
+  min-height: 200px;
 }
 
 .announcement-content {
@@ -226,14 +242,13 @@
   display: flex;
   gap: 34px;
   height: 30%;
-  min-height: 300px;
+  min-height: 350px;
 }
 
 .metric-card {
   flex: 1;
   text-align: center;
   background: linear-gradient(180deg, #2D2F39 0%, #191A20 100%) !important;
-  min-height: 100%;
 }
 
 .metric-card h3 {
@@ -258,8 +273,8 @@
 .roi-card {
   flex: 1;
   background: linear-gradient(180deg, #2D2F39 0%, #191A20 100%) !important;
-  height: calc(50% - 12px); /* Subtracting half of gap */
-  min-height: 250px;
+  height: auto;
+  min-height: 350px;
   display: flex;
   flex-direction: column;
 }
@@ -275,11 +290,13 @@
 .roi-header h3 {
   font-size: 24px;
   font-weight: 500;
+  color: #fff;
 }
 
 .roi-header span {
   font-size: 14px;
   font-weight: 300;
+  color: #fff;
 }
 
 .roi-metrics {
@@ -294,40 +311,60 @@
   flex-direction: column;
   justify-content: space-between;
   align-items: flex-start;
-  background: transparent;
+  background: linear-gradient(180deg, #1f1f20 0%, #000000 100%) !important;
   border: 1px solid #3f3c3c;
   padding: 12px;
-  border-radius: 8px;
+  border-radius: 14px;
   height: 100px;
 }
 
 .roi-item span {
   font-size: 14px;
-  font-weight: 300;
+  font-weight: 400;
 }
 
 .percentage {
   font-weight: 500;
   font-size: 24px;
+    color: #ffffff;
+
 }
 
 .articles-card {
+  display: flex;
+  justify-content: space-between;
   height: calc(15% - 12px); /* Subtracting half of gap */
   min-height: 100px;
   background: transparent;
+}
+
+.articles-card::before {
+  content: '';
+  position: absolute;
+  bottom: 0px;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+    circle at 70% 250%,
+    rgba(244, 250, 68, 0.4) 0%,
+    rgba(0, 0, 0, 0) 40%
+  );
+  z-index: 1;
+  pointer-events: none;
+}
+
+.articles-header{
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
+  align-items: start;
+  margin-bottom: 16px;
+  height: auto;
 }
 
 .articles-header h3 {
   font-size: 24px;
   font-weight: 500;
-}
-
-.article-card-icon {
-  color: #00b96b;
-  height: 80px;
-  width: auto;
 }
 
 .view-all {
@@ -375,7 +412,7 @@
   background: linear-gradient(180deg, #2D2F39 0%, #191A20 100%) !important;
 }
 
-/* Mobile Responsiveness */
+/* Mobile Responsiveness
 @media screen and (max-width: 1024px) {
   .metrics-cards {
     flex-direction: column;
@@ -384,18 +421,20 @@
   .roi-metrics {
     grid-template-columns: 1fr;
   }
-}
+} */
 
 /* Tablet Breakpoint (768px - 1024px) */
 @media screen and (max-width: 1024px) {
+
+  .dashboard-layout {
+    padding: 20px;
+  }
+  
+  
   .main-content {
     flex-direction: column;
     padding: 20px;
     gap: 20px;
-  }
-
-  .left-section, .right-section {
-    height: auto;
   }
 
   .metrics-cards {
@@ -406,21 +445,39 @@
   }
 
   .bottom-cards {
+    flex-direction: column;
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns:1fr;
     gap: 20px;
     height: auto;
+  }
+
+  .rewards-card{
+    height: 400px;
+  }
+
+  .announcement-card{
+    height: 200px;
+  }
+
+  .support-card{
+    height: 200px;
+  }
+
+  .roi-card{
+    height: auto !important; /* Override any other styles */
+    min-height: 350px;
+    width: 100% !important;
+    grid-column: span 2; /* Make it full width */
   }
 
   .right-cards {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
+    gap: 24px;
   }
 
-  .workshop-banner {
-    min-height: 300px;
-  }
+  
 
   .roi-metrics {
     grid-template-columns: repeat(2, 1fr);
@@ -429,6 +486,9 @@
 
 /* Mobile Breakpoint (< 768px) */
 @media screen and (max-width: 767px) {
+  .dashboard-layout {
+    padding: 16px;
+  }
   .main-content {
     padding: 16px;
     gap: 16px;
@@ -440,10 +500,6 @@
   .roi-metrics {
     grid-template-columns: 1fr;
     gap: 16px;
-  }
-
-  .workshop-banner {
-    min-height: 200px;
   }
 
   .header {
@@ -485,6 +541,12 @@
     font-size: 16px;
   }
 
+  .roi-card {
+    height: auto !important;
+    min-height: 450px;
+    grid-column: span 1;
+  }
+
   .roi-item {
     height: 80px;
     padding: 10px;
@@ -502,13 +564,24 @@
     gap: 12px;
   }
 
+
+  .workshop-banner{
+    height: 350px;
+    padding: none;
+
+  }
+
   .header {
     padding: 0 12px;
     height: 48px;
   }
 
-  .workshop-banner {
-    min-height: 160px;
+  .bottom-cards{
+    min-height: 1000px;
+  }
+
+  .rewards-card{
+    height: 100%;
   }
 
   .workshops-header,
@@ -524,6 +597,18 @@
 
   .view-all {
     font-size: 14px;
+  }
+
+  .right-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .announcement-card,
+  .support-card {
+    max-height: fit-content;
+    width: 100%;
   }
 
   .roi-item {

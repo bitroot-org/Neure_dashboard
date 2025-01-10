@@ -1,15 +1,14 @@
-/* CustomHeader.css */
 .custom-header {
-  background-color: transparent;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  padding-bottom: 12px;
   width: 100%;
+  margin-bottom: 24px;
 }
 
 .header-main {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .header-left {
@@ -18,22 +17,87 @@
   gap: 12px;
 }
 
-.back-button {
-  font-size: larger;
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .header-title {
+  margin: 0;
   font-size: 24px;
   font-weight: 500;
   color: #ffffff;
 }
 
-.header-right {
+.back-button {
+  padding: 0;
   display: flex;
   align-items: center;
+  justify-content: center;
 }
 
+.back-button:hover {
+  background: transparent;
+}
 
-.header-filters {
-  margin-top: 16px;
+.back-icon {
+  color: #ffffff;
+}
+
+.filter-select {
+  width: 120px;
+}
+
+.edit-button {
+  display: flex;
+  align-items: center;
+  background-color: #ffffff !important;
+  color: black !important; 
+  padding: 4px 40px;
+  border-radius: 20px;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.edit-button.ant-btn {
+  background-color: #ffffff;
+  color: #000000;
+  border: none;
+  height: 40px;
+  width: 120px;
+  border-radius: 20px;
+  font-size: 16px;
+  font-weight: 500;
+  box-shadow: none;
+}
+
+.edit-button.ant-btn:hover,
+.edit-button.ant-btn:focus {
+  background-color: #f0f0f0;
+  color: #000000;
+  border: none;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2);
+  outline: none;
+}
+
+.edit-button.ant-btn:active {
+  background-color: #e0e0e0;
+  color: #000000;
+  border: none;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.3);
+}
+
+/* Override Ant Design Select styles for dark theme */
+.filter-select .ant-select-selector {
+  background-color: transparent !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+.filter-select .ant-select-selection-item {
+  color: #ffffff !important;
+}
+
+.filter-select .ant-select-arrow {
+  color: rgba(255, 255, 255, 0.65) !important;
 }
