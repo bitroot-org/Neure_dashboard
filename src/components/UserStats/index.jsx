@@ -4,11 +4,11 @@ import './index.css';
 
 const { Title, Text } = Typography;
 
-const UserStats = ({ data }) => {
+const UserStats = ({ data, onClick }) => {
   const { totalUsers, activeUsers, inactiveUsers, lastUpdated } = data;
 
   return (
-    <Card className="stats-card">
+    <Card className="stats-card" style={{ cursor: onClick ? 'pointer' : 'default' }} onClick={onClick}>
       <div className="stats-container">
         <Title className="stats-title">Total users</Title>
         

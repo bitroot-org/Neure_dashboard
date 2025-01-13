@@ -27,7 +27,7 @@ import axios from "axios";
 import PresentationSlide from "../../components/PresentationSlide";
 import UserStats from "../../components/UserStats";
 
-const { Header, Content } = Layout;
+const { Header, Content, Footer } = Layout;
 
 const DashboardLayout = () => {
   const [hasNotifications, setHasNotifications] = useState(false);
@@ -46,7 +46,7 @@ const DashboardLayout = () => {
     totalUsers: 512,
     activeUsers: 500,
     inactiveUsers: 12,
-    lastUpdated: '21 Apr'
+    lastUpdated: "21 Apr",
   };
 
   const menuItems = [
@@ -122,15 +122,21 @@ const DashboardLayout = () => {
   };
 
   const handleViewAllWorkshops = () => {
-    navigate('/eventDashboard');
+    navigate("/eventDashboard");
+  };
+
+  const handleCompanyGaugeClick = () => {
+    navigate('/company-performance');
+  };
+
+  const handleUserStatsClick = () => {
+    navigate('/user-stats');
   };
 
   return (
     <Layout className="dashboard-layout">
       <Header className="header">
-        <div className="CompanyTitle">
-          The Company
-        </div>
+        <div className="CompanyTitle">The Company</div>
         <div className="header-right">
           <Space size={16} align="center">
             <Badge dot={hasNotifications} offset={[-5, 5]}>
@@ -165,24 +171,29 @@ const DashboardLayout = () => {
             <Card className="workshop-banner">
               <div className="workshops-header">
                 <h2>Upcoming Workshops</h2>
-                <Button 
-                  type="link" 
-                  className="view-all" 
+                <Button
+                  type="link"
+                  className="view-all"
                   onClick={handleViewAllWorkshops}
                 >
                   View All <RightOutlined />
                 </Button>
               </div>
               <div className="workshops-image-card">
-              <PresentationSlide
-                title="Building Resilience: Strategies for Stress Management"
-                date="Mumbai | 15 Oct '24"
-                backgroundImage="https://images.pexels.com/photos/3183197/pexels-photo-3183197.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-              /></div>              
+                <PresentationSlide
+                  title="Building Resilience: Strategies for Stress Management"
+                  date="Mumbai | 15 Oct '24"
+                  backgroundImage="https://images.pexels.com/photos/3183197/pexels-photo-3183197.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+                />
+              </div>
             </Card>
 
             <div className="bottom-cards">
-              <Card className="rewards-card">
+              <Card
+                className="rewards-card"
+                onClick={() => navigate("/rewards")}
+                style={{ cursor: "pointer" }}
+              >
                 <div className="rewards-content">
                   <h3>Rewards & </h3>
                   <h3>Recognition</h3>
@@ -192,7 +203,11 @@ const DashboardLayout = () => {
                 </div>
               </Card>
               <div className="right-cards">
-                <Card className="announcement-card">
+                <Card
+                  className="announcement-card"
+                  onClick={() => navigate("/announcements")}
+                  style={{ cursor: "pointer" }}
+                >
                   <div className="announcement-content">
                     <h3>Anouncements</h3>
                     <div className="announcement-icon">
@@ -200,7 +215,11 @@ const DashboardLayout = () => {
                     </div>
                   </div>
                 </Card>
-                <Card className="support-card">
+                <Card
+                  className="support-card"
+                  onClick={() => navigate("/support")}
+                  style={{ cursor: "pointer" }}
+                >
                   <div className="support-content">
                     <div className="support-icon">
                       <img src="support.png" alt="support icon" />
@@ -221,8 +240,14 @@ const DashboardLayout = () => {
               title="Project performance"
               lastCheckDate="31 Jan"
               status="Average"
+              onClick={handleCompanyGaugeClick}
+              style={{ cursor: 'pointer' }}
             />
-            <UserStats data={data} />
+            <UserStats 
+              data={data} 
+              onClick={handleUserStatsClick}
+              style={{ cursor: 'pointer' }}
+            />
           </div>
 
           <Card className="roi-card">
@@ -253,7 +278,7 @@ const DashboardLayout = () => {
           <Card className="articles-card">
             <div className="articles-header">
               <h3>Explore articles on improving mental well-being by Neure.</h3>
-              <Button type="link" className="view-all">
+              <Button type="link" className="view-all" onClick={() => navigate('/articles')} style={{ cursor: 'pointer' }}>
                 View All <RightOutlined />
               </Button>
             </div>
@@ -263,6 +288,13 @@ const DashboardLayout = () => {
           </Card>
         </div>
       </Content>
+
+      <Footer className="footer">
+        <div className="footer-content">
+          Powered by{" "}
+          <img src="./neure.png" alt="Neure Icon" className="neure-icon" />
+        </div>
+      </Footer>
     </Layout>
   );
 };

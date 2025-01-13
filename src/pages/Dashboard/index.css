@@ -1,5 +1,5 @@
 .dashboard-container {
-  padding: 24px;
+  padding: 80px;
   background-color: #191A20;
   min-height: 100vh;
   color: #E5E7EB;
@@ -8,20 +8,60 @@
 /* Stats Grid Styles */
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
   margin-bottom: 24px;
+  height:100%;
+}
+
+.left-metrics {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  height: 100%;
+}
+
+.right-stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 2 cards per row */
+  gap: 24px;
+  height: 100%;
+}
+
+
+
+.stat-card{
+  background: linear-gradient(145deg, #2D2F39 0%, #191A20 100%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 20px;
 }
 
 @media (max-width: 1024px) {
   .stats-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 1fr;
+  }
+  
+  .left-metrics, .right-stats {
+    gap: 16px;
+  }
+  
+  .right-stats {
+    grid-template-columns: 1fr; /* 1 card per row */
   }
 }
 
 @media (max-width: 640px) {
   .stats-grid {
     grid-template-columns: 1fr;
+  }
+  
+  .right-stats {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  
+  .stat-card {
+    padding: 16px;
   }
 }
 

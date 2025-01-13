@@ -4,6 +4,7 @@ import FeedbackModal from "../../components/FeedBackModal/FeedbackModal";
 import BackButton from "../../components/Button";
 import { faqData } from "../../constants/faqData";
 import "./index.css";
+import CustomHeader from "../../components/CustomHeader";
 
 const HelpAndSupport = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -11,13 +12,10 @@ const HelpAndSupport = () => {
   return (
     <div className="faq-container">
       <div className="faq-inner">
-        <div className="faq-header">
-          <BackButton text="Help & Support" />
-          <div className="border-line" />
-          <p className="description">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-            Suspendisse varius enim in eros elementum tristique.
-          </p>
+        <CustomHeader title="Help and Support" />
+
+        <div className="description">
+          <h2>Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloremque eaque, quos facere accusantium amet nobis, earum perferendis, Quo vero debitis dignissimos quia porro modi molestias aspernatur</h2>
         </div>
 
         <Collapse accordion className="faq-collapse" items={faqData} />

@@ -1,17 +1,8 @@
-// src/pages/RewardsDashboard/index.jsx
 import React from "react";
 import { Card } from "antd";
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-} from "recharts";
 import "./index.css";
 import MetricLineChart from "../../components/MetricLineCharts";
+import CustomHeader from "../../components/CustomHeader";
 
 const dummyMetricsData = [
   { name: "5k", value: 20 },
@@ -48,23 +39,23 @@ const CustomTooltip = ({ active, payload, label }) => {
 
 const RewardsDashboard = () => {
   return (
-    <div className="dashboard-container">
-      <div className="metrics-section">
-        {/* Employee Happiness Card */}
-        <Card className="happiness-card">
-          <div className="happiness-content">
+    <div className="rewards-dashboard">
+      <CustomHeader title="Rewards & Recognition" />
+      <div className="rewards-metrics-section">
+        <Card className="rewards-happiness-card">
+          <div className="rewards-happiness-info">
             <h2>92%</h2>
             <p>Employee happiness</p>
-            <div className="employee-icon">
-              <img src="achievement.png" alt="Achievememt Logo" />
-            </div>
+          </div>
+
+          <div className="rewards-employee-icon">
+            <img src="achievement.png" alt="Achievement Logo" />
           </div>
         </Card>
 
-        {/* Stats Cards */}
-        <div className="stats-container">
-          <Card className="stat-card">
-            <div className="stat-content">
+        <div className="rewards-stats-container">
+          <Card className="rewards-stat-card">
+            <div className="rewards-stat-content">
               <div className="stat-icon">
                 <img src="handCoins.png" alt="Hand holding coins" />
               </div>
@@ -75,8 +66,8 @@ const RewardsDashboard = () => {
             </div>
           </Card>
 
-          <Card className="stat-card">
-            <div className="stat-content">
+          <Card className="rewards-stat-card">
+            <div className="rewards-stat-content">
               <div className="stat-icon">
                 <img src="shootingStar.png" alt="Shooting star" />
               </div>
@@ -87,8 +78,8 @@ const RewardsDashboard = () => {
             </div>
           </Card>
 
-          <Card className="stat-card">
-            <div className="stat-content">
+          <Card className="rewards-stat-card">
+            <div className="rewards-stat-content">
               <div className="stat-icon">
                 <img src="trophy.png" alt="Trophy" />
               </div>
@@ -100,8 +91,7 @@ const RewardsDashboard = () => {
           </Card>
         </div>
 
-        {/* Top Rewarded Employees */}
-        <Card className="employees-card">
+        <Card className="rewards-employees-card">
           <h3>Top Rewarded Employees:</h3>
           <div className="employees-list">
             {dummyEmployeeData.map((employee, index) => (

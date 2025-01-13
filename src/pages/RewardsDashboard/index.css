@@ -1,11 +1,10 @@
-/* src/pages/RewardsDashboard/index.css */
-.dashboard-container {
-  padding: 24px;
+.rewards-dashboard {
+  padding: 80px;
   background-color: #191A20;
   min-height: 100vh;
 }
 
-.metrics-section {
+.rewards-metrics-section {
   display: grid;
   grid-template-columns: 1fr 2fr 1fr;
   gap: 24px;
@@ -13,49 +12,57 @@
 }
 
 /* Base styles remain the same */
-.happiness-card {
+.rewards-happiness-card {
   background-color: #065f46 !important;
-  border: 1px solid #4B5563;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.happiness-content {
+.rewards-happiness-info{
   display: flex;
   flex-direction: column;
   align-items: center;
-  text-align: center;
-  color: white;
 }
 
-.happiness-content h2 {
-  font-size: 36px;
+.rewards-happiness-info h2 {
+  color: white;
+  font-size: 48px;
+  font-weight: 500;
+  margin: 0;
+}
+
+.rewards-happiness-info p {
+  color: #6b7280;
+  font-size: 18px;
   font-weight: 400;
 }
 
-.happiness-content p {
-  font-size: 20px;
-  font-weight: 300;
-}
-
-.stats-container {
+.rewards-stats-container {
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
 
-.stat-card {
-  background: linear-gradient(to bottom, #373738, #191A20) !important;
+.rewards-stat-card {
+  background-color: #191A20 !important;
   border: 1px solid #4B5563;
+  width: 100%;
 }
 
-.stat-content {
+.rewards-stat-content {
   display: flex;
   align-items: center;
   gap: 16px;
+  padding: 16px;
 }
 
 .stat-icon {
   width: 64px;
   height: 64px;
+  flex-shrink: 0;
+}
+
+.stat-info {
+  flex: 1;
 }
 
 .stat-info p {
@@ -71,20 +78,16 @@
   margin: 0;
 }
 
-.employees-card {
-  background: linear-gradient(to bottom, #373738, #191A20) !important;
-  border: 1px solid #4B5563;
-}
 
-.employees-card h3 {
+.rewards-employees-card h3 {
   color: white;
-  margin-bottom: 16px;
+  margin-bottom:-20px;
   font-size: 24px;
   font-weight: 500;
 }
 
 .employees-list {
-  margin-top: 16px;
+  margin: 16px;
 }
 
 .employee-item {
@@ -94,6 +97,7 @@
   padding: 8px 0;
   position: relative;
   padding-left: 12px;
+  margin: 30px 0;
 }
 
 .employee-item::before {
@@ -180,13 +184,13 @@
 
 /* Responsive styles */
 @media screen and (max-width: 1024px) {
-  .metrics-section {
+  .rewards-metrics-section {
     grid-template-columns: 1fr 1fr;
   }
   
-  .employees-card {
+  .rewards-employees-card {
     grid-column: span 2;
-    height: 350px;
+    height: 380px;
   }
 }
 
@@ -234,3 +238,4 @@
     gap: 12px;
   }
 }
+

@@ -1,20 +1,19 @@
 import React, { useState } from 'react';
-import { Tabs, List, Space, Button } from 'antd';
-import { LeftOutlined, BellOutlined } from '@ant-design/icons';
+import { Tabs, List, Space } from 'antd';
 import { allData, announcementsData, notificationsData } from '../../constants/faqData';
 import BackButton from '../../components/Button';
+import './index.css';
+import CustomHeader from '../../components/CustomHeader';
 
-
-const AnnouncementsNotifications = () => {
+const AnnouncementsAndNotifications = () => {
   const [activeTab, setActiveTab] = useState('all');
 
   const getItemIcon = (type) => {
     switch (type) {
       case 'notification':
-        return <img src='notifications.png' />;
+        return <img src='notifications.png' alt="notification icon" />;
       default:
-        return <img src='announcements.png'/>
-        
+        return <img src='announcements.png' alt="announcement icon" />;
     }
   };
 
@@ -24,25 +23,24 @@ const AnnouncementsNotifications = () => {
       renderItem={item => (
         <List.Item
           key={item.id}
-          className="border-b border-gray-800 cursor-pointer px-4 py-6"
+          className="list-item"
         >
           <List.Item.Meta
             avatar={getItemIcon(item.type)}
             title={
               <Space>
-                <span className="text-white">{item.title}</span>
-                {item.isNew && (
-                  <span className="bg-red-500 w-2 h-2 rounded-full inline-block" />
-                )}
+                <span className="item-title">{item.title}</span>
+                {item.isNew && <span className="new-indicator" />}
               </Space>
             }
             description={
               <div>
-                <p className="text-gray-400 mb-1">{item.description}</p>
-                <small className="text-gray-500">{`${item.type.charAt(0).toUpperCase() + item.type.slice(1)} • ${item.date}`}</small>
+                <p className="item-description">{item.description}</p>
+                <small className="item-meta">
+                  {`${item.type.charAt(0).toUpperCase() + item.type.slice(1)} • ${item.date}`}
+                </small>
               </div>
             }
-            
           />
         </List.Item>
       )}
@@ -50,14 +48,13 @@ const AnnouncementsNotifications = () => {
   );
 
   return (
-    <div className="min-h-full bg-black">
-      <div className="w-full">
-        <BackButton text="Announcements & Notifications" />
+    <div className="notifications-container">
+      <div className="notifications-wrapper">
+        <CustomHeader title="Announcements & notifications" />
         <Tabs
           activeKey={activeTab}
           onChange={setActiveTab}
           className="notifications-tabs"
-
           items={[
             {
               key: 'all',
@@ -81,4 +78,4 @@ const AnnouncementsNotifications = () => {
   );
 };
 
-export default AnnouncementsNotifications;
+export default AnnouncementsAndNotifications;

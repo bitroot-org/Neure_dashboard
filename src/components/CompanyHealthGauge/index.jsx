@@ -8,7 +8,9 @@ const CompanyHealthGauge = ({
   status = "Good",
   lastCheckDate = "21 Apr",
   width = "100%",
-  height = "100%"
+  height = "100%",
+  onClick,
+  style
 }) => {
   const containerRef = useRef(null);
   const canvasRef = useRef(null);
@@ -148,7 +150,8 @@ const CompanyHealthGauge = ({
     <div 
       ref={containerRef} 
       className="gauge-container"
-      style={{ width, height }}
+      style={{ width, height, cursor: onClick ? 'pointer' : 'default'}}
+      onClick={onClick}
     >
       <h2>{title}</h2>
       <canvas 

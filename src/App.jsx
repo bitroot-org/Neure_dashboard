@@ -7,7 +7,7 @@ import LoginPage from "./pages/Login";
 import OnboardingFlow from "./pages/Onboarding";
 import Dashboard from "./pages/Dashboard";
 import HelpAndSupport from "./pages/HelpAndSupport";
-import AnnouncementsNotifications from "./pages/AnnouncementsAndNotifications";
+import AnnouncementsAndNotifications from "./pages/AnnouncementsAndNotifications";
 import EmployeeManagement from "./pages/EmployeeManagement";
 import Article from "./pages/Articles";
 import RewardsDashboard from "./pages/RewardsDashboard";
@@ -42,7 +42,7 @@ function App() {
           }
         />
         <Route
-          path="/help"
+          path="/support"
           element={
             <UserProtectedWrapper>
               <HelpAndSupport />
@@ -53,7 +53,7 @@ function App() {
           path="/announcements"
           element={
             <UserProtectedWrapper>
-              <AnnouncementsNotifications />
+              <AnnouncementsAndNotifications />
             </UserProtectedWrapper>
           }
         />

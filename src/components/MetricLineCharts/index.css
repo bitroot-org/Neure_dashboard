@@ -1,6 +1,6 @@
 .chart-container {
   background-color: transparent;
-  border: 1px solid #374151;
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 16px;
   padding: 20px;
   width: 100%;
@@ -22,16 +22,25 @@
 
 .period-selector {
   background-color: #374151;
-  border: none;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
   color: #E5E7EB;
   padding: 6px 12px;
   cursor: pointer;
   font-size: 14px;
 }
 
+.period-selector option {
+  background-color: #1F2937;
+  color: #E5E7EB;
+}
+
 .period-selector:focus {
   outline: none;
-  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
+  box-shadow: 0 0 0 2px rgba(63, 69, 67, 0.5);
+}
+
+.period-selector option:hover {
+  background-color: #374151;
 }
 
 .chart-wrapper {
@@ -40,8 +49,8 @@
 }
 
 .custom-tooltip {
-  background-color: #1F2937;
-  border: 1px solid #374151;
+  background-color: #1F2937 !important;
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 4px;
   padding: 8px 12px;
 }

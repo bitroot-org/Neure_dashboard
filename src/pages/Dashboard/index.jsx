@@ -1,28 +1,31 @@
 import React from "react";
-import { Table, Space } from "antd";
+import { Table, Space, Card } from "antd";
 import { ArrowUpOutlined, ArrowDownOutlined } from "@ant-design/icons";
 import MetricLineChart from "../../components/MetricLineCharts";
 import { sampleData } from "../../constants/faqData";
 import "./index.css";
+import CompanyHealthGauge from "../../components/CompanyHealthGauge";
+import UserStats from "../../components/UserStats";
+import CustomHeader from "../../components/CustomHeader";
 
 const Dashboard = () => {
   const statsData = [
     {
-      title: "Employee Engagement Levels",
+      title: "Employee Engagement",
       value: "85%",
       change: 4.5,
       status: "up",
       description: "Up from past month",
     },
     {
-      title: "Productivity Improvements",
+      title: "Employee Turnover",
       value: "85%",
       change: 1.5,
       status: "up",
       description: "Up from past month",
     },
     {
-      title: "Reduction in Absenteeism",
+      title: "Stress Levels",
       value: "85%",
       change: 3.5,
       status: "down",
@@ -142,26 +145,51 @@ const Dashboard = () => {
     },
   ];
 
+  const data = {
+    totalUsers: 512,
+    activeUsers: 500,
+    inactiveUsers: 12,
+    lastUpdated: "21 Apr",
+  };
+
   return (
     <div className="dashboard-container">
-      {/* Stats Section */}
+      <CustomHeader title="Dashboard" />
       <div className="stats-grid">
-        {statsData.map((stat, index) => (
-          <div key={index} className="stat-card">
-            <h3>{stat.title}</h3>
-            <div className="stat-value">{stat.value}</div>
-            <div className={`stat-change ${stat.status}`}>
-              {stat.status === "up" ? (
-                <ArrowUpOutlined />
-              ) : (
-                <ArrowDownOutlined />
-              )}
-              <span>
-                {stat.change}% {stat.description}
-              </span>
+        <div className="left-metrics">
+          <CompanyHealthGauge
+            className="metric-card"
+            value={500}
+            title="Project performance"
+            lastCheckDate="31 Jan"
+            status="Average"
+            style={{ cursor: 'pointer' }}
+          />
+          <UserStats 
+            data={data} 
+            style={{ cursor: 'pointer' }}
+          />
+        </div>
+        
+        <div className="right-stats">
+          {statsData.map((stat, index) => (
+            <div key={index} className="stat-card">
+              <h3>{stat.title}</h3>
+              <div className=""></div>
+              <div className="stat-value">{stat.value}</div>
+              <div className={`stat-change ${stat.status}`}>
+                {stat.status === "up" ? (
+                  <img src="CaretUp.png" />
+                ) : (
+                  <img src="CaretDown.png" />
+                )}
+                <span>
+                  {stat.change}%
+                </span>
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
 
       {/* Metric Chart Section */}

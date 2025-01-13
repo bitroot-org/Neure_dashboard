@@ -1,6 +1,6 @@
 /* DashboardLayout.css */
 .dashboard-layout {
-  padding: 80px;
+  padding: 60px 80px;
   min-height: 100vh;
   background-color: #191a20;
   overflow-x: hidden;
@@ -84,7 +84,7 @@
   display: flex;
   flex-direction: column;
   gap: 24px;
-  height: calc(100vh - 112px); /* 100vh - (header height + padding) */
+  height: 100%; 
 }
 
 .workshops-header {
@@ -150,15 +150,14 @@
 .bottom-cards {
   display: flex;
   gap: 24px;
-  height: calc(60% - 48px);
+  height: 100%;
 }
 
 .rewards-card {
+  flex: 1;
   background: linear-gradient(180deg, #2D2F39 0%, #191A20 100%) !important;
   min-height: 350px;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
+  height: 420px;
 }
 
 .rewards-content {
@@ -166,7 +165,6 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 24px;
 }
 
 .rewards-content h3 {
@@ -201,7 +199,7 @@
 .announcement-card,
 .support-card {
   background: linear-gradient(180deg, #2D2F39 0%, #191A20 100%) !important;
-  height: calc(50% - 12px);
+  height: 100%;
   flex: 1;
   min-height: 200px;
 }
@@ -222,6 +220,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-top: 20px;
 }
 
 .support-content h3 {
@@ -410,6 +409,29 @@
 /* Add this new class after your existing card styles */
 .ant-card {
   background: linear-gradient(180deg, #2D2F39 0%, #191A20 100%) !important;
+}
+
+.footer {
+  text-align: center;
+  padding: 0px;
+  background: transparent !important;
+  height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.footer-content {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #666;
+}
+
+.neure-icon {
+  height: 24px;
+  width: auto;
 }
 
 /* Mobile Responsiveness
