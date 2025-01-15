@@ -1,12 +1,13 @@
 import React from 'react';
 import './index.css';
 
-const PresentationSlide = ({ title, date, backgroundImage, location }) => {
+const ArticleCard = ({ title, date,readingTime, backgroundImage }) => {
   return (
     <div className="slide">
       <div className="content">
         <h1>{title}</h1>
-        <div><p>{location} | {date}</p></div>
+        <div><p>{date}  |  {readingTime} min read</p></div>
+        
       </div>
       <div className="background">
         {backgroundImage && (
@@ -20,4 +21,4 @@ const PresentationSlide = ({ title, date, backgroundImage, location }) => {
   );
 };
 
-export default PresentationSlide;
+export default ArticleCard;

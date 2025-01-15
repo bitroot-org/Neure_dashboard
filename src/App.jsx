@@ -90,7 +90,7 @@ function App() {
           }
         />
         <Route
-          path="/workshops"
+          path="/workshopDetails"
           element={
             <UserProtectedWrapper>
               <WorkshopCard />
@@ -116,7 +116,7 @@ function App() {
         />
 
         {/* Catch all redirect */}
-        <Route path="*" element={<Navigate to="/dashboard" replace />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>
   );

@@ -1,0 +1,62 @@
+.slide {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  min-height: 270px;
+  border: 1px solid #585151;
+  border-radius: 14px;
+}
+
+.content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  padding: 40px;
+  padding-bottom: 30px;
+  padding-left: 30px;
+  z-index: 2;
+  background: linear-gradient(
+    to top,
+    #2D2F39 0%,
+    rgba(45, 47, 57, 0.5) 50%,
+    rgba(45, 47, 57, 0) 100%
+  );
+  width: 100%;
+}
+
+.content h1 {
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 32px;
+  color: #fff;
+  margin-bottom: 8px;
+}
+
+.content p {
+  font-size: 14px;
+  font-weight: 400;
+  color: #fff;
+}
+
+.background {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1;
+}
+
+.background-image {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  z-index: 1;
+}
+
+

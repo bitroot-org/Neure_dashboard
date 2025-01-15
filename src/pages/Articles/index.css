@@ -106,3 +106,66 @@
     height: 180px;
   }
 }
+
+/* Pagination container styles */
+.pagination-container {
+  display: flex;
+  justify-content: flex-end;
+  padding: 24px 0;
+  margin-top: 32px;
+}
+
+/* Pagination styles */
+.custom-pagination {
+  .ant-pagination-item,
+  .ant-pagination-prev,
+  .ant-pagination-next {
+    background: transparent;
+    border: 1px solid #4B5563;
+    border-radius: 4px;
+    margin: 0 4px;
+    
+    a {
+      color: #E5E7EB;
+    }
+    
+    &:hover {
+      background: #595d64;
+      border-color: #00D885;
+      
+      a {
+        color: #00D885;
+      }
+    }
+  }
+
+  .ant-pagination-item-active {
+    background: #00D885;
+    border-color: #00D885;
+    
+    a {
+      color: #191A20;
+    }
+    
+    &:hover {
+      background: #00D885;
+      a {
+        color: #191A20;
+      }
+    }
+  }
+
+  .ant-pagination-prev,
+  .ant-pagination-next {
+    .ant-pagination-item-link {
+      background: #2A2B32;
+      border: 1px solid #4B5563;
+      color: #E5E7EB;
+      
+      &:hover {
+        border-color: #00D885;
+        color: #00D885;
+      }
+    }
+  }
+}

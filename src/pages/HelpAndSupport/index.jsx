@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Collapse, Card, Button, Space } from "antd";
 import FeedbackModal from "../../components/FeedBackModal/FeedbackModal";
-import BackButton from "../../components/Button";
 import { faqData } from "../../constants/faqData";
 import "./index.css";
 import CustomHeader from "../../components/CustomHeader";

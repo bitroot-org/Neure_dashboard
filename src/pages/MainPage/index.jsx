@@ -126,11 +126,15 @@ const DashboardLayout = () => {
   };
 
   const handleCompanyGaugeClick = () => {
-    navigate('/company-performance');
+    navigate('/dashboard');
   };
 
   const handleUserStatsClick = () => {
-    navigate('/user-stats');
+    navigate('/dashboard');
+  };
+
+  const handleViewWorkshopDetails = () => {
+    navigate('/workshopDetails');
   };
 
   return (
@@ -179,11 +183,11 @@ const DashboardLayout = () => {
                   View All <RightOutlined />
                 </Button>
               </div>
-              <div className="workshops-image-card">
+              <div className="workshops-image-card" onClick={handleViewWorkshopDetails} style={{ cursor: 'pointer' }}>
                 <PresentationSlide
                   title="Building Resilience: Strategies for Stress Management"
                   date="Mumbai | 15 Oct '24"
-                  backgroundImage="https://images.pexels.com/photos/3183197/pexels-photo-3183197.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+                  backgroundImage="https://images.pexels.com/photos/3183197/pexels-photo-3183197.jpeg"
                 />
               </div>
             </Card>

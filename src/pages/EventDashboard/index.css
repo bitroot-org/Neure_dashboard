@@ -4,9 +4,12 @@
   background-color: #191A20;
   padding: 80px;
   margin: 0 auto;
+  display: flex;
+  flex-direction: column;
 }
 
 .workshop-content{
+  flex: 1;
   padding-top: 18px;
 }
 
@@ -28,8 +31,9 @@
 
 .workshops-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(3, 1fr); /* Show exactly 3 columns */
   gap: 24px;
+  max-width: 100%;
 }
 
 .workshop-item {
@@ -38,7 +42,38 @@
   overflow: hidden;
 }
 
+.pagination-container {
+  margin: none;
+  display: flex;
+  justify-content: center;
+
+}
+
+/* Tablet view - 2 columns */
+@media (max-width: 1024px) {
+  .workshop-page{
+    padding: 40px;
+  }
+  .workshops-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Mobile view - 1 column */
 @media (max-width: 768px) {
+  .workshop-page{
+    padding: 32px;
+  }
+  .workshops-grid {
+    grid-template-columns: 1fr;
+  }
+  
+}
+
+@media (max-width: 768px) {
+  .workshop-page{
+    padding: 40px;
+  }
   .workshop-content {
     padding: 16px;
   }
@@ -53,6 +88,9 @@
 }
 
 @media (max-width: 480px) {
+  .workshop-page{
+    padding: 10px;
+  }
   .workshop-content {
     padding: 12px;
   }

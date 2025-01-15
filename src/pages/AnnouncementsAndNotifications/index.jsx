@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Tabs, List, Space } from 'antd';
 import { allData, announcementsData, notificationsData } from '../../constants/faqData';
-import BackButton from '../../components/Button';
 import './index.css';
 import CustomHeader from '../../components/CustomHeader';
 

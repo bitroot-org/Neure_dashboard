@@ -2,9 +2,9 @@ import React from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import './index.css';
 
-const CustomCalendar = () => {
+const CustomCalendar = ({ activeDates = [], onDateSelect }) => {
   const [currentDate, setCurrentDate] = React.useState(new Date());
-  const [selectedDate, setSelectedDate] = React.useState(18); // Example selected date
+  const [selectedDate, setSelectedDate] = React.useState(null);
 
   const getDaysInMonth = (date) => {
     return new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
@@ -12,6 +12,24 @@ const CustomCalendar = () => {
 
   const getFirstDayOfMonth = (date) => {
     return new Date(date.getFullYear(), date.getMonth(), 1).getDay();
+  };
+
+  const formatDateString = (day) => {
+    const year = currentDate.getFullYear();
+    const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
+    const dayStr = day.toString().padStart(2, '0');
+    return `${year}-${month}-${dayStr}`;
+  };
+
+  const isActiveDate = (day) => {
+    const dateStr = formatDateString(day);
+    return activeDates.includes(dateStr);
+  };
+
+  const isSelectedDate = (day) => {
+    if (!selectedDate) return false;
+    const currentDateStr = formatDateString(day);
+    return currentDateStr === selectedDate;
   };
 
   const getDaysArray = () => {
@@ -49,6 +67,12 @@ const CustomCalendar = () => {
     setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1));
   };
 
+  const handleDateClick = (day) => {
+    const dateStr = formatDateString(day);
+    setSelectedDate(dateStr);
+    onDateSelect?.(dateStr);
+  };
+
   const { prevMonthDays, currentMonthDays, nextMonthDays } = getDaysArray();
 
   return (
@@ -79,18 +103,17 @@ const CustomCalendar = () => {
         {currentMonthDays.map((day) => (
           <div
             key={`current-${day}`}
-            className={`calendar-day ${day === selectedDate ? 'selected' : ''}`}
-            onClick={() => setSelectedDate(day)}
+            className={`calendar-day ${isSelectedDate(day) ? 'selected' : ''} ${
+              isActiveDate(day) ? 'active' : ''
+            }`}
+            onClick={() => handleDateClick(day)}
           >
             {day}
           </div>
         ))}
 
         {nextMonthDays.map((day, index) => (
-          <div
-            key={`next-${index}`}
-            className="calendar-day next-month"
-          >
+          <div key={`next-${index}`} className="calendar-day next-month">
             {day}
           </div>
         ))}
