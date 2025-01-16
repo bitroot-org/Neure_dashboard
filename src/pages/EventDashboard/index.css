@@ -31,8 +31,7 @@
 
 .workshops-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* Show exactly 3 columns */
-  gap: 24px;
+  grid-template-columns: repeat(3, 1fr); 
   max-width: 100%;
 }
 

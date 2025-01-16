@@ -39,8 +39,20 @@ const LoginPage = () => {
         }
       });
 
-      // Store token in localStorage
+      // Convert expiresAt to local timestamp and readable format
+      const expiryDate = new Date(response.data.data.expiresAt);
+      const localExpiryTimestamp = expiryDate.getTime();
+      const readableExpiry = expiryDate.toLocaleString('en-US', {
+        dateStyle: 'full',
+        timeStyle: 'long'
+      });
+
+      // Store token and expiry info in localStorage
       localStorage.setItem('token', response.data.data.token);
+      localStorage.setItem('tokenExpiry', localExpiryTimestamp);
+      // localStorage.setItem('readableExpiry', readableExpiry);
+
+      console.log('Token expires at:', readableExpiry); // For debugging
       
       message.success('Login successful!');
       navigate('/');
