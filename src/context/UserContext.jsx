@@ -1,26 +1,51 @@
-import React, { createContext, useState } from 'react'
+import React, { createContext, useState, useEffect } from 'react'
 
 export const UserDataContext = createContext()
 
-
 const UserContext = ({ children }) => {
-
-    const [ user, setUser ] = useState({
+    const [user, setUser] = useState({
         id: '',
         email: '',
-        role_id: '',
+        roleId: '',
+        userType: '',
         fullName: {
             firstName: '',
             lastName: ''
         }
     })
+    const [isLoading, setIsLoading] = useState(true)
+
+    // Load initial data from localStorage
+    useEffect(() => {
+        const storedUser = localStorage.getItem('userData')
+        if (storedUser) {
+            const parsedUser = JSON.parse(storedUser)
+            // Transform data to match dashboard structure
+            setUser({
+                ...parsedUser,
+                fullName: {
+                    firstName: parsedUser.fullName.firstName,
+                    lastName: parsedUser.fullName.lastName
+                }
+            })
+        }
+        setIsLoading(false)
+    }, [])
+
+    // Custom setter that updates both state and localStorage
+    const updateUser = (userData) => {
+        setUser(userData)
+        localStorage.setItem('userData', JSON.stringify(userData))
+    }
+
+    if (isLoading) {
+        return null // or loading spinner
+    }
 
     return (
-        <div>
-            <UserDataContext.Provider value={{ user, setUser }}>
-                {children}
-            </UserDataContext.Provider>
-        </div>
+        <UserDataContext.Provider value={{ user, setUser: updateUser }}>
+            {children}
+        </UserDataContext.Provider>
     )
 }
 

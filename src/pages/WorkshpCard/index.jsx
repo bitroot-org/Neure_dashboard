@@ -1,31 +1,67 @@
-import React from 'react';
-import { Typography, Button } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Typography, Button, Spin, message } from 'antd';
+import { useParams } from 'react-router-dom';
 import { CalendarOutlined, EnvironmentOutlined, ClockCircleOutlined } from '@ant-design/icons';
-import './index.css';
+import { getWorkshopDetails } from '../../services/api';
 import CustomHeader from '../../components/CustomHeader';
+import './index.css';
 
 const { Title, Text, Paragraph } = Typography;
 
-const WorkshopCard = () => {
+// Add this helper function at the top of the file
+const formatDateTime = (date, startTime, endTime) => {
+  const eventDate = new Date(date);
+  const start = new Date(startTime);
+  const end = new Date(endTime);
 
-  const agendaItems = [
-    {
-      title: 'Introduction to Mental Resilience',
-      points: [
-        'Understanding mental resilience and why it matters at work',
-        'Key traits of resilient individuals',
-        'Assessing your current level of resilience'
-      ]
-    },
-    {
-      title: 'Stress Management Techniques',
-      points: [
-        'Identifying stress triggers and response patterns',
-        'Practical tools for managing workplace stress',
-        'Building positive coping mechanisms for high-stress situations'
-      ]
-    }
-  ];
+  const formattedDate = eventDate.toLocaleString('en-US', {
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric'
+  });
+
+  const formattedStartTime = start.toLocaleString('en-US', {
+    hour: 'numeric',
+    minute: '2-digit',
+    hour12: true
+  });
+
+  const formattedEndTime = end.toLocaleString('en-US', {
+    hour: 'numeric',
+    minute: '2-digit',
+    hour12: true
+  });
+
+  return `${formattedDate} | ${formattedStartTime} - ${formattedEndTime}`;
+};
+
+const WorkshopCard = () => {
+  const { workshopId } = useParams();
+  const [workshop, setWorkshop] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchWorkshopDetails = async () => {
+      try {
+        setLoading(true);
+        const response = await getWorkshopDetails(workshopId);
+        if (response.status) {
+          setWorkshop(response.data);
+        } else {
+          message.error('Failed to fetch workshop details');
+        }
+      } catch (error) {
+        message.error('Error fetching workshop details');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchWorkshopDetails();
+  }, [workshopId]);
+
+  if (loading) return <Spin size="large" />;
+  if (!workshop) return <div>Workshop not found</div>;
 
   return (
     <div className="workshop-container">
@@ -33,29 +69,32 @@ const WorkshopCard = () => {
       <div className="workshop-card">
         <div className="image-container">
           <img 
-            src="./workshop.png" 
-            alt="Workshop participants" 
+            src={workshop.poster_image}
+            alt="Workshop" 
             className="workshop-image"
           />
         </div>
         
         <div className="content-container">
-          <Title  className="workshop-title">
-            Boosting Mental Resilience in the Workplace
+          <Title className="workshop-title">
+            {workshop.title}
           </Title>
 
+          {/* Update the event-details section */}
           <div className="event-details">
             <div className="detail-item">
               <CalendarOutlined className="detail-icon" />
-              <Text>October 15, 2024</Text>
-            </div>
-            <div className="detail-item">
-              <ClockCircleOutlined className="detail-icon" />
-              <Text>10:00 AM - 12:30 PM</Text>
+              <Text>
+                {formatDateTime(
+                  workshop.conference_date,
+                  workshop.schedules[0]?.start_time,
+                  workshop.schedules[0]?.end_time
+                )}
+              </Text>
             </div>
             <div className="detail-item">
               <EnvironmentOutlined className="detail-icon" />
-              <Text>Mumbai, Maharashtra</Text>
+              <Text>{workshop.location}</Text>
             </div>
           </div>
 
@@ -65,22 +104,17 @@ const WorkshopCard = () => {
 
           <div className="section">
             <Title level={4} className="section-title">Overview:</Title>
-            <Paragraph className="overview-text">
-              This workshop focuses on helping employees develop mental resilience, a key factor in handling stress, maintaining work-life balance, and staying productive. Learn practical tools and techniques to handle workplace stress, develop a growth mindset, and build strong coping mechanisms for professional challenges.
-            </Paragraph>
+            <p className="overview-text">
+              {workshop.description}
+            </p>
           </div>
 
           <div className="section">
             <Title level={4} className="section-title">Agenda:</Title>
             <div className="agenda-list">
-              {agendaItems.map((item, index) => (
+              {workshop.agenda.split(',').map((item, index) => (
                 <div key={index} className="agenda-item">
-                  <Text strong className="agenda-title">{index + 1}. {item.title}</Text>
-                  <ul className="agenda-points">
-                    {item.points.map((point, pIndex) => (
-                      <li key={pIndex}>{point}</li>
-                    ))}
-                  </ul>
+                  <Text className="agenda-title">{index + 1}. {item.trim()}</Text>
                 </div>
               ))}
             </div>

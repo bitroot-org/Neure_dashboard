@@ -57,7 +57,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  color: #a0a0a0;
+  color: #ffffffd2;
 }
 
 .detail-icon {
@@ -81,6 +81,9 @@
 
 .section {
   margin-bottom: 32px;
+  border: 1px solid #ffffff36;
+  padding: 24px;
+  border-radius: 12px;
 }
 
 .section-title {
@@ -91,14 +94,15 @@
 }
 
 .overview-text {
-  color: #a0a0a0 !important;
+  color: #ffffffd2;
   font-size: 16px;
   line-height: 1.6;
   margin-bottom: 0;
 }
 
+
 .agenda-list {
-  color: #a0a0a0;
+  color: #ffffffd2;
 }
 
 .agenda-item {
@@ -131,10 +135,29 @@
   left: -20px;
 }
 
+@media screen and (max-width: 1024px) {
+  .workshop-card{
+    padding: 30px;
+  }
+
+  .workshop-image{
+    height: 400px;
+  }
+  
+}
+
 /* Responsive Styles */
 @media screen and (max-width: 768px) {
   .workshop-container {
     padding: 16px;
+  }
+
+  .workshop-card{
+    padding: 30px;
+  }
+
+  .workshop-image{
+    height: 300px;
   }
 
   .content-container {
@@ -163,6 +186,13 @@
     padding: 12px;
   }
 
+  .workshop-card{
+    padding: 0px;
+  }
+
+  .workshop-image{
+    height: 200px;
+  }
   .content-container {
     padding: 20px;
   }
@@ -195,4 +225,19 @@
 
 .ant-card {
   color: #a0a0a0 !important;
+}
+
+.agenda-item .ant-typography {
+  color: var(--neure-green) !important;
+}
+
+.detail-item .ant-typography {
+  color: var(--neure-green) !important;
+}
+
+/* Override Ant Design Typography */
+.ant-typography {
+  &.ant-typography-secondary {
+    color: var(--neure-light-green) !important;
+  }
 }

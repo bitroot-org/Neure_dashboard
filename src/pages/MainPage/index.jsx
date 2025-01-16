@@ -26,6 +26,7 @@ import { UserDataContext } from "../../context/UserContext";
 import axios from "axios";
 import PresentationSlide from "../../components/PresentationSlide";
 import UserStats from "../../components/UserStats";
+import { logoutUser } from "../../services/api";
 
 const { Header, Content, Footer } = Layout;
 
@@ -70,34 +71,26 @@ const DashboardLayout = () => {
 
   const handleLogout = async () => {
     try {
-      const token = localStorage.getItem("token");
-      const response = await axios.get(
-        `${import.meta.env.VITE_BASE_URL}/user/logout`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await logoutUser();
 
-      if (response.status === 200) {
-        // Clear local storage
-        localStorage.removeItem("token");
-        localStorage.removeItem("user");
-
-        // Reset user context
+      if (response.status) {
+        // First reset user context with empty state
         setUser({
-          id: "",
-          email: "",
-          role_id: "",
+          id: '',
+          email: '',
+          roleId: '',
+          userType: '',
           fullName: {
-            firstName: "",
-            lastName: "",
-          },
+            firstName: '',
+            lastName: ''
+          }
         });
 
-        // Navigate to login
-        navigate("/login");
+
+        localStorage.clear(); 
+
+        message.success('Logged out successfully');
+        navigate('/login');
       }
     } catch (error) {
       console.error("Logout failed:", error);

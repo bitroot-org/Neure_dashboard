@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Row, Col, Spin, Alert } from "antd";
 import CustomCalendar from "../../components/CustomCalendar";
 import PresentationSlide from "../../components/PresentationSlide";
@@ -7,6 +8,7 @@ import axios from "axios";
 import "./index.css";
 import CustomPagination from "../../components/CustomPagination";
 import { getWorkshops, getWorkshopDates } from "../../services/api";
+import { Pointer } from "lucide-react";
 
 const EventDashboard = () => {
   const [workshops, setWorkshops] = useState([]);
@@ -16,20 +18,21 @@ const EventDashboard = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [workshopDates, setWorkshopDates] = useState([]);
   const [selectedDate, setSelectedDate] = useState(null);
-
   const pageSize = 6;
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchWorkshops = async () => {
       try {
         setLoading(true);
         setError(null); // Reset error state before fetching
-        const data = await getWorkshops({ 
-          currentPage, 
+        const data = await getWorkshops({
+          currentPage,
           pageSize,
-          selectedDate 
+          selectedDate,
         });
-        
+
         if (data.status) {
           setWorkshops(data.data.workshops);
           setTotalPages(data.data.pagination.totalPages);
@@ -53,20 +56,20 @@ const EventDashboard = () => {
     const fetchWorkshopDates = async () => {
       try {
         const data = await getWorkshopDates();
-        console.log('API Response:', data);
+        console.log("API Response:", data);
 
         if (data.status && Array.isArray(data.data)) {
-          const formattedDates = data.data.map(date => {
-            const formattedDate = new Date(date).toISOString().split('T')[0];
-            console.log('Formatted date:', formattedDate);
+          const formattedDates = data.data.map((date) => {
+            const formattedDate = new Date(date).toISOString().split("T")[0];
+            console.log("Formatted date:", formattedDate);
             return formattedDate;
           });
-          
+
           setWorkshopDates(formattedDates);
-          console.log('Workshop dates set:', formattedDates);
+          console.log("Workshop dates set:", formattedDates);
         }
       } catch (error) {
-        console.error('Failed to fetch workshop dates:', error);
+        console.error("Failed to fetch workshop dates:", error);
       }
     };
 
@@ -80,6 +83,10 @@ const EventDashboard = () => {
   const handleDateSelect = (date) => {
     setSelectedDate(date);
     setCurrentPage(1); // Reset to first page when date changes
+  };
+
+  const handleWorkshopClick = (workshopId) => {
+    navigate(`/workshopDetails/${workshopId}`);
   };
 
   const formatDate = (dateString) => {
@@ -98,7 +105,7 @@ const EventDashboard = () => {
         <Row gutter={[24, 24]}>
           <Col xs={24} md={8} lg={6}>
             <div className="calendar-wrapper">
-              <CustomCalendar 
+              <CustomCalendar
                 activeDates={workshopDates}
                 onDateSelect={handleDateSelect}
               />
@@ -114,12 +121,14 @@ const EventDashboard = () => {
               ) : (
                 workshops.map((workshop) => (
                   <div key={workshop.workshop_id} className="workshop-item">
-                    <PresentationSlide
-                      title={workshop.title}
-                      date={formatDate(workshop.start_time)}
-                      location={workshop.location}
-                      backgroundImage={workshop.poster_image}
-                    />
+                    <div style={{cursor:"Pointer"}} onClick={() => handleWorkshopClick(workshop.workshop_id)}>
+                      <PresentationSlide
+                        title={workshop.title}
+                        date={formatDate(workshop.start_time)}
+                        location={workshop.location}
+                        backgroundImage={workshop.poster_image}
+                      />
+                    </div>
                   </div>
                 ))
               )}

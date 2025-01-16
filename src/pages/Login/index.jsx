@@ -3,6 +3,7 @@ import { Form, Input, Button, Typography, message } from "antd";
 import { EyeOutlined, EyeInvisibleOutlined } from "@ant-design/icons";
 import { UserDataContext } from '../../context/UserContext'
 import { useNavigate } from 'react-router-dom';
+import { loginUser } from "../../services/api";
 import "./index.css";
 import axios from 'axios'
 
@@ -23,37 +24,28 @@ const LoginPage = () => {
   const handleSubmit = async (values) => {
     setIsLoading(true);
     try {
-      const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/user/login`, {
-        email: values.email,
-        password: values.password
-      });
+      const response = await loginUser(values.email, values.password);
 
-      // Update user context with login data
-      setUser({
-        id: response.data.data.user.id,
-        email: response.data.data.user.email,
-        role_id: response.data.data.user.role_id,
-        fullName: {
-          firstName: response.data.data.user.first_name || '',
-          lastName: response.data.data.user.last_name || ''
-        }
-      });
+      // Store tokens
+      localStorage.setItem('accessToken', response.data.accessToken);
+      localStorage.setItem('refreshToken', response.data.refreshToken);
+      localStorage.setItem('expiresAt', response.data.expiresAt);
 
-      // Convert expiresAt to local timestamp and readable format
-      const expiryDate = new Date(response.data.data.expiresAt);
-      const localExpiryTimestamp = expiryDate.getTime();
-      const readableExpiry = expiryDate.toLocaleString('en-US', {
-        dateStyle: 'full',
-        timeStyle: 'long'
-      });
-
-      // Store token and expiry info in localStorage
-      localStorage.setItem('token', response.data.data.token);
-      localStorage.setItem('tokenExpiry', localExpiryTimestamp);
-      // localStorage.setItem('readableExpiry', readableExpiry);
-
-      console.log('Token expires at:', readableExpiry); // For debugging
       
+      // Update user context with login data
+      const userData = {
+        id: response.data.user.id,
+        email: response.data.user.email,
+        roleId: response.data.user.role_id,
+        userType: response.data.user.user_type,
+        fullName: {
+          firstName: response.data.user.first_name,
+          lastName: response.data.user.last_name
+        }
+      };
+      
+      setUser(userData);
+
       message.success('Login successful!');
       navigate('/');
 

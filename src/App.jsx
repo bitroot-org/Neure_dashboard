@@ -98,6 +98,14 @@ function App() {
           }
         />
         <Route
+          path="/workshopDetails/:workshopId"
+          element={
+            <UserProtectedWrapper>
+              <WorkshopCard />
+            </UserProtectedWrapper>
+          }
+        />
+        <Route
           path="/onboarding"
           element={
             <UserProtectedWrapper>
