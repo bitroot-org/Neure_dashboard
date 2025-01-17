@@ -41,19 +41,24 @@ api.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
-    
-    if ((error.response.status === 401 || error.response.status === 403) && !originalRequest._retry) {
+
+    if (
+      (error.response.status === 401 || error.response.status === 403) &&
+      !originalRequest._retry
+    ) {
       originalRequest._retry = true;
       try {
         const response = await refreshToken();
         if (response.data.accessToken) {
           localStorage.setItem("accessToken", response.data.accessToken);
-          api.defaults.headers.common['Authorization'] = `Bearer ${response.data.accessToken}`;
+          api.defaults.headers.common[
+            "Authorization"
+          ] = `Bearer ${response.data.accessToken}`;
           return api(originalRequest);
         }
       } catch (refreshError) {
         localStorage.clear();
-        window.location.href = '/login';
+        window.location.href = "/login";
         return Promise.reject(refreshError);
       }
     }
@@ -109,17 +114,34 @@ export const getWorkshops = async (params) => {
 export const getWorkshopDetails = async (workshopId) => {
   const response = await api.get(`/workshop/getWorkshopDetails`, {
     params: {
-      workshop_id: workshopId
-    }
+      workshop_id: workshopId,
+    },
   });
   return response.data;
 };
 
-export const getCompanyById = async (companyId) => {  
+export const getCompanyById = async (companyId) => {
   const response = await api.get(`/company/getCompanyInfo`, {
     params: {
-      company_id: companyId
+      company_id: companyId,
+    },
+  });
+  return response.data;
+};
+
+export const updateCompanyInfo = async (companyInfo) => {
+  const response = await api.put(`/company/updateCompanyInfo`,  companyInfo);
+  return response.data;
+};
+
+
+export const getCompanyEmployees = async (companyId, params) => {
+  const response = await api.get(`/company/getCompanyEmployees`, {
+    params: {
+      company_id: companyId,
+      page: params.page,
+      limit: params.limit
     }
   });
   return response.data;
-}
+};

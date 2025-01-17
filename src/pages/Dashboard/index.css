@@ -106,9 +106,9 @@
 /* Table Section Styles */
 .table-section {
   background-color: transparent;
-  border: 1px solid #374151;
+  border: 1px solid rgba(255, 255, 255, 0.1);
   padding: 24px;
-  border-radius: 8px;
+  border-radius: 16px;
 }
 
 .table-header {
@@ -140,23 +140,32 @@
   background-color: transparent;
 }
 
-.employee-avatar {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  object-fit: cover;
+.employee-table .ant-table-thead > tr > th::before {
+  display: none !important;
 }
 
-.status-badge {
-  padding: 4px 12px;
-  border-radius: 16px;
-  font-size: 12px;
-  text-transform: capitalize;
+.employee-table .ant-table-thead > tr > th {
+  padding: 16px 24px !important;
+  text-align: left !important;
+  background-color: transparent !important;
+  border-bottom: none !important;
+  color: #ffffff !important;
 }
 
-.status-badge.test {
-  background-color: #059669;
-  color: white;
+.employee-table .ant-table-tbody > tr > td {
+  padding: 16px 24px !important;
+  text-align: left !important;
+  background-color: transparent !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: #ffffff !important;
+}
+
+.employee-table .ant-table {
+  background: transparent !important;
+}
+
+.employee-table .ant-table-cell {
+  vertical-align: middle !important;
 }
 
 /* Ant Design Table Overrides */

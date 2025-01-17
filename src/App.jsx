@@ -58,7 +58,7 @@ function App() {
           }
         />
         <Route
-          path="/employees"
+          path="/employeesManagement"
           element={
             <UserProtectedWrapper>
               <EmployeeManagement />

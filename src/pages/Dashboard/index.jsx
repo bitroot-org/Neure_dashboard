@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Table, Space, Card } from "antd";
 import { ArrowUpOutlined, ArrowDownOutlined } from "@ant-design/icons";
 import MetricLineChart from "../../components/MetricLineCharts";
@@ -7,8 +7,39 @@ import "./index.css";
 import CompanyHealthGauge from "../../components/CompanyHealthGauge";
 import UserStats from "../../components/UserStats";
 import CustomHeader from "../../components/CustomHeader";
+import { getCompanyEmployees } from "../../services/api";
 
 const Dashboard = () => {
+  const [employees, setEmployees] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [pagination, setPagination] = useState({
+    current: 1,
+    pageSize: 10,
+    total: 0
+  });
+
+  const fetchEmployees = async (page = 1, pageSize = 10) => {
+    try {
+      setLoading(true);
+      const response = await getCompanyEmployees(1, {
+        page,
+        limit: pageSize
+      });
+      
+      if (response.status) {
+        setEmployees(response.data.employees);
+      }
+    } catch (error) {
+      message.error("Failed to fetch employees");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchEmployees(pagination.current, pagination.pageSize);
+  }, []);
+
   const statsData = [
     {
       title: "Employee Engagement",
@@ -40,108 +71,47 @@ const Dashboard = () => {
     },
   ];
 
-  const employeeData = [
-    {
-      key: "1",
-      name: "Ravi",
-      designation: "Manager",
-      dateTime: "12.09.2019 - 12:53 PM",
-      place: "423",
-      amount: "$34,295",
-      status: "Test",
-      avatar: "./profile.jpg",
-    },
-    {
-      key: "2",
-      name: "Kumar",
-      designation: "Designer",
-      dateTime: "12.09.2019 - 12:53 PM",
-      place: "423",
-      amount: "$34,295",
-      status: "Test",
-      avatar: "./profile.jpg",
-    },
-    {
-      key: "3",
-      name: "Anushka",
-      designation: "Developer",
-      dateTime: "12.09.2019 - 12:53 PM",
-      place: "423",
-      amount: "$34,295",
-      status: "Test",
-      avatar: "./profile.jpg",
-    },
-    {
-      key: "4",
-      name: "Ravi",
-      designation: "Manager",
-      dateTime: "12.09.2019 - 12:53 PM",
-      place: "423",
-      amount: "$34,295",
-      status: "Test",
-      avatar: "./profile.jpg",
-    },
-    {
-      key: "5",
-      name: "Ravi",
-      designation: "Manager",
-      dateTime: "12.09.2019 - 12:53 PM",
-      place: "423",
-      amount: "$34,295",
-      status: "Test",
-      avatar: "./profile.jpg",
-    },
-    {
-      key: "4",
-      name: "Ravi",
-      designation: "Manager",
-      dateTime: "12.09.2019 - 12:53 PM",
-      place: "423",
-      amount: "$34,295",
-      status: "Test",
-      avatar: "./profile.jpg",
-    },
-  ];
-
   const columns = [
     {
-      title: "Product Name",
-      dataIndex: "name",
+      title: "Rank",
+      key: "rank",
+      width: 80,
+      render: (_, record, index) => index + 1,
+    },
+    {
+      title: "Employee Name",
       key: "name",
-      render: (text, record) => (
-        <Space>
-          <img src={record.avatar} alt={text} className="employee-avatar" />
-          {text}
-        </Space>
-      ),
+      render: (_, record) => `${record.first_name} ${record.last_name}`,
     },
     {
-      title: "Designation",
-      dataIndex: "designation",
-      key: "designation",
+      title: "Department",
+      dataIndex: "department",
+      key: "department",
+      filters: [
+        { text: "Customer Support", value: "Customer Support" },
+        { text: "Engineering", value: "Engineering" },
+        { text: "Sales", value: "Sales" },
+      ],
+      onFilter: (value, record) => record.department === value,
     },
     {
-      title: "Date - Time",
-      dataIndex: "dateTime",
-      key: "dateTime",
+      title: "Workshops Attended",
+      dataIndex: "Workshop_attended",
+      key: "Workshop_attended",
+      sorter: (a, b) => a.Workshop_attended - b.Workshop_attended,
     },
     {
-      title: "Place",
-      dataIndex: "place",
-      key: "place",
+      title: "Tasks Completed",
+      dataIndex: "Task_completed",
+      key: "Task_completed",
+      sorter: (a, b) => a.Task_completed - b.Task_completed,
     },
     {
-      title: "Amount",
-      dataIndex: "amount",
-      key: "amount",
-    },
-    {
-      title: "Status",
-      dataIndex: "status",
-      key: "status",
-      render: (text) => (
-        <span className={`status-badge ${text.toLowerCase()}`}>{text}</span>
-      ),
+      title: "Engagement Score",
+      dataIndex: "EngagementScore",
+      key: "EngagementScore",
+      sorter: (a, b) => a.EngagementScore - b.EngagementScore,
+      render: (score) => `${score}%`,
     },
   ];
 
@@ -163,14 +133,11 @@ const Dashboard = () => {
             title="Project performance"
             lastCheckDate="31 Jan"
             status="Average"
-            style={{ cursor: 'pointer' }}
+            style={{ cursor: "pointer" }}
           />
-          <UserStats 
-            data={data} 
-            style={{ cursor: 'pointer' }}
-          />
+          <UserStats data={data} style={{ cursor: "pointer" }} />
         </div>
-        
+
         <div className="right-stats">
           {statsData.map((stat, index) => (
             <div key={index} className="stat-card">
@@ -183,9 +150,7 @@ const Dashboard = () => {
                 ) : (
                   <img src="CaretDown.png" />
                 )}
-                <span>
-                  {stat.change}%
-                </span>
+                <span>{stat.change}%</span>
               </div>
             </div>
           ))}
@@ -209,8 +174,9 @@ const Dashboard = () => {
         </div>
         <Table
           columns={columns}
-          dataSource={employeeData}
-          pagination={false}
+          dataSource={employees}
+          loading={loading}
+          rowKey="user_id"
           className="employee-table"
         />
       </div>

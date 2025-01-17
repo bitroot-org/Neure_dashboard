@@ -4,6 +4,7 @@ import { Avatar, Typography, Select, Input, message, Spin, Radio } from "antd";
 import { getCompanyById } from "../../services/api";
 import "./index.css";
 import CustomHeader from "../../components/CustomHeader";
+import { updateCompanyInfo } from "../../services/api";
 
 const { Text } = Typography;
 
@@ -185,10 +186,16 @@ const CompanyProfile = () => {
   const handleSubmit = async () => {
     try {
       console.log('Form Data:', formData);
-      setIsEditable(false);
-      setCompany(formData);
+      setLoading(true);
+      const response = await updateCompanyInfo(formData);
+      if (response.status) {
+        message.success('Company information updated successfully');
+        setIsEditable(false);
+      }
     } catch (error) {
-      message.error('Failed to update company details');
+      message.error('Failed to update company information');
+    } finally {
+      setLoading(false);
     }
   };
 
