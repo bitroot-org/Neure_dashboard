@@ -114,3 +114,12 @@ export const getWorkshopDetails = async (workshopId) => {
   });
   return response.data;
 };
+
+export const getCompanyById = async (companyId) => {  
+  const response = await api.get(`/company/getCompanyInfo`, {
+    params: {
+      company_id: companyId
+    }
+  });
+  return response.data;
+}

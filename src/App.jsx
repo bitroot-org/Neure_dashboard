@@ -82,18 +82,10 @@ function App() {
           }
         />
         <Route
-          path="/company"
+          path="/companyProfile"
           element={
             <UserProtectedWrapper>
               <CompanyProfile />
-            </UserProtectedWrapper>
-          }
-        />
-        <Route
-          path="/workshopDetails"
-          element={
-            <UserProtectedWrapper>
-              <WorkshopCard />
             </UserProtectedWrapper>
           }
         />

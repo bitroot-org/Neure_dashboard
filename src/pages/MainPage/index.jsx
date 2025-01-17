@@ -111,7 +111,7 @@ const DashboardLayout = () => {
   };
 
   const handleProfileClick = () => {
-    navigate("/company");
+    navigate("/companyProfile");
   };
 
   const handleViewAllWorkshops = () => {
