@@ -8,7 +8,6 @@ import axios from "axios";
 import "./index.css";
 import CustomPagination from "../../components/CustomPagination";
 import { getWorkshops, getWorkshopDates } from "../../services/api";
-import { Pointer } from "lucide-react";
 
 const EventDashboard = () => {
   const [workshops, setWorkshops] = useState([]);
@@ -121,7 +120,10 @@ const EventDashboard = () => {
               ) : (
                 workshops.map((workshop) => (
                   <div key={workshop.workshop_id} className="workshop-item">
-                    <div style={{cursor:"Pointer"}} onClick={() => handleWorkshopClick(workshop.workshop_id)}>
+                    <div
+                      style={{ cursor: "Pointer" }}
+                      onClick={() => handleWorkshopClick(workshop.workshop_id)}
+                    >
                       <PresentationSlide
                         title={workshop.title}
                         date={formatDate(workshop.start_time)}

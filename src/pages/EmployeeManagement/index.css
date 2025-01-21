@@ -1,6 +1,6 @@
 .employee-dashboard {
   padding: 80px;
-  background-color: #191A20;
+  background-color: #191a20;
   min-height: 100vh;
 }
 
@@ -20,37 +20,15 @@
   gap: 16px;
 }
 
-/* Responsive grid adjustments */
-@media screen and (max-width: 1200px) {
-  .metrics-container {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media screen and (max-width: 576px) {
-  .metrics-container {
-    grid-template-columns: 1fr;
-  }
-  
-  .employee-dashboard {
-    padding: 16px;
-  }
-
-  .dashboard-section {
-    margin: 16px 0;
-  }
-
-  .section-title {
-    font-size: 18px !important;
-  }
-}
-
 .metric-card {
-  background: linear-gradient(180deg, rgba(90, 114, 150, 0.2) 0%, rgba(0, 0, 0, 0) 100%) !important;
+  background: linear-gradient(
+    180deg,
+    rgba(90, 114, 150, 0.2) 0%,
+    rgba(0, 0, 0, 0) 100%
+  ) !important;
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
   border-radius: 20px;
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.5) !important;
-
 }
 
 .metric-card:hover {
@@ -58,21 +36,66 @@
 }
 
 .metric-card .ant-card-body {
-  padding: 16px;
+  padding: 0px 16px !important;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  height: 100%;
+}
+
+.metric-header {
+  display: flex;
+  justify-content: space-between;
+  align-self: flex-start;
+  align-items: center;
+  width: 100%;
+}
+
+/* Update existing button styles */
+.metric-header button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  gap: 2px;
+  padding: 8px;
+}
+
+/* Update dot styles */
+.metric-header .dot {
+  width: 6px;
+  height: 6px;
+  background-color: rgb(255, 255, 255);
+  border-radius: 50%;
+  display: inline-block;
+}
+
+/* Add hover effect */
+.metric-header button:hover .dot {
+  background-color: #ffffff;
 }
 
 .metric-title {
   color: #8c8c8c !important;
-  margin: 0 !important;
   font-size: 18px;
+  font-weight: 400;
+  padding-bottom: 10px;
+}
+
+.dot{
+  width: 40px;
+  height: 40px;
+  background-color: #ffffff;
+  border-radius: 50%;
+  display: inline-block;
 }
 
 .metric-value {
   font-size: 36px;
-  font-weight: 600;
+  font-weight: 700;
+  margin: 0px 0;
   color: #ffffff;
-  margin-top: 8px;
-  margin-bottom: -4px;
+  align-self: flex-start;
 }
 
 @media screen and (max-width: 768px) {
@@ -82,12 +105,15 @@
 }
 
 .metric-change {
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 500;
+  border-radius: 4px;
+  align-self: flex-start;
+  padding-bottom: 16px;
 }
 
 .metric-change.positive {
-  color: #52c41a;
+  color: #00d885;
 }
 
 .metric-change.negative {
@@ -142,24 +168,9 @@
   background: transparent;
 }
 
-
-
 /* Fix for sort icons */
 .employee-table .ant-table-column-sorter {
   color: #ffffff;
-}
-
-
-/* Mobile-specific table styles */
-@media screen and (max-width: 768px) {
-  .employee-table .ant-table-thead > tr > th,
-  .employee-table .ant-table-tbody > tr > td {
-    padding: 8px 12px;
-  }
-  
-  .employee-table .ant-pagination {
-    padding: 0 12px;
-  }
 }
 
 .status-badge {
@@ -188,14 +199,6 @@
 
 .employee-table .ant-table-tbody > tr:nth-child(even) > td {
   background-color: transparent !important;
-}
-
-
-/* Touch-friendly adjustments for mobile */
-@media (hover: none) {
-  .metric-card:hover {
-    transform: none;
-  }
 }
 
 /* Fix for dropdown menus */
@@ -252,4 +255,41 @@
 
 .three-dots-btn:hover .dot {
   background-color: #8c8c8c;
+}
+
+/* Responsive grid adjustments */
+@media screen and (max-width: 1200px) {
+  .metrics-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .metrics-container {
+    grid-template-columns: 1fr;
+  }
+
+  .employee-dashboard {
+    padding: 16px;
+  }
+
+  .dashboard-section {
+    margin: 16px 0;
+  }
+
+  .section-title {
+    font-size: 18px !important;
+  }
+}
+
+/* Mobile-specific table styles */
+@media screen and (max-width: 768px) {
+  .employee-table .ant-table-thead > tr > th,
+  .employee-table .ant-table-tbody > tr > td {
+    padding: 8px 12px;
+  }
+
+  .employee-table .ant-pagination {
+    padding: 0 12px;
+  }
 }

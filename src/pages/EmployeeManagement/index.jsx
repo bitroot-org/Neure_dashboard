@@ -2,11 +2,41 @@ import React, { useState, useEffect } from "react";
 import { Card, Table, Typography, Space, Empty } from "antd";
 import "./index.css";
 import CustomHeader from "../../components/CustomHeader";
+import { getTopPerformingEmployee } from "../../services/api";
 
 const { Title } = Typography;
 
 const EmployeeDashboard = () => {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const [employees, setEmployees] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [pagination, setPagination] = useState({
+    current: 1,
+    pageSize: 10,
+    total: 0,
+  });
+
+  const fetchEmployees = async (page = 1, pageSize = 10) => {
+    try {
+      setLoading(true);
+      const response = await getTopPerformingEmployee(1, {
+        page,
+        limit: pageSize,
+      });
+
+      if (response.status) {
+        setEmployees(response.data.employees);
+      }
+    } catch (error) {
+      message.error("Failed to fetch employees");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchEmployees(pagination.current, pagination.pageSize);
+  }, []);
 
   useEffect(() => {
     const handleResize = () => {
@@ -29,7 +59,7 @@ const EmployeeDashboard = () => {
       title: "Employee Name",
       dataIndex: "name",
       key: "name",
-      sorter: (a, b) => a.name.localeCompare(b.name),
+      render: (_, record) => `${record.first_name} ${record.last_name}`,
     },
     {
       title: "Department",
@@ -64,7 +94,6 @@ const EmployeeDashboard = () => {
         { text: "Other", value: "Other" },
       ],
       onFilter: (value, record) => record.gender === value,
-      
     },
     {
       title: "Date Added",
@@ -74,10 +103,14 @@ const EmployeeDashboard = () => {
     },
     {
       title: "Status",
-      dataIndex: "status",
-      key: "status",
-      render: (status) => (
-        <span className={`status-badge ${status.toLowerCase()}`}>{status}</span>
+      dataIndex: "is_active",
+      key: "is_active",
+      render: (is_active) => (
+        <span
+          className={`status-badge ${is_active === 1 ? "active" : "inactive"}`}
+        >
+          {is_active === 1 ? "Active" : "InActive"}
+        </span>
       ),
     },
     {
@@ -91,44 +124,8 @@ const EmployeeDashboard = () => {
           <span className="dot"></span>
         </button>
       ),
-    }
+    },
   ];
-
-  const data = [
-    {
-      key: "1",
-      name: "Alice Johnson",
-      department: "Engineering",
-      email: "example@mail.com",
-      age: 28,
-      gender: "Female",
-      dateAdded: "12 Oct 2024",
-      status: "Active",
-    },
-    {
-      key: "2",
-      name: "Alice Johnson",
-      department: "Engineering",
-      email: "example@mail.com",
-      age: 28,
-      gender: "Female",
-      dateAdded: "12 Oct 2024",
-      status: "InActive",
-    },
-    {
-      key: "3",
-      name: "Alice Johnson",
-      department: "Engineering",
-      email: "example@mail.com",
-      age: 28,
-      gender: "Female",
-      dateAdded: "12 Oct 2024",
-      status: "Active",
-    },
-    // Add more data as needed
-  ];
-
-  
 
   return (
     <div className="employee-dashboard">
@@ -141,23 +138,27 @@ const EmployeeDashboard = () => {
         <div className="metrics-container">
           {metrics.map((metric, index) => (
             <Card key={index} className="metric-card">
-              <Space direction="vertical" size={0}>
-                <Title level={5} className="metric-title">
-                  {metric.title}
-                </Title>
-                <div className="metric-value">{metric.value}</div>
-                <div
-                  className={`metric-change ${
-                    metric.change.includes("+")
-                      ? "positive"
-                      : metric.change === "0%"
-                      ? "neutral"
-                      : "negative"
-                  }`}
-                >
-                  {metric.change}
-                </div>
-              </Space>
+              <div className="metric-header">
+                <h3 className="metric-title">{metric.title}</h3>
+                <button>
+                  <span className="dot"></span>
+                  <span className="dot"></span>
+                  <span className="dot"></span>
+                </button>
+              </div>
+
+              <h1 className="metric-value">{metric.value}</h1>
+              <div
+                className={`metric-change ${
+                  metric.change.includes("+")
+                    ? "positive"
+                    : metric.change === "0%"
+                    ? "neutral"
+                    : "negative"
+                }`}
+              >
+                {metric.change}
+              </div>
             </Card>
           ))}
         </div>
@@ -166,24 +167,31 @@ const EmployeeDashboard = () => {
       <Table
         className="employee-table"
         columns={columns}
-        dataSource={data}
+        dataSource={employees}
         pagination={false}
         locale={{
           emptyText: (
-            <div style={{ 
-              background: 'black', 
-              padding: '32px',
-              color: 'white',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center'
-            }}>
-              <div style={{ filter: 'brightness(0) invert(1)', marginBottom: '8px' }}>
+            <div
+              style={{
+                background: "black",
+                padding: "32px",
+                color: "white",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
+            >
+              <div
+                style={{
+                  filter: "brightness(0) invert(1)",
+                  marginBottom: "8px",
+                }}
+              >
                 {Empty.PRESENTED_IMAGE_SIMPLE}
               </div>
               <span>No Data Available</span>
             </div>
-          )
+          ),
         }}
       />
     </div>

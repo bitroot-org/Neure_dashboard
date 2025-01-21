@@ -68,7 +68,7 @@ api.interceptors.response.use(
 
 export const loginUser = async (email, password) => {
   try {
-    const response = await api.post("/user/login", { email, password });
+    const response = await api.post("/user/login", { email, password, role_id:2 });
     if (response.data.data) {
       localStorage.setItem("accessToken", response.data.data.accessToken);
       localStorage.setItem("refreshToken", response.data.data.refreshToken);
@@ -145,3 +145,32 @@ export const getCompanyEmployees = async (companyId, params) => {
   });
   return response.data;
 };
+
+
+export const getTopPerformingEmployee = async (companyId, params) => {
+  const response = await api.get(`/company/getCompanyEmployees`, {
+    params: {
+      company_id: companyId,
+      page: params.page,
+      limit: params.limit
+    }
+  });
+  return response.data;
+};
+
+export const getQna = async () => {
+  const response = await api.get(`/company/getQna`);
+  return response.data;
+}
+
+export const getNotificationAndAnnouncements = async ({company_id, page, limit}) => {
+  console.log(company_id, page, limit);
+  const response = await api.get(`/notifications/getNotificationAndAnnouncements`, {
+    params: {
+      company_id,
+      page,
+      limit
+    }
+  });
+  return response.data;
+}

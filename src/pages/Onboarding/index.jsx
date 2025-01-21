@@ -387,6 +387,7 @@ const OnboardingFlow = () => {
   const handleSubmit = (values) => {
     const finalData = { ...formData, ...values };
     setFormData(finalData);
+    console.log("Final Data:", finalData);
     localStorage.removeItem('formData');
     setCurrentStep(5);
   };

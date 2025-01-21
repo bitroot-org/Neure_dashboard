@@ -168,6 +168,11 @@
   vertical-align: middle !important;
 }
 
+/* Remove existing pagination styles */
+.employee-table .ant-pagination {
+  display: none !important;
+}
+
 /* Ant Design Table Overrides */
 .ant-table {
   background-color: transparent !important;

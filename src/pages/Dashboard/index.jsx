@@ -21,7 +21,7 @@ const Dashboard = () => {
   const fetchEmployees = async (page = 1, pageSize = 10) => {
     try {
       setLoading(true);
-      const response = await getCompanyEmployees(1, {
+      const response = await getTopPerformingEmployee(1, {
         page,
         limit: pageSize
       });
@@ -178,6 +178,7 @@ const Dashboard = () => {
           loading={loading}
           rowKey="user_id"
           className="employee-table"
+          pagination={false}
         />
       </div>
     </div>

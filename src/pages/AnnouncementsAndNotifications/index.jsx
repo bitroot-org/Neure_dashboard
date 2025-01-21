@@ -1,29 +1,70 @@
-import React, { useState } from 'react';
-import { Tabs, List, Space } from 'antd';
-import { allData, announcementsData, notificationsData } from '../../constants/faqData';
-import './index.css';
-import CustomHeader from '../../components/CustomHeader';
+import React, { useState, useEffect } from "react";
+import { Tabs, List, Space } from "antd";
+import {
+  allData,
+  announcementsData,
+  notificationsData,
+} from "../../constants/faqData";
+import "./index.css";
+import CustomHeader from "../../components/CustomHeader";
+import { getNotificationAndAnnouncements } from "../../services/api";
 
 const AnnouncementsAndNotifications = () => {
-  const [activeTab, setActiveTab] = useState('all');
+  const [activeTab, setActiveTab] = useState("all");
+  const [data, setData] = useState({ announcements: [], notifications: [] });
+  const [loading, setLoading] = useState(true);
 
-  const getItemIcon = (type) => {
-    switch (type) {
-      case 'notification':
-        return <img src='notifications.png' alt="notification icon" />;
-      default:
-        return <img src='announcements.png' alt="announcement icon" />;
+  const fetchData = async (tab) => {
+    try {
+      setLoading(true);
+      const params = {
+        company_id: 1, // Replace with actual company_id
+        page: 1,
+        limit: 10,
+      };
+
+      if (tab === "announcements") {
+        params.is_announcement = 1;
+      } else if (tab === "notifications") {
+        params.is_notification = 1;
+      }
+
+      const response = await getNotificationAndAnnouncements(params);
+      setData(response.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
-  const renderList = (data) => (
+  useEffect(() => {
+    fetchData(activeTab);
+  }, [activeTab]);
+
+  const getItemIcon = (type) => {
+    switch (type) {
+      case "notification":
+        return <img src="notifications.png" alt="notification icon" />;
+      default:
+        return <img src="announcements.png" alt="announcement icon" />;
+    }
+  };
+
+  const formatDate = (dateString) => {
+    return new Date(dateString).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  };
+
+  const renderList = (items) => (
     <List
-      dataSource={data}
-      renderItem={item => (
-        <List.Item
-          key={item.id}
-          className="list-item"
-        >
+      loading={loading}
+      dataSource={items}
+      renderItem={(item) => (
+        <List.Item key={item.id} className="list-item">
           <List.Item.Meta
             avatar={getItemIcon(item.type)}
             title={
@@ -34,9 +75,9 @@ const AnnouncementsAndNotifications = () => {
             }
             description={
               <div>
-                <p className="item-description">{item.description}</p>
+                <p className="item-description">{item.content}</p>
                 <small className="item-meta">
-                  {`${item.type.charAt(0).toUpperCase() + item.type.slice(1)} • ${item.date}`}
+                {`${item.type || 'Announcement'} • ${formatDate(item.created_at)}`}
                 </small>
               </div>
             }
@@ -45,6 +86,12 @@ const AnnouncementsAndNotifications = () => {
       )}
     />
   );
+
+  const getAllItems = () => {
+    return [...data.announcements, ...data.notifications].sort((a, b) => 
+      new Date(b.created_at) - new Date(a.created_at)
+    );
+  };
 
   return (
     <div className="notifications-container">
@@ -56,20 +103,20 @@ const AnnouncementsAndNotifications = () => {
           className="notifications-tabs"
           items={[
             {
-              key: 'all',
-              label: 'All',
-              children: renderList(allData)
+              key: "all",
+              label: "All",
+              children: renderList(getAllItems()),
             },
             {
-              key: 'announcements',
-              label: 'Announcements',
-              children: renderList(announcementsData)
+              key: "announcements",
+              label: "Announcements",
+              children: renderList(data.announcements),
             },
             {
-              key: 'notifications',
-              label: 'Notifications',
-              children: renderList(notificationsData)
-            }
+              key: "notifications",
+              label: "Notifications",
+              children: renderList(data.notifications),
+            },
           ]}
         />
       </div>

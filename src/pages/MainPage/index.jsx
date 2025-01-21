@@ -1,5 +1,5 @@
 // DashboardLayout.jsx
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import {
   Layout,
   Space,
@@ -7,7 +7,7 @@ import {
   Avatar,
   Button,
   Card,
-  Progress,
+  Spin,
   message,
 } from "antd";
 import {
@@ -26,16 +26,63 @@ import { UserDataContext } from "../../context/UserContext";
 import axios from "axios";
 import PresentationSlide from "../../components/PresentationSlide";
 import UserStats from "../../components/UserStats";
-import { logoutUser } from "../../services/api";
+import { logoutUser, getWorkshops } from "../../services/api";
 
 const { Header, Content, Footer } = Layout;
 
 const DashboardLayout = () => {
   const [hasNotifications, setHasNotifications] = useState(false);
+  const [workshop, setWorkshop] = useState(null);
+  const [totalPages, setTotalPages] = useState(1);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
   const { user, setUser } = useContext(UserDataContext);
 
+  const pageSize = 1;
+  const currentPage = 1;
+
   console.log("User from Mian dashboard ", user);
+
+  useEffect(() => {
+    const fetchWorkshop = async () => {
+      console.log("fetchWorkshops called");
+      try {
+        setLoading(true);
+        setError(null);
+        const data = await getWorkshops({
+          currentPage,
+          pageSize,
+        });
+        console.log("getWorkshops response:", data);
+        if (data.status) {
+          setWorkshop(data.data.workshops[0]);
+          console.log("Workshop data:", data.data.workshops);
+          setTotalPages(data.data.pagination.totalPages);
+          if (data.data.workshops.length === 0) {
+            setError("No workshops available.");
+          }
+        } else {
+          setError("Failed to fetch workshops.");
+        }
+      } catch (error) {
+        console.error("Error fetching workshops:", error);
+        setError("Failed to fetch workshops. Please try again later.");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchWorkshop();
+  }, [pageSize]);
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-GB", {
+      day: "2-digit",
+      month: "short",
+      year: "2-digit",
+    });
+  };
 
   const getInitial = () => {
     return user.fullName.firstName
@@ -76,21 +123,20 @@ const DashboardLayout = () => {
       if (response.status) {
         // First reset user context with empty state
         setUser({
-          id: '',
-          email: '',
-          roleId: '',
-          userType: '',
+          id: "",
+          email: "",
+          roleId: "",
+          userType: "",
           fullName: {
-            firstName: '',
-            lastName: ''
-          }
+            firstName: "",
+            lastName: "",
+          },
         });
 
+        localStorage.clear();
 
-        localStorage.clear(); 
-
-        message.success('Logged out successfully');
-        navigate('/login');
+        message.success("Logged out successfully");
+        navigate("/login");
       }
     } catch (error) {
       console.error("Logout failed:", error);
@@ -119,15 +165,15 @@ const DashboardLayout = () => {
   };
 
   const handleCompanyGaugeClick = () => {
-    navigate('/dashboard');
+    navigate("/dashboard");
   };
 
   const handleUserStatsClick = () => {
-    navigate('/dashboard');
+    navigate("/dashboard");
   };
 
   const handleViewWorkshopDetails = () => {
-    navigate('/workshopDetails');
+    navigate("/workshopDetails");
   };
 
   return (
@@ -176,11 +222,16 @@ const DashboardLayout = () => {
                   View All <RightOutlined />
                 </Button>
               </div>
-              <div className="workshops-image-card" onClick={handleViewWorkshopDetails} style={{ cursor: 'pointer' }}>
+              <div
+                className="workshops-image-card"
+                onClick={handleViewWorkshopDetails}
+                style={{ cursor: "pointer" }}
+              >
                 <PresentationSlide
-                  title="Building Resilience: Strategies for Stress Management"
-                  date="Mumbai | 15 Oct '24"
-                  backgroundImage="https://images.pexels.com/photos/3183197/pexels-photo-3183197.jpeg"
+                  title={workshop?.title}
+                  date={formatDate(workshop?.start_time)}
+                  location={workshop?.location}
+                  backgroundImage={workshop?.poster_image}
                 />
               </div>
             </Card>
@@ -238,12 +289,12 @@ const DashboardLayout = () => {
               lastCheckDate="31 Jan"
               status="Average"
               onClick={handleCompanyGaugeClick}
-              style={{ cursor: 'pointer' }}
+              style={{ cursor: "pointer" }}
             />
-            <UserStats 
-              data={data} 
+            <UserStats
+              data={data}
               onClick={handleUserStatsClick}
-              style={{ cursor: 'pointer' }}
+              style={{ cursor: "pointer" }}
             />
           </div>
 
@@ -275,7 +326,12 @@ const DashboardLayout = () => {
           <Card className="articles-card">
             <div className="articles-header">
               <h3>Explore articles on improving mental well-being by Neure.</h3>
-              <Button type="link" className="view-all" onClick={() => navigate('/articles')} style={{ cursor: 'pointer' }}>
+              <Button
+                type="link"
+                className="view-all"
+                onClick={() => navigate("/articles")}
+                style={{ cursor: "pointer" }}
+              >
                 View All <RightOutlined />
               </Button>
             </div>
