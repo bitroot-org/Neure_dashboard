@@ -1,8 +1,8 @@
-.dashboard-container {
+.dashboard-containers {
   padding: 80px;
-  background-color: #191A20;
+  background-color: #000;
   min-height: 100vh;
-  color: #E5E7EB;
+  color: #e5e7eb;
 }
 
 /* Stats Grid Styles */
@@ -11,7 +11,7 @@
   grid-template-columns: 1fr 1fr;
   gap: 24px;
   margin-bottom: 24px;
-  height:100%;
+  height: 100%;
 }
 
 .left-metrics {
@@ -28,10 +28,8 @@
   height: 100%;
 }
 
-
-
-.stat-card{
-  background: linear-gradient(145deg, #2D2F39 0%, #191A20 100%);
+.stat-card {
+  background: linear-gradient(145deg, #2d2f39 0%, #191a20 100%);
   border: 1px solid rgba(255, 255, 255, 0.1);
   padding: 20px;
 }
@@ -40,11 +38,12 @@
   .stats-grid {
     grid-template-columns: 1fr;
   }
-  
-  .left-metrics, .right-stats {
+
+  .left-metrics,
+  .right-stats {
     gap: 16px;
   }
-  
+
   .right-stats {
     grid-template-columns: 1fr; /* 1 card per row */
   }
@@ -54,25 +53,25 @@
   .stats-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .right-stats {
     grid-template-columns: 1fr;
     gap: 16px;
   }
-  
+
   .stat-card {
     padding: 16px;
   }
 }
 
 .stat-card {
-  background-color: #191A20;
+  background-color: #191a20;
   border-radius: 8px;
   padding: 20px;
 }
 
 .stat-card h3 {
-  color: #9CA3AF;
+  color: #9ca3af;
   font-size: 18px;
   margin: 0 0 2px 0;
 }
@@ -91,21 +90,21 @@
 }
 
 .stat-change.up {
-  color: #10B981;
+  color: #10b981;
 }
 
 .stat-change.down {
-  color: #EF4444;
+  color: #ef4444;
 }
 
 /* Chart Section Styles */
 .chart-section {
-  margin-bottom: 24px;
+  margin: 24px 0px;
 }
 
 /* Table Section Styles */
 .table-section {
-  background-color: transparent;
+  background-color: #191A20;
   border: 1px solid rgba(255, 255, 255, 0.1);
   padding: 24px;
   border-radius: 16px;
@@ -120,7 +119,7 @@
 }
 
 .table-header h2 {
-  color: #E5E7EB;
+  color: #e5e7eb;
   font-size: 24px;
   font-weight: 500;
   margin: 0;
@@ -129,7 +128,7 @@
 .period-selector {
   background-color: transparent;
   border: 1px solid #fafafa;
-  color: #E5E7EB;
+  color: #e5e7eb;
   padding: 6px 12px;
   border-radius: 4px;
   cursor: pointer;
@@ -179,14 +178,14 @@
 }
 
 .ant-table-thead > tr > th {
-  background-color: #1F2937 !important;
-  color: #9CA3AF !important;
+  background-color: #1f2937 !important;
+  color: #9ca3af !important;
   border-bottom: 1px solid #374151 !important;
 }
 
 .ant-table-tbody > tr > td {
-  background-color: #1F2937 !important;
-  color: #E5E7EB !important;
+  background-color: #1f2937 !important;
+  color: #e5e7eb !important;
   border-bottom: 1px solid #374151 !important;
 }
 
@@ -202,11 +201,11 @@
   .dashboard-container {
     padding: 16px;
   }
-  
+
   .table-section {
     overflow-x: auto;
   }
-  
+
   .ant-table {
     min-width: 800px;
   }

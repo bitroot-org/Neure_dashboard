@@ -1,32 +1,88 @@
 /* Base container styles */
 .profile-container {
-  background-color: #191A20;
+  background: radial-gradient(
+    3000px circle at 50% -60%,
+    #5b5d6b 0%,
+    #0d0d11 35%
+  );
   min-height: 100vh;
   padding: 80px;
   color: #ffffff;
   max-width: 100%;
   margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center content horizontally */
 }
 
 /* Header Styles */
 .header-container {
-  display: flex;
-  align-items: center;
   margin-bottom: 32px;
+  display: flex;
+  justify-content: space-between;
+  width: 1200px;
+  align-items: flex-end; /* This aligns children to the baseline */
+}
+
+.header-container .left-part {
+  display: flex;
+}
+
+.header-container .right-part {
+  display: flex;
+  align-items: flex-end; /* Align button to baseline */
+}
+.header-container .right-part .edit-button {
+  background: linear-gradient(to bottom, #ffffff 0%, #797b87 100%);
+  padding: 8px 24px;
+  border-radius: 18px;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+  color: #191a20;
+  margin-bottom: 4px; /* Fine-tune the baseline alignment */
+}
+
+.avatar-container {
+  position: relative;
+}
+
+.avatar-edit-button {
+  background-color: #ffffff;
+  height: 32px;
+  width: 32px;
+  border-radius: 50%;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  cursor: pointer;
+}
+
+/* Add this for the image inside the button */
+.avatar-edit-button img {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
 }
 
 .company-avatar {
   padding: 42px;
-  color: #EEE420;
+  color: #eee420;
   font-size: 70px;
   font-weight: 500;
   flex-shrink: 0;
   height: 100px;
   width: 100px;
+  background-color: #144035;
 }
 
 .header-text {
-  margin-left: 12px;
+  margin-left: 32px;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -34,38 +90,46 @@
 
 .company-name {
   color: #ffffff !important;
-  font-size: 24px;
-  font-weight: 400;
+  font-size: 32px;
+  font-weight: 500;
   margin-bottom: 2px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .company-email {
-  color: #8c8c8c !important;
   font-size: 20px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  color: #8c8c8c !important;
+}
+
+.header-text .company-email.ant-typography {
+  color: rgba(
+    255,
+    255,
+    255,
+    0.8
+  ) !important; /* Using the same green color as the slider */
+  font-size: 20px;
+  margin-top: 4px;
 }
 
 /* Form Styles */
 .form-container {
+  width: 1200px;
   max-width: 100%;
-  background-color: transparent;
+  background: #191a20;
+  margin: 0 auto;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 18px;
 }
 
 .form-section {
   margin-bottom: 32px;
   padding: 24px;
-
 }
 
 .section-title {
   color: #ffffff !important;
   font-size: 24px;
-  font-weight: 400;
+  font-weight: 500;
   display: block;
 }
 
@@ -73,7 +137,14 @@
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 24px;
+}
+
+.form-section .form-group:not(:last-child) {
   margin-bottom: 24px;
+}
+
+.form-section h3.section-title {
+  margin-bottom: 32px !important;
 }
 
 .input-group {
@@ -82,9 +153,10 @@
 }
 
 .input-label {
-  color: #8c8c8c;
+  color: #ffffff;
   font-size: 16px;
   margin-bottom: 8px;
+  font-size: 500;
 }
 
 /* Input Styles */
@@ -94,7 +166,7 @@
   border-radius: 4px;
   color: #ffffff !important;
   height: 40px;
-  padding: 8px 12px;
+  padding: 22px !important;
 }
 
 .custom-input:hover,
@@ -125,7 +197,6 @@
   font-size: 12px;
 }
 
-
 /* Size Radio Group */
 .size-radio-group {
   display: flex;
@@ -153,8 +224,8 @@
 
 .size-radio-group .ant-radio-button-wrapper-checked {
   background-color: transparent !important;
-  border-color: #00D885 !important;
-  color: #00D885;
+  border-color: #00d885 !important;
+  color: #00d885;
 }
 
 .size-radio-group .ant-radio-button-wrapper span {
@@ -163,20 +234,26 @@
   width: 100%;
 }
 
-
 .size-radio-group .ant-radio-button-wrapper:hover {
-  color: #00D885;
-  border-color: #00D885 !important;
+  color: #00d885;
+  border-color: #00d885 !important;
 }
 
 /* Divider */
 .divider {
   height: 1px;
   background-color: #333333;
-  margin: 32px 0;
+  margin: 10px 0;
 }
 
 /* Responsive Breakpoints */
+@media screen and (max-width: 1500px) {
+  .form-container {
+    width: 100%;
+    padding: 0 20px;
+  }
+}
+
 @media screen and (max-width: 768px) {
   .profile-container {
     padding: 16px;
@@ -200,6 +277,10 @@
   .section-title {
     font-size: 16px;
     margin-bottom: 20px;
+  }
+
+  .form-container {
+    padding: 0 10px;
   }
 }
 

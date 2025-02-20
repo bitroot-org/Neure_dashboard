@@ -47,6 +47,7 @@
 
 .filter-select {
   width: 120px;
+  background: #191A20;
 }
 
 .edit-button {
@@ -91,7 +92,6 @@
 /* Override Ant Design Select styles for dark theme */
 .filter-select .ant-select-selector {
   background-color: transparent !important;
-  border-color: rgba(255, 255, 255, 0.15) !important;
 }
 
 .filter-select .ant-select-selection-item {

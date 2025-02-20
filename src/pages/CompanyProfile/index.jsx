@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { Avatar, Typography, Select, Input, message, Spin, Radio } from "antd";
+import { Avatar, Typography, Select, Input, message, Spin, Radio, Slider, InputNumber } from "antd";
 import { getCompanyById } from "../../services/api";
 import "./index.css";
 import CustomHeader from "../../components/CustomHeader";
@@ -8,18 +8,36 @@ import { updateCompanyInfo } from "../../services/api";
 
 const { Text } = Typography;
 
-const CompanyHeader = ({ companyInfo }) => (
+const CompanyHeader = ({ companyInfo, isEditable, onEditClick }) => (
   <div className="header-container">
-    <Avatar className="company-avatar">{companyInfo.company_name.charAt(0).toUpperCase()}</Avatar>
-    <div className="header-text">
-      <Text className="company-name">{companyInfo.company_name}</Text>
-      <Text className="company-email">{companyInfo.email_domain}</Text>
+    <div className="left-part">
+      <div className="avatar-container">
+        <Avatar className="company-avatar">{companyInfo.company_name.charAt(0).toUpperCase()}</Avatar>
+        <button
+          className="avatar-edit-button"
+          onClick={onEditClick}
+        >
+          <img src="./editIcon.png" alt="edit" />
+        </button>
+      </div>
+      <div className="header-text">
+        <Text className="company-name">{companyInfo.company_name}</Text>
+        <Text className="company-email">{companyInfo.email_domain}</Text>
+      </div>
+    </div>
+    <div className="right-part">
+      <button
+        className="edit-button"
+        onClick={onEditClick}
+      >
+        {isEditable ? 'Save' : 'Edit'}
+      </button>
     </div>
   </div>
 );
 
 const CompanyForm = ({ companyInfo, contactInfo, disabled, onChange }) => {
-  const sizeOptions = ["10-50", "51-200", "201-500", "500+"];
+  const [value, setValue] = useState(companyInfo.company_size || 500);
 
   const getSizeRange = (size) => {
     if (!size) return "10-50";
@@ -41,36 +59,83 @@ const CompanyForm = ({ companyInfo, contactInfo, disabled, onChange }) => {
 
   return (
     <div className="form-container">
-      
+
       <div className="form-section">
-        <Text className="section-title">Company info</Text>
+        <h3 className="section-title">Company info</h3>
 
         <div className="form-group">
           <div className="input-group">
             <label className="input-label">Company name*</label>
-            <Input
+            <input
               className="custom-input"
               value={companyInfo.company_name}
               disabled={disabled}
-              onChange={(e) => onChange('company', 'company_name', e.target.value)}
+              onChange={(e) => !disabled && onChange('company', 'company_name', e.target.value)}
             />
           </div>
 
           <div className="input-group">
-            <label className="input-label">Industry*</label>
-            <Select
-              className="custom-select"
-              value={companyInfo.industry}
-              suffixIcon={<span className="select-arrow">▼</span>}
-              disabled={disabled}
-              onChange={(value) => onChange('company', 'industry', value)}
-            >
-              <Select.Option value="Technology">Technology</Select.Option>
-            </Select>
+            <label className="input-label">Number of employees*</label>
+            <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+              <div style={{ position: "relative", flex: 1 }}>
+                <div
+                  style={{
+                    position: "absolute",
+                    left: 0,
+                    top: "50%",
+                    transform: "translateY(-10%)",
+                    height: "8px",
+                    backgroundColor: "#4ADE80",
+                    width: `${value / 100}%`,
+                    zIndex: 3,
+                    borderRadius: "2px",
+                  }}
+                />
+                <input
+                  type="range"
+                  min="1"
+                  max="10000"
+                  value={value}
+                  onChange={(e) => !disabled && setValue(e.target.value)}
+                  disabled={disabled}
+                  style={{
+                    width: "100%",
+                    appearance: "none",
+                    background: "transparent",
+                    cursor: "pointer",
+                    position: "relative",
+                    zIndex: 2,
+                    opacity: disabled ? 0.5 : 1,
+                  }}
+                  className="custom-slider"
+                />
+              </div>
+              <input
+                type="number"
+                min="1"
+                max="10000"
+                value={value}
+                onChange={(e) => !disabled && setValue(e.target.value)}
+                style={{
+                  backgroundColor: "#191A20",
+                  borderRadius: "12px",
+                  border: "2px solid rgba(255, 255, 255, 0.1)",
+                  padding: "8px 12px",
+                  width: "80px",
+                  color: "white",
+                  fontSize: "16px",
+                  outline: "none",
+                  textAlign: "center",
+                  cursor: disabled ? "not-allowed" : "text",
+                  opacity: disabled ? 0.5 : 1,
+                }}
+              />
+            </div>
           </div>
+
         </div>
 
-        <div className="input-group">
+        {/* <div className="input-group">
           <label className="input-label">Company size*</label>
           <Radio.Group
             className="size-radio-group"
@@ -84,36 +149,38 @@ const CompanyForm = ({ companyInfo, contactInfo, disabled, onChange }) => {
               </Radio.Button>
             ))}
           </Radio.Group>
-        </div>
+        </div> */}
       </div>
 
       <div className="divider" />
 
       <div className="form-section">
-        <Text className="section-title">Contact person Info</Text>
+        <h3 className="section-title">Contact person Info</h3>
 
         <div className="form-group">
           <div className="input-group">
             <label className="input-label">Full name*</label>
-            <Input
+            <input
               className="custom-input"
               value={contactInfo.first_name + " " + contactInfo.last_name}
               disabled={disabled}
               onChange={(e) => {
-                const [firstName, lastName] = e.target.value.split(' ');
-                onChange('contact_person', 'first_name', firstName);
-                onChange('contact_person', 'last_name', lastName);
+                if (!disabled) {
+                  const [firstName, lastName] = e.target.value.split(' ');
+                  onChange('contact_person', 'first_name', firstName);
+                  onChange('contact_person', 'last_name', lastName);
+                }
               }}
             />
           </div>
 
           <div className="input-group">
             <label className="input-label">Job title*</label>
-            <Input
+            <input
               className="custom-input"
               value={contactInfo.job_title}
               disabled={disabled}
-              onChange={(e) => onChange('contact_person', 'job_title', e.target.value)}
+              onChange={(e) => !disabled && onChange('contact_person', 'job_title', e.target.value)}
             />
           </div>
         </div>
@@ -121,21 +188,21 @@ const CompanyForm = ({ companyInfo, contactInfo, disabled, onChange }) => {
         <div className="form-group">
           <div className="input-group">
             <label className="input-label">Email*</label>
-            <Input
+            <input
               className="custom-input"
               value={contactInfo.email}
               disabled={disabled}
-              onChange={(e) => onChange('contact_person', 'email', e.target.value)}
+              onChange={(e) => !disabled && onChange('contact_person', 'email', e.target.value)}
             />
           </div>
 
           <div className="input-group">
             <label className="input-label">Phone number*</label>
-            <Input
+            <input
               className="custom-input"
               value={contactInfo.phone}
               disabled={disabled}
-              onChange={(e) => onChange('contact_person', 'phone', e.target.value)}
+              onChange={(e) => !disabled && onChange('contact_person', 'phone', e.target.value)}
             />
           </div>
         </div>
@@ -156,10 +223,11 @@ const CompanyProfile = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    const companyId = localStorage.getItem("companyId");
     const fetchCompanyData = async () => {
       try {
         setLoading(true);
-        const response = await getCompanyById(1);
+        const response = await getCompanyById(companyId);
         if (response.status) {
           setCompany(response.data);
           setFormData(response.data); // Initialize form data
@@ -199,31 +267,36 @@ const CompanyProfile = () => {
     }
   };
 
+  const handleEditSave = async () => {
+    if (isEditable) {
+      // Save functionality
+      await handleSubmit();
+    } else {
+      // Edit functionality
+      setIsEditable(true);
+    }
+  };
+
   return (
     <div className="profile-container">
-      <CustomHeader 
-        title="Company Profile"
+      <CustomHeader
+        title="Account details"
         showBackButton={true}
-        showEditButton={true}
-        onEditClick={() => {
-          if (isEditable) {
-            handleSubmit();
-          } else {
-            setIsEditable(true);
-          }
-        }}
-        buttonText={isEditable ? "Save" : "Edit"}
       />
-      
+
       {!loading && (
         <>
-        <CompanyHeader companyInfo={formData?.company} />
-        <CompanyForm 
-          companyInfo={formData?.company}
-          contactInfo={formData?.contact_person}
-          disabled={!isEditable}
-          onChange={handleInputChange}
-        />
+          <CompanyHeader
+            companyInfo={formData?.company}
+            isEditable={isEditable}
+            onEditClick={handleEditSave}
+          />
+          <CompanyForm
+            companyInfo={formData?.company}
+            contactInfo={formData?.contact_person}
+            disabled={!isEditable}
+            onChange={handleInputChange}
+          />
         </>
       )}
     </div>

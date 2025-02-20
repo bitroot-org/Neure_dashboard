@@ -15,8 +15,9 @@ const formatDateTime = (date, startTime, endTime) => {
   const end = new Date(endTime);
 
   const formattedDate = eventDate.toLocaleString('en-US', {
-    month: 'long',
+    weekday: 'long',
     day: 'numeric',
+    month: 'short',
     year: 'numeric'
   });
 
@@ -68,53 +69,56 @@ const WorkshopCard = () => {
       <CustomHeader title="Workshop Details" />
       <div className="workshop-card">
         <div className="image-container">
-          <img 
+          <img
             src={workshop.poster_image}
-            alt="Workshop" 
+            alt="Workshop"
             className="workshop-image"
           />
         </div>
-        
+
         <div className="content-container">
-          <Title className="workshop-title">
-            {workshop.title}
-          </Title>
+          <div className='title-container'>
+            <Title className="workshop-title">
+              {workshop.title}
+            </Title>
+            <p>By <span>{workshop.organizer}</span></p>
+          </div>
+
 
           {/* Update the event-details section */}
           <div className="event-details">
             <div className="detail-item">
-              <CalendarOutlined className="detail-icon" />
-              <Text>
+              <img src='/calendarIcon.png' alt='calendar-icon' className="detail-icon" />
+              <h3 className='detail-text'>
                 {formatDateTime(
                   workshop.conference_date,
                   workshop.schedules[0]?.start_time,
                   workshop.schedules[0]?.end_time
                 )}
-              </Text>
+              </h3>
             </div>
-            <div className="detail-item">
+            {/* <div className="detail-item">
               <EnvironmentOutlined className="detail-icon" />
               <Text>{workshop.location}</Text>
-            </div>
+            </div> */}
+            <button className='download-button'>
+              Download worksheet
+            </button>
           </div>
 
-          <Button type="primary" className="book-button">
-            Book a session
-          </Button>
-
           <div className="section">
-            <Title level={4} className="section-title">Overview:</Title>
+            <h3 className="section-title">Overview:</h3>
             <p className="overview-text">
               {workshop.description}
             </p>
           </div>
 
           <div className="section">
-            <Title level={4} className="section-title">Agenda:</Title>
+            <h3  className="section-title">Agenda:</h3>
             <div className="agenda-list">
               {workshop.agenda.split(',').map((item, index) => (
                 <div key={index} className="agenda-item">
-                  <Text className="agenda-title">{index + 1}. {item.trim()}</Text>
+                  <p className="agenda-title">{index + 1}. {item.trim()}</p>
                 </div>
               ))}
             </div>

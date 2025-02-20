@@ -68,7 +68,11 @@ api.interceptors.response.use(
 
 export const loginUser = async (email, password) => {
   try {
-    const response = await api.post("/user/login", { email, password, role_id:2 });
+    const response = await api.post("/user/login", {
+      email,
+      password,
+      role_id: 2,
+    });
     if (response.data.data) {
       localStorage.setItem("accessToken", response.data.data.accessToken);
       localStorage.setItem("refreshToken", response.data.data.refreshToken);
@@ -90,10 +94,10 @@ export const logoutUser = async () => {
   }
 };
 
-export const getWorkshopDates = async () => {
+export const getWorkshopDates = async (companyId) => {
   const response = await api.get("/workshop/getWorkshopDates", {
     params: {
-      company_id: 1,
+      company_id: companyId,
     },
   });
   return response.data;
@@ -102,7 +106,7 @@ export const getWorkshopDates = async () => {
 export const getWorkshops = async (params) => {
   const response = await api.get("/workshop/getWorkshopsByCompanyId", {
     params: {
-      company_id: 1,
+      company_id: params.companyId,
       page: params.currentPage,
       pageSize: params.pageSize,
       start_time: params.selectedDate,
@@ -130,30 +134,30 @@ export const getCompanyById = async (companyId) => {
 };
 
 export const updateCompanyInfo = async (companyInfo) => {
-  const response = await api.put(`/company/updateCompanyInfo`,  companyInfo);
+  const response = await api.put(`/company/updateCompanyInfo`, companyInfo);
   return response.data;
 };
-
 
 export const getCompanyEmployees = async (companyId, params) => {
   const response = await api.get(`/company/getCompanyEmployees`, {
     params: {
       company_id: companyId,
       page: params.page,
-      limit: params.limit
-    }
+      limit: params.limit,
+    },
   });
   return response.data;
 };
 
-
-export const getTopPerformingEmployee = async (companyId, params) => {
-  const response = await api.get(`/company/getCompanyEmployees`, {
+export const getTopPerformingEmployee = async (params) => {
+  console.log(params);
+  console.log(params.companyId);
+  const response = await api.get(`/company/getTopPerformingEmployee`, {
     params: {
-      company_id: companyId,
+      company_id: params.companyId,
       page: params.page,
-      limit: params.limit
-    }
+      limit: params.limit,
+    },
   });
   return response.data;
 };
@@ -161,16 +165,32 @@ export const getTopPerformingEmployee = async (companyId, params) => {
 export const getQna = async () => {
   const response = await api.get(`/company/getQna`);
   return response.data;
-}
+};
 
-export const getNotificationAndAnnouncements = async ({company_id, page, limit}) => {
+export const getNotificationAndAnnouncements = async ({
+  company_id,
+  page,
+  limit,
+}) => {
   console.log(company_id, page, limit);
-  const response = await api.get(`/notifications/getNotificationAndAnnouncements`, {
-    params: {
-      company_id,
-      page,
-      limit
+  const response = await api.get(
+    `/notifications/getNotificationAndAnnouncements`,
+    {
+      params: {
+        company_id,
+        page,
+        limit,
+      },
     }
+  );
+  return response.data;
+};
+
+export const getCompanyMetrics = async (companyId) => {
+  const response = await api.get(`/company/getCompanyMetrics`, {
+    params: {
+      company_id: companyId,
+    },
   });
   return response.data;
-}
+};

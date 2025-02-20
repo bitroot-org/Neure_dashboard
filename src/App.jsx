@@ -16,6 +16,7 @@ import WorkshopCard from "./pages/WorkshpCard";
 import DashboardLayout from "./pages/MainPage";
 import UserProtectedWrapper from "./pages/UserProtectedWrapper";
 import EventDashboard from "./pages/EventDashboard";
+import Settings from "./pages/Settings";
 
 function App() {
   return (
@@ -111,6 +112,14 @@ function App() {
           element={
             <UserProtectedWrapper>
               <EventDashboard />
+            </UserProtectedWrapper>
+          }
+        />
+        <Route
+          path="/settings"
+          element={
+            <UserProtectedWrapper>
+              <Settings />
             </UserProtectedWrapper>
           }
         />

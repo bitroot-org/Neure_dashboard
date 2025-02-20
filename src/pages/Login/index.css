@@ -1,8 +1,8 @@
-.bg-radial-gradient {
+.bg-radial-gradients {
   background: radial-gradient(
-    300px circle at 50% -80px,
-    rgba(19, 173, 153, 0.15) 0%,
-    rgba(7, 202, 49, 0.1) 40%,
+    300px circle at 50% -70px,
+    rgba(69, 233, 178, 0.15) 30%,
+    rgba(46, 205, 155, 0.1) 50%,
     transparent 70%
   );
   height: 200px;  
@@ -11,3 +11,8 @@
   left: 0;
   right: 0;
 }
+
+.ant-input {
+  background: #1E1F23 !important;
+}
+

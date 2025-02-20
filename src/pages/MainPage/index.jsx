@@ -19,14 +19,19 @@ import {
   LogoutOutlined,
 } from "@ant-design/icons";
 import { Dropdown } from "antd";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import "./index.css";
 import CompanyHealthGauge from "../../components/CompanyHealthGauge";
 import { UserDataContext } from "../../context/UserContext";
 import axios from "axios";
 import PresentationSlide from "../../components/PresentationSlide";
 import UserStats from "../../components/UserStats";
-import { logoutUser, getWorkshops } from "../../services/api";
+import {
+  logoutUser,
+  getWorkshops,
+  getCompanyMetrics,
+} from "../../services/api";
+import TermsModal from "../../components/TermsModal";
 
 const { Header, Content, Footer } = Layout;
 
@@ -36,7 +41,10 @@ const DashboardLayout = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [metricsData, setMetricsData] = useState(null);
+  const [isTermsModalVisible, setIsTermsModalVisible] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
   const { user, setUser } = useContext(UserDataContext);
 
   const pageSize = 1;
@@ -45,12 +53,14 @@ const DashboardLayout = () => {
   console.log("User from Mian dashboard ", user);
 
   useEffect(() => {
+    const companyId = localStorage.getItem("companyId");
     const fetchWorkshop = async () => {
       console.log("fetchWorkshops called");
       try {
         setLoading(true);
         setError(null);
         const data = await getWorkshops({
+          companyId,
           currentPage,
           pageSize,
         });
@@ -75,6 +85,41 @@ const DashboardLayout = () => {
     fetchWorkshop();
   }, [pageSize]);
 
+  useEffect(() => {
+    const fetchMetrics = async () => {
+      try {
+        setLoading(true);
+        const companyId = localStorage.getItem("companyId");
+        if (!companyId) {
+          message.error("Company ID not found");
+          return;
+        }
+
+        const response = await getCompanyMetrics(companyId);
+        console.log("Metrics response:", response);
+        if (response.status) {
+          setMetricsData(response.data.metrics);
+        }
+      } catch (error) {
+        console.error("Error fetching metrics:", error);
+        message.error("Failed to fetch company metrics");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMetrics();
+  }, []);
+
+  // Add this useEffect to show modal when navigating from success page
+  useEffect(() => {
+    if (location.state?.showTerms) {
+      setIsTermsModalVisible(true);
+      // Clean up the state to prevent modal from showing on refresh
+      window.history.replaceState({}, document.title);
+    }
+  }, [location]);
+
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleDateString("en-GB", {
@@ -88,13 +133,6 @@ const DashboardLayout = () => {
     return user.fullName.firstName
       ? user.fullName.firstName[0].toUpperCase()
       : "U";
-  };
-
-  const data = {
-    totalUsers: 512,
-    activeUsers: 500,
-    inactiveUsers: 12,
-    lastUpdated: "21 Apr",
   };
 
   const menuItems = [
@@ -176,22 +214,49 @@ const DashboardLayout = () => {
     navigate("/workshopDetails");
   };
 
+  const handleTermsAccept = () => {
+    setIsTermsModalVisible(false);
+  };
+
+  const handleTermsCancel = () => {
+    setIsTermsModalVisible(false);
+    message.info("Please accept the terms to continue");
+  };
+
+  // Add this handler function along with your other handlers
+  const handleSettingsClick = () => {
+    navigate("/settings");
+  };
+
   return (
     <Layout className="dashboard-layout">
       <Header className="header">
-        <div className="CompanyTitle">The Company</div>
+        <div className="CompanyTitle">{metricsData?.companyName}</div>
         <div className="header-right">
           <Space size={16} align="center">
-            <Badge dot={hasNotifications} offset={[-5, 5]}>
-              <UserOutlined
-                className="header-icon"
+            <div className="soundscapes-button">
+              <img src="/MusicNotes.png" />
+              <h3>Soundscapes</h3>
+            </div>
+            <div className="employee_management-button">
+              <img
+                src="/UserGear.png"
                 onClick={handleProfileClickManagement}
                 style={{ cursor: "pointer" }}
               />
-            </Badge>
-            <SettingOutlined className="header-icon" />
+              <h3>Employess</h3>
+            </div>
+            <div
+              className="settings-button"
+              onClick={handleSettingsClick}
+              style={{ cursor: "pointer" }}
+            >
+              <img src="/GearSix.png" />
+              <h3>Settings</h3>
+            </div>
+
             <div className="user-info">
-              {/* <Avatar className="company-avatar">{getInitial()}</Avatar> */}
+              <Avatar className="avatar">{getInitial()}</Avatar>
               <h3 className="user-name">
                 {`${user.fullName.firstName} ${user.fullName.lastName}`}
                 <Dropdown
@@ -216,8 +281,13 @@ const DashboardLayout = () => {
                 <h2>Upcoming Workshops</h2>
                 <Button
                   type="link"
-                  className="view-all"
                   onClick={handleViewAllWorkshops}
+                  style={{
+                    cursor: "pointer",
+                    color: "#ffffff",
+                    fontSize: "16px",
+                    fontWeight: "500",
+                  }}
                 >
                   View All <RightOutlined />
                 </Button>
@@ -237,20 +307,7 @@ const DashboardLayout = () => {
             </Card>
 
             <div className="bottom-cards">
-              <Card
-                className="rewards-card"
-                onClick={() => navigate("/rewards")}
-                style={{ cursor: "pointer" }}
-              >
-                <div className="rewards-content">
-                  <h3>Rewards & </h3>
-                  <h3>Recognition</h3>
-                  <div className="rewards-illustration">
-                    <img src="./winner.png" alt="Rewards and Recognition" />
-                  </div>
-                </div>
-              </Card>
-              <div className="right-cards">
+              <div className="left-cards">
                 <Card
                   className="announcement-card"
                   onClick={() => navigate("/announcements")}
@@ -276,6 +333,28 @@ const DashboardLayout = () => {
                   </div>
                 </Card>
               </div>
+              <Card
+                className="rewards-card"
+                onClick={() => navigate("/rewards")}
+                style={{ cursor: "pointer" }}
+              >
+                <div className="rewards-content">
+                  <h3>Rewards & Recognition</h3>
+                  <h3
+                    style={{
+                      color: "#EEE420",
+                      fontSize: "18px",
+                      fontWeight: "500",
+                      paddingTop: "10px",
+                    }}
+                  >
+                    COMING SOON !
+                  </h3>
+                  <div className="rewards-illustration">
+                    <img src="./winner.png" alt="Rewards and Recognition" />
+                  </div>
+                </div>
+              </Card>
             </div>
           </div>
         </div>
@@ -284,18 +363,27 @@ const DashboardLayout = () => {
           <div className="metrics-cards">
             <CompanyHealthGauge
               className="metric-card"
-              value={500}
+              value={50}
+              maxValue={100}
               title="Project performance"
-              lastCheckDate="31 Jan"
               status="Average"
               onClick={handleCompanyGaugeClick}
               style={{ cursor: "pointer" }}
             />
-            <UserStats
-              data={data}
-              onClick={handleUserStatsClick}
-              style={{ cursor: "pointer" }}
-            />
+            <div>
+              <Card
+                className="resource-card"
+                onClick={() => navigate("/rewards")}
+                style={{ cursor: "pointer" }}
+              >
+                <div className="resource-content">
+                  <h3>Resources</h3>
+                  <div className="resource-illustration">
+                    <img src="./resources.png" alt="Rewards and Recognition" />
+                  </div>
+                </div>
+              </Card>
+            </div>
           </div>
 
           <Card className="roi-card">
@@ -305,40 +393,48 @@ const DashboardLayout = () => {
             </div>
             <div className="roi-metrics">
               <div className="roi-item">
-                <span>Employee Engagement Levels</span>
-                <div className="percentage">85% ↑</div>
+                <span>Stress Levels</span>
+                <div className="percentage">
+                  85% <img src="/Downward.png" />
+                </div>
               </div>
               <div className="roi-item">
-                <span>Productivity Improvements</span>
-                <div className="percentage">85% ↑</div>
-              </div>
-              <div className="roi-item">
-                <span>Reduction in Absenteeism</span>
-                <div className="percentage">85% ↓</div>
+                <span>Psychological Safety Index (PSI)</span>
+                <div className="percentage">
+                  85% <img src="Upward.png" />
+                </div>
               </div>
               <div className="roi-item">
                 <span>Employee Retention</span>
-                <div className="percentage">85% ↑</div>
+                <div className="percentage">
+                  85% <img src="Upward.png" />
+                </div>
+              </div>
+              <div className="roi-item">
+                <span>Employee Engagement</span>
+                <div className="percentage">
+                  85% <img src="/Downward.png" />
+                </div>
               </div>
             </div>
           </Card>
 
-          <Card className="articles-card">
-            <div className="articles-header">
+          {/* <div className="custom-articles">
+            <div className="articles-content">
               <h3>Explore articles on improving mental well-being by Neure.</h3>
-              <Button
+              <h2
                 type="link"
                 className="view-all"
                 onClick={() => navigate("/articles")}
                 style={{ cursor: "pointer" }}
               >
                 View All <RightOutlined />
-              </Button>
+              </h2>
             </div>
-            <div className="articles-image-container">
+            <div className="articles-img">
               <img src="./problemSolving.png" alt="Problem solving" />
             </div>
-          </Card>
+          </div> */}
         </div>
       </Content>
 
@@ -348,6 +444,15 @@ const DashboardLayout = () => {
           <img src="./neure.png" alt="Neure Icon" className="neure-icon" />
         </div>
       </Footer>
+
+      <TermsModal
+        isOpen={isTermsModalVisible}
+        onClose={() => setIsTermsModalVisible(false)}
+        onAccept={() => {
+          setIsTermsModalVisible(false);
+          message.success("Terms accepted successfully");
+        }}
+      />
     </Layout>
   );
 };

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Table, Space, Card } from "antd";
+import { Table, Space, Card, message } from "antd";
 import { ArrowUpOutlined, ArrowDownOutlined } from "@ant-design/icons";
 import MetricLineChart from "../../components/MetricLineCharts";
 import { sampleData } from "../../constants/faqData";
@@ -7,29 +7,44 @@ import "./index.css";
 import CompanyHealthGauge from "../../components/CompanyHealthGauge";
 import UserStats from "../../components/UserStats";
 import CustomHeader from "../../components/CustomHeader";
-import { getCompanyEmployees } from "../../services/api";
+import { getTopPerformingEmployee, getCompanyMetrics } from "../../services/api";
 
 const Dashboard = () => {
-  const [employees, setEmployees] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [employees, setEmployees] = useState([]);
+  const [metricsData, setMetricsData] = useState(null);
+
   const [pagination, setPagination] = useState({
     current: 1,
     pageSize: 10,
-    total: 0
+    total: 0,
   });
 
   const fetchEmployees = async (page = 1, pageSize = 10) => {
     try {
       setLoading(true);
-      const response = await getTopPerformingEmployee(1, {
+      const companyId = localStorage.getItem("companyId");
+
+      if (!companyId) {
+        message.error("Company ID not found");
+        return;
+      }
+
+      const response = await getTopPerformingEmployee({
+        companyId,
         page,
-        limit: pageSize
+        limit: pageSize,
       });
-      
+
       if (response.status) {
         setEmployees(response.data.employees);
+        setPagination((prev) => ({
+          ...prev,
+          total: response.data.total || 0,
+        }));
       }
     } catch (error) {
+      console.error("Error fetching employees:", error);
       message.error("Failed to fetch employees");
     } finally {
       setLoading(false);
@@ -37,8 +52,34 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    fetchEmployees(pagination.current, pagination.pageSize);
+    const fetchMetrics = async () => {
+      try {
+        setLoading(true);
+        const companyId = localStorage.getItem("companyId");
+        if (!companyId) {
+          message.error("Company ID not found");
+          return;
+        }
+
+        const response = await getCompanyMetrics(companyId);
+        console.log("Metrics response:", response);
+        if (response.status) {
+          setMetricsData(response.data.metrics);
+        }
+      } catch (error) {
+        console.error("Error fetching metrics:", error);
+        message.error("Failed to fetch company metrics");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMetrics();
   }, []);
+
+  useEffect(() => {
+    fetchEmployees(pagination.current, pagination.pageSize);
+  }, []); // Empty dependency array to run once on mount
 
   const statsData = [
     {
@@ -110,8 +151,8 @@ const Dashboard = () => {
       title: "Engagement Score",
       dataIndex: "EngagementScore",
       key: "EngagementScore",
-      sorter: (a, b) => a.EngagementScore - b.EngagementScore,
       render: (score) => `${score}%`,
+      align: "center",
     },
   ];
 
@@ -123,8 +164,8 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="dashboard-container">
-      <CustomHeader title="Dashboard" />
+    <div className="dashboard-containers">
+      <CustomHeader title="Dashboard" showFilterButton="true" />
       <div className="stats-grid">
         <div className="left-metrics">
           <CompanyHealthGauge
@@ -135,7 +176,7 @@ const Dashboard = () => {
             status="Average"
             style={{ cursor: "pointer" }}
           />
-          <UserStats data={data} style={{ cursor: "pointer" }} />
+          <UserStats data={metricsData} style={{ cursor: "pointer" }} />
         </div>
 
         <div className="right-stats">

@@ -1,0 +1,84 @@
+.profile-container {
+  padding: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.profile-card {
+  height: 100%;
+}
+
+.profile-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.profile-image {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 16px;
+}
+
+.profile-name {
+  margin: 8px 0 !important;
+}
+
+.rating-container {
+  margin: 16px 0;
+}
+
+.detail-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.price-section {
+  text-align: center;
+  margin: 24px 0;
+}
+
+.price {
+  font-size: 24px;
+  font-weight: bold;
+  margin-right: 8px;
+}
+
+.details-section section {
+  margin-bottom: 32px;
+}
+
+.tags-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.availability-details .detail-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .profile-container {
+    padding: 16px;
+  }
+
+  .profile-card {
+    margin-bottom: 24px;
+  }
+
+  .detail-item {
+    justify-content: center;
+  }
+
+  .availability-details .detail-row {
+    flex-direction: column;
+    gap: 4px;
+  }
+}

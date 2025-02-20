@@ -24,9 +24,12 @@ const EventDashboard = () => {
   useEffect(() => {
     const fetchWorkshops = async () => {
       try {
+        const companyId = localStorage.getItem("companyId");
+
         setLoading(true);
         setError(null); // Reset error state before fetching
         const data = await getWorkshops({
+          companyId,
           currentPage,
           pageSize,
           selectedDate,
@@ -54,7 +57,8 @@ const EventDashboard = () => {
   useEffect(() => {
     const fetchWorkshopDates = async () => {
       try {
-        const data = await getWorkshopDates();
+        const companyId = localStorage.getItem("companyId");
+        const data = await getWorkshopDates(companyId);
         console.log("API Response:", data);
 
         if (data.status && Array.isArray(data.data)) {
