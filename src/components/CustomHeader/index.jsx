@@ -1,11 +1,11 @@
 import React from 'react';
-import { Button, Select, Space } from 'antd';
-import { LeftOutlined, EditOutlined, FilterOutlined } from '@ant-design/icons';
+import { Button, Select } from 'antd';
+import { ArrowLeftOutlined, EditOutlined, FilterOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import './index.css';
 
-const CustomHeader = ({ 
-  title, 
+const CustomHeader = ({
+  title,
   showBackButton = true,
   showEditButton = false,
   showFilterButton = false,
@@ -15,6 +15,7 @@ const CustomHeader = ({
 }) => {
   const navigate = useNavigate();
   const [filterValue, setFilterValue] = React.useState(defaultFilterValue);
+  const [backIconLoaded, setBackIconLoaded] = React.useState(true);
 
   const handleBack = () => {
     navigate(-1);
@@ -31,16 +32,26 @@ const CustomHeader = ({
       <div className="header-main">
         <div className="header-left">
           {showBackButton && (
-            <Button 
+            <Button
               type="text"
-              icon={<img src='ArrowLeft.png' alt='Arrow left'/>}
+              icon={
+                backIconLoaded ? (
+                  <img
+                    src="ArrowLeft.png"
+                    alt="Arrow left"
+                    onError={() => setBackIconLoaded(false)}
+                  />
+                ) : (
+                  <ArrowLeftOutlined style={{ fontSize: '24px', color: '#fff', fontWeight:"400" }} />
+                )
+              }
               onClick={handleBack}
               className="back-button"
             />
           )}
           <h1 className="header-title">{title}</h1>
         </div>
-        
+
         <div className="header-right">
           {showFilterButton && (
             <Select
@@ -48,12 +59,12 @@ const CustomHeader = ({
               onChange={setFilterValue}
               options={filterOptions}
               className="filter-select"
-              suffixIcon={<img src='bottomArrow.png' alt='filterButton' />}
+              suffixIcon={<FilterOutlined style={{ fontSize: '16px', color: '#fff' }} />}
             />
           )}
-          
+
           {showEditButton && (
-            <Button 
+            <Button
               onClick={onEditClick}
               className="edit-button"
             >

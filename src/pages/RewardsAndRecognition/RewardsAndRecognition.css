@@ -1,0 +1,101 @@
+.rewardRecognition-dashboard-container {
+  padding: 80px;
+  max-width: 100%;
+  margin: 0 auto;
+  background-color: black;
+}
+
+.rewards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+  gap: 30px;
+  padding: 20px 0;
+}
+
+.rewardRecognition-card {
+  background: #191A20;
+  border: 1px solid #2D2F39;
+  border-radius: 18px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 15px;
+  transition: transform 0.2s;
+  height: 280px;
+}
+
+.rewardRecognition-card:hover {
+  transform: translateY(-5px);
+}
+
+.card-icon {
+  width: 64px;
+  height: 64px;
+  margin-bottom: 10px;
+  background: radial-gradient(circle, #5F616C, #2D2F39);
+  border-radius: 50%;
+  padding: 10px;
+}
+
+.card-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.card-title h3 {
+  color: white;
+  font-size: 24px;
+  font-weight: 500;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.card-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: auto;
+  width: 100%;
+  padding: 0 20px;
+}
+
+.btn-details, .btn-send {
+  width: 100%;
+  padding: 8px 16px;
+  height: 48px;
+  border-radius: 70px;
+  border: none;
+  font-size: 16px;
+  font-weight:700 ;
+  cursor: pointer;
+  flex: 1;
+}
+
+.btn-details {
+  background: transparent;
+  border: 1px solid #666;
+  color: white;
+}
+
+.btn-send {
+  background: linear-gradient(to bottom, #FFFFFF 0%, #797B87 100%);
+  color: black;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .rewards-grid {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  }
+  
+  .reward-card {
+    padding: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .rewards-grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -9,7 +9,7 @@ import Dashboard from "./pages/Dashboard";
 import HelpAndSupport from "./pages/HelpAndSupport";
 import AnnouncementsAndNotifications from "./pages/AnnouncementsAndNotifications";
 import EmployeeManagement from "./pages/EmployeeManagement";
-import Article from "./pages/Articles";
+import Resources from "./pages/Resources";
 import RewardsDashboard from "./pages/RewardsDashboard";
 import CompanyProfile from "./pages/CompanyProfile";
 import WorkshopCard from "./pages/WorkshpCard";
@@ -17,6 +17,11 @@ import DashboardLayout from "./pages/MainPage";
 import UserProtectedWrapper from "./pages/UserProtectedWrapper";
 import EventDashboard from "./pages/EventDashboard";
 import Settings from "./pages/Settings";
+import Article from "./pages/Article";
+import RemoveEmployee from "./pages/RemoveEmployee";
+import AddNewEmployee from "./pages/AddNewEmployee";
+import Soundscapes from "./pages/Soundscapes";
+import RewardsAndRecognition from "./pages/RewardsAndRecognition";
 
 function App() {
   return (
@@ -67,10 +72,10 @@ function App() {
           }
         />
         <Route
-          path="/articles"
+          path="/resources"
           element={
             <UserProtectedWrapper>
-              <Article />
+              <Resources />
             </UserProtectedWrapper>
           }
         />
@@ -120,6 +125,48 @@ function App() {
           element={
             <UserProtectedWrapper>
               <Settings />
+            </UserProtectedWrapper>
+          }
+        />
+        <Route
+          path="/articleDetails/:articleId"
+          element={
+            <UserProtectedWrapper>
+              <Article />
+            </UserProtectedWrapper>
+          }
+        />
+        <Route
+          path="/removeEmployee"
+          element={
+            <UserProtectedWrapper>
+              <RemoveEmployee />
+            </UserProtectedWrapper>
+          }
+        />
+
+        <Route
+          path= "/addNewEmployee"
+          element={
+            <UserProtectedWrapper>
+              <AddNewEmployee />
+            </UserProtectedWrapper>
+          }
+        />
+
+        <Route
+          path="/soundscapes"
+          element={
+            <UserProtectedWrapper>
+              <Soundscapes />
+            </UserProtectedWrapper>
+          }
+        />
+        <Route
+          path="/rewardsAndRecognition"
+          element={
+            <UserProtectedWrapper>
+              <RewardsAndRecognition />
             </UserProtectedWrapper>
           }
         />

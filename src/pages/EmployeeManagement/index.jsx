@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Card, Table, Typography, Space, Empty } from "antd";
+import { SearchOutlined } from "@ant-design/icons";
 import "./index.css";
 import CustomHeader from "../../components/CustomHeader";
 import { getTopPerformingEmployee } from "../../services/api";
@@ -19,13 +20,14 @@ const EmployeeDashboard = () => {
   const fetchEmployees = async (page = 1, pageSize = 10) => {
     try {
       setLoading(true);
-      const response = await getTopPerformingEmployee(1, {
+      const response = await getTopPerformingEmployee({
+        companyId: 1,
         page,
         limit: pageSize,
       });
 
       if (response.status) {
-        setEmployees(response.data.employees);
+        setEmployees(response.data);
       }
     } catch (error) {
       message.error("Failed to fetch employees");
@@ -56,15 +58,41 @@ const EmployeeDashboard = () => {
 
   const columns = [
     {
-      title: "Employee Name",
+      title: "Sr no.",
+      key: "serialNumber",
+      render: (_, __, index) => index + 1,
+      width: 80,
+    },
+    {
+      title: "Full Name",
       dataIndex: "name",
       key: "name",
       render: (_, record) => `${record.first_name} ${record.last_name}`,
     },
     {
+      title: "Official Email ID",
+      dataIndex: "email",
+      key: "email",
+    },
+    {
+      title: "Contact Number",
+      dataIndex: "phone",
+      key: "phone",
+    },
+    {
+      title: "Gender",
+      dataIndex: "gender",
+      key: "gender",
+    },
+    {
+      title: "Age",
+      dataIndex: "age",
+      key: "age",
+    },
+    {
       title: "Department",
-      dataIndex: "department",
-      key: "department",
+      dataIndex: "department_name",
+      key: "department_name",
       filters: [
         { text: "Engineering", value: "Engineering" },
         { text: "Marketing", value: "Marketing" },
@@ -74,31 +102,15 @@ const EmployeeDashboard = () => {
       onFilter: (value, record) => record.department === value,
     },
     {
-      title: "Email ID",
-      dataIndex: "email",
-      key: "email",
+      title: "City",
+      dataIndex: "city",
+      key: "city",
     },
     {
-      title: "Age",
-      dataIndex: "age",
-      key: "age",
-      sorter: (a, b) => a.age - b.age,
-    },
-    {
-      title: "Gender",
-      dataIndex: "gender",
-      key: "gender",
-      filters: [
-        { text: "Male", value: "Male" },
-        { text: "Female", value: "Female" },
-        { text: "Other", value: "Other" },
-      ],
-      onFilter: (value, record) => record.gender === value,
-    },
-    {
-      title: "Date Added",
-      dataIndex: "dateAdded",
-      key: "dateAdded",
+      title: "Date added",
+      dataIndex: "joined_date",
+      key: "joined_date",
+      render: (date) => new Date(date).toISOString().split('T')[0],
       sorter: (a, b) => new Date(a.dateAdded) - new Date(b.dateAdded),
     },
     {
@@ -131,36 +143,48 @@ const EmployeeDashboard = () => {
     <div className="employee-dashboard">
       <CustomHeader title="Employee Management" />
 
-      <div className="dashboard-section">
-        <Title level={4} className="section-title">
-          Key Metrics
-        </Title>
-        <div className="metrics-container">
-          {metrics.map((metric, index) => (
-            <Card key={index} className="metric-card">
-              <div className="metric-header">
-                <h3 className="metric-title">{metric.title}</h3>
-                <button>
+      <div className="metrics-container">
+        {metrics.map((metric, index) => (
+          <Card key={index} className="metric-card">
+            <div className="metric-header">
+              <h3 className="metric-title">{metric.title}</h3>
+              {/* <button>
                   <span className="dot"></span>
                   <span className="dot"></span>
                   <span className="dot"></span>
-                </button>
-              </div>
+                </button> */}
+            </div>
 
-              <h1 className="metric-value">{metric.value}</h1>
+            <div className="employee-metric-data">
+              <h1 className="employee-metric-value">{metric.value}</h1>
               <div
-                className={`metric-change ${
-                  metric.change.includes("+")
-                    ? "positive"
-                    : metric.change === "0%"
+                className={`employee-metric-change ${metric.change.includes("+")
+                  ? "positive"
+                  : metric.change === "0%"
                     ? "neutral"
                     : "negative"
-                }`}
+                  }`}
               >
                 {metric.change}
               </div>
-            </Card>
-          ))}
+            </div>
+
+          </Card>
+        ))}
+      </div>
+
+      <div className="employee-actions">
+        <div className="employee-search-container">
+          <SearchOutlined className="search-icon" />
+          <input
+            type="text"
+            placeholder="Search name, department"
+            className="employee-search"
+          />
+        </div>
+        <div className="employee-action-buttons">
+          <button className="add-employee-btn">Add Employee</button>
+          <button className="remove-employee-btn">Remove Employee</button>
         </div>
       </div>
 
@@ -179,6 +203,7 @@ const EmployeeDashboard = () => {
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
+                margin: "-15px -20px",
               }}
             >
               <div

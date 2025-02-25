@@ -1,0 +1,337 @@
+/* SoundscapeContainer.css */
+.soundscape-container {
+  background-color: #000;
+  padding: 80px;
+  width: 100%;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+.soundscapes-main-content {
+  display: flex;
+  flex-direction: column;
+  padding: 0px 120px;
+  overflow-y: auto;
+}
+
+/* Top Picks Section */
+.soundscapes-top-picks {
+  margin-bottom: 40px;
+}
+
+.soundscapes-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.soundscapes-section-header h2 {
+  font-size: 24px;
+  color: #fff;
+  font-weight: 500;
+}
+
+.soundscapes-see-all {
+  font-size: 16px;
+  color: #fff;
+  cursor: pointer;
+}
+
+/* Remove absolute positioning from the buttons and make the container a flex container */
+.soundscapes-carousel-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 280px;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Make the wrapper take all available space between the buttons */
+.soundscapes-carousel-wrapper {
+  flex: 1;
+  overflow: hidden;
+}
+
+.soundscapes-carousel-content {
+  display: flex;
+  transition: transform 0.3s ease;
+}
+
+/* Carousel Card */
+.soundscapes-carousel-card {
+  width: 200px;
+  background: transparent;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-right: 16px;
+}
+
+/* Card Image Container */
+.soundscapes-card-image {
+  position: relative;
+  border-radius: 16px;
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+}
+
+.soundscapes-card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Play Overlay on Image */
+.soundscapes-play-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.598);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+}
+
+.soundscapes-carousel-card:hover .soundscapes-play-overlay {
+  opacity: 1;
+}
+
+/* Card Info below the image */
+.soundscapes-card-info {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  padding: 8px;
+  text-align: center;
+}
+
+.soundscapes-card-info h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 500;
+  color: #fff;
+}
+
+.soundscapes-card-info p {
+  margin: 4px 0 0;
+  font-size: 16px;
+  color: #b1b3c0;
+}
+
+/* Remove positioning from buttons */
+.soundscapes-carousel-button {
+  background: rgba(255, 255, 255, 0.252);
+  border: none;
+  color: white;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+/* Optionally add left/right margins to buttons */
+.soundscapes-carousel-button.soundscapes-left {
+  margin-right: 16px;
+}
+.soundscapes-carousel-button.soundscapes-right {
+  margin-left: 16px;
+}
+
+/* Fresh Tunes Section */
+.soundscapes-fresh-tunes {
+  margin-bottom: 100px;
+}
+
+.soundscapes-fresh-tunes h2 {
+  font-size: 24px;
+  color: #fff;
+  font-weight: 500;
+  margin-bottom: 24px;
+}
+
+.soundscapes-tunes-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.soundscapes-tune-item {
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.soundscapes-tune-item:hover {
+  background-color: #282828;
+}
+
+.soundscapes-tune-thumbnail {
+  width: 48px;
+  height: 48px;
+  background: linear-gradient(45deg, #444, #333);
+  border-radius: 4px;
+  margin-right: 16px;
+}
+
+.soundscapes-tune-info {
+  flex: 1;
+}
+
+.soundscapes-tune-info h3 {
+  margin: 0;
+  font-size: 18px;
+  color: #fff;
+  font-weight: 500;
+}
+
+.soundscapes-tune-info p {
+  font-size: 16px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.soundscapes-tune-controls {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.soundscapes-duration {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 14px;
+}
+
+.soundscapes-like-button {
+  font-size: 22px;
+  color: #fff;
+}
+
+.soundscapes-more-button {
+  font-size: 22px;
+  color: #fff;
+}
+
+/* Player Footer */
+.soundscapes-player {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #191a2080;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid #282828;
+}
+
+.soundscapes-now-playing {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex: 1;
+}
+
+.soundscapes-track-thumbnail {
+  width: 56px;
+  height: 56px;
+}
+
+.soundscapes-track-thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 10px;
+}
+
+.soundscapes-tune-thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 10px;
+}
+
+.soundscapes-track-info h3 {
+  margin: 0;
+  font-size: 18px;
+  color: #fff;
+  font-weight: 500;
+}
+
+.soundscapes-track-info p {
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.5);
+  font-weight: 400;
+}
+
+.soundscapes-player-controls {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  justify-content: center;
+}
+
+.soundscapes-player-controls img {
+  height: 30px;
+  width: 30px;
+}
+
+.soundscapes-player-controls .soundscapes-play img {
+  height: 40px;
+  width: 40px;
+}
+
+.soundscapes-player-controls button {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 20px;
+}
+
+.soundscapes-player-controls .soundscapes-play {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background-color: #282932;
+  color: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.soundscapes-player-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex: 1;
+  justify-content: flex-end;
+}
+
+.soundscapes-player-actions button {
+  background: none;
+  border: none;
+  color: #999;
+  cursor: pointer;
+  font-size: 20px;
+}
+
+@media (min-width: 1024px) {
+  .soundscapes-tunes-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 32px;
+  }
+}

@@ -150,8 +150,8 @@ export const getCompanyEmployees = async (companyId, params) => {
 };
 
 export const getTopPerformingEmployee = async (params) => {
-  console.log(params);
-  console.log(params.companyId);
+  console.log("Params for employee data: ",params);
+  console.log("Params for employee  company id data: ",params.companyId);
   const response = await api.get(`/company/getTopPerformingEmployee`, {
     params: {
       company_id: params.companyId,

@@ -191,7 +191,7 @@ const DashboardLayout = () => {
   };
 
   const handleProfileClickManagement = () => {
-    navigate("/employees");
+    navigate("/employeesManagement");
   };
 
   const handleProfileClick = () => {
@@ -229,25 +229,27 @@ const DashboardLayout = () => {
   };
 
   return (
-    <Layout className="dashboard-layout">
-      <Header className="header">
-        <div className="CompanyTitle">{metricsData?.companyName}</div>
-        <div className="header-right">
+    <Layout className="main-dashboard-layout">
+      <Header className="main-header">
+        <div className="main-company-title">{metricsData?.companyName}</div>
+        <div className="main-header-right">
           <Space size={16} align="center">
-            <div className="soundscapes-button">
+            <div className="main-header-button"
+              onClick={() => navigate("/soundscapes")}
+            >
               <img src="/MusicNotes.png" />
               <h3>Soundscapes</h3>
             </div>
-            <div className="employee_management-button">
+            <div className="main-header-button">
               <img
                 src="/UserGear.png"
-                onClick={handleProfileClickManagement}
+                onClick={() => navigate("/employeesManagement")}
                 style={{ cursor: "pointer" }}
               />
               <h3>Employess</h3>
             </div>
             <div
-              className="settings-button"
+              className="main-header-button"
               onClick={handleSettingsClick}
               style={{ cursor: "pointer" }}
             >
@@ -255,9 +257,9 @@ const DashboardLayout = () => {
               <h3>Settings</h3>
             </div>
 
-            <div className="user-info">
-              <Avatar className="avatar">{getInitial()}</Avatar>
-              <h3 className="user-name">
+            <div className="main-user-info">
+              <Avatar className="main-avatar">{getInitial()}</Avatar>
+              <h3 className="main-user-name">
                 {`${user.fullName.firstName} ${user.fullName.lastName}`}
                 <Dropdown
                   menu={{ items: menuItems, onClick: handleMenuClick }}
@@ -273,11 +275,11 @@ const DashboardLayout = () => {
         </div>
       </Header>
 
-      <Content className="main-content">
-        <div className="left-section">
-          <div className="workshops-content">
-            <Card className="workshop-banner">
-              <div className="workshops-header">
+      <div className="main-content">
+        <div className="main-dashboard-left">
+          <div className="main-workshops-content">
+            <div className="main-workshop-banner">
+              <div className="main-workshops-header">
                 <h2>Upcoming Workshops</h2>
                 <Button
                   type="link"
@@ -293,7 +295,7 @@ const DashboardLayout = () => {
                 </Button>
               </div>
               <div
-                className="workshops-image-card"
+                className="main-workshops-image-card"
                 onClick={handleViewWorkshopDetails}
                 style={{ cursor: "pointer" }}
               >
@@ -304,29 +306,29 @@ const DashboardLayout = () => {
                   backgroundImage={workshop?.poster_image}
                 />
               </div>
-            </Card>
+            </div>
 
-            <div className="bottom-cards">
-              <div className="left-cards">
+            <div className="main-bottom-cards">
+              <div className="main-left-cards">
                 <Card
-                  className="announcement-card"
+                  className="main-announcement-card"
                   onClick={() => navigate("/announcements")}
                   style={{ cursor: "pointer" }}
                 >
-                  <div className="announcement-content">
+                  <div className="main-announcement-content">
                     <h3>Anouncements</h3>
-                    <div className="announcement-icon">
+                    <div className="main-announcement-icon">
                       <img src="Marketing.png" alt="marketing icon" />
                     </div>
                   </div>
                 </Card>
                 <Card
-                  className="support-card"
+                  className="main-support-card"
                   onClick={() => navigate("/support")}
                   style={{ cursor: "pointer" }}
                 >
-                  <div className="support-content">
-                    <div className="support-icon">
+                  <div className="main-support-content">
+                    <div className="main-support-icon">
                       <img src="support.png" alt="support icon" />
                     </div>
                     <h3>Help & support</h3>
@@ -334,11 +336,11 @@ const DashboardLayout = () => {
                 </Card>
               </div>
               <Card
-                className="rewards-card"
+                className="main-rewards-card"
                 onClick={() => navigate("/rewards")}
                 style={{ cursor: "pointer" }}
               >
-                <div className="rewards-content">
+                <div className="main-rewards-content">
                   <h3>Rewards & Recognition</h3>
                   <h3
                     style={{
@@ -350,7 +352,7 @@ const DashboardLayout = () => {
                   >
                     COMING SOON !
                   </h3>
-                  <div className="rewards-illustration">
+                  <div className="main-rewards-illustration">
                     <img src="./winner.png" alt="Rewards and Recognition" />
                   </div>
                 </div>
@@ -359,10 +361,10 @@ const DashboardLayout = () => {
           </div>
         </div>
 
-        <div className="right-section">
-          <div className="metrics-cards">
+        <div className="main-dashboard-right">
+          <div className="main-metrics-cards">
             <CompanyHealthGauge
-              className="metric-card"
+              className="main-metric-card"
               value={50}
               maxValue={100}
               title="Project performance"
@@ -372,13 +374,13 @@ const DashboardLayout = () => {
             />
             <div>
               <Card
-                className="resource-card"
-                onClick={() => navigate("/rewards")}
+                className="main-resource-card"
+                onClick={() => navigate("/rewardsAndRecognition")}
                 style={{ cursor: "pointer" }}
               >
-                <div className="resource-content">
+                <div className="main-resource-content">
                   <h3>Resources</h3>
-                  <div className="resource-illustration">
+                  <div className="main-resource-illustration">
                     <img src="./resources.png" alt="Rewards and Recognition" />
                   </div>
                 </div>
@@ -386,62 +388,45 @@ const DashboardLayout = () => {
             </div>
           </div>
 
-          <Card className="roi-card">
-            <div className="roi-header">
+          <Card className="main-roi-card">
+            <div className="main-roi-header">
               <h3>ROI</h3>
               <span>Compare to prev. month</span>
             </div>
-            <div className="roi-metrics">
-              <div className="roi-item">
+            <div className="main-roi-metrics">
+              <div className="main-roi-item">
                 <span>Stress Levels</span>
-                <div className="percentage">
+                <div className="main-percentage">
                   85% <img src="/Downward.png" />
                 </div>
               </div>
-              <div className="roi-item">
+              <div className="main-roi-item">
                 <span>Psychological Safety Index (PSI)</span>
-                <div className="percentage">
+                <div className="main-percentage">
                   85% <img src="Upward.png" />
                 </div>
               </div>
-              <div className="roi-item">
+              <div className="main-roi-item">
                 <span>Employee Retention</span>
-                <div className="percentage">
+                <div className="main-percentage">
                   85% <img src="Upward.png" />
                 </div>
               </div>
-              <div className="roi-item">
+              <div className="main-roi-item">
                 <span>Employee Engagement</span>
-                <div className="percentage">
+                <div className="main-percentage">
                   85% <img src="/Downward.png" />
                 </div>
               </div>
             </div>
           </Card>
-
-          {/* <div className="custom-articles">
-            <div className="articles-content">
-              <h3>Explore articles on improving mental well-being by Neure.</h3>
-              <h2
-                type="link"
-                className="view-all"
-                onClick={() => navigate("/articles")}
-                style={{ cursor: "pointer" }}
-              >
-                View All <RightOutlined />
-              </h2>
-            </div>
-            <div className="articles-img">
-              <img src="./problemSolving.png" alt="Problem solving" />
-            </div>
-          </div> */}
         </div>
-      </Content>
+      </div>
 
-      <Footer className="footer">
-        <div className="footer-content">
+      <Footer className="main-footer">
+        <div className="main-footer-content">
           Powered by{" "}
-          <img src="./neure.png" alt="Neure Icon" className="neure-icon" />
+          <img src="./neure.png" alt="Neure Icon" className="main-neure-icon" />
         </div>
       </Footer>
 

@@ -1,0 +1,56 @@
+.employee-dashboard {
+  padding: 80px;
+  background: radial-gradient(3000px circle at 50% -60%, #5b5d6b 0%, #0d0d11 40%);
+  min-height: 100vh;
+}
+
+.employee-table {
+  background-color: transparent;
+  border-radius: 8px;
+  overflow-x: auto;
+  width: 100%;
+}
+
+.remove-employee-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 24px 0px;
+  padding-top: 20px;
+}
+
+.employee-action-buttons button {
+  margin-left: 14px;
+  padding: 8px 16px;
+  background: linear-gradient(to bottom, #FFFFFF 0%, #797B87 100%);
+  border: none;
+  border-radius: 70px;
+  color: #191a20;
+  font-weight: 500;
+  cursor: pointer;
+  height: 48px;
+  border-bottom: none;
+
+}
+
+.employee-action-buttons .remove-employee-btn {
+  background: transparent;
+  color: red;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.employee-action-buttons button:hover {
+  border: 2px solid #ffffff6f;
+}
+
+.green-checkbox {
+  /* For modern browsers that support accent-color */
+  accent-color: transparent;
+  width: 18px;
+  height: 18px;
+}
+
+/* When checked, set accent-color to green */
+.green-checkbox:checked {
+  accent-color: #00d885;
+}

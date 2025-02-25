@@ -1,0 +1,149 @@
+.add-employee-dashboard {
+  padding: 80px;
+  background: radial-gradient(
+    3000px circle at 50% -60%,
+    #5b5d6b 0%,
+    #0d0d11 40%
+  );
+  min-height: 100vh;
+  color: #ffffff;
+}
+
+.form-container {
+  margin-top: 32px;
+  background-color: #191a20;
+  padding: 32px;
+  border-radius: 12px;
+  width: 800px;
+}
+
+.type-section {
+  margin-bottom: 16px;
+}
+
+.section-title {
+  font-size: 24px;
+  font-weight: 400;
+  margin-bottom: 8px;
+  color: #ffffff;
+}
+
+.type-buttons {
+  display: flex;
+  gap: 16px;
+}
+
+.type-btn {
+  height: 48px;
+  flex: 1;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: transparent;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 16px;
+  font-weight: 400;
+  cursor: pointer;
+  border-radius: 18px;
+}
+
+.type-btn.active {
+  background-color: transparent;
+  color: #00d885;
+  border-color: #00d885;
+  box-shadow: 0px -4px 6px 0px #00d88538 inset;
+}
+
+.custom-divider {
+  height: 1px;
+  background-color: #434343;
+  margin: 24px 0;
+  width: calc(100% + 64px); /* 32px on left + 32px on right = 64px extra */
+  margin-left: -32px; /* pull the divider to the left */
+}
+
+.form-row {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 16px;
+}
+
+.form-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-item label {
+  margin-bottom: 4px;
+  font-size: 14px;
+}
+
+.form-item input,
+.form-item select {
+  height: 48px;
+  padding: 0 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  background-color: transparent;
+  color: #5a5656;
+  font-size: 16px;
+}
+
+.form-container .submit-container {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.submit-btn {
+  height: 48px;
+  width: fit-content;
+  padding: 0px 24px;
+  border: none;
+  border-radius: 70px;
+  background: linear-gradient(to bottom, #ffffff 0%, #797b87 100%);
+  color: #000000;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+/* Additional CSS for Bulk Upload */
+.bulk-upload-container {
+  width: 100%;
+  border: 2px dashed rgba(255, 255, 255, 0.1);
+  padding: 40px;
+  text-align: center;
+  border-radius: 12px;
+  color: #ffffff;
+  margin-top: 24px;
+}
+
+.bulk-upload-container .upload-instructions {
+  margin-bottom: 16px;
+  font-size: 16px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.upload-instructions span {
+  color: #00d885;
+  text-decoration: underline;
+  text-decoration-color: #00d885;
+}
+
+.bulk-upload-container .file-input-label {
+  display: inline-block;
+  padding: 12px 24px;
+  background: #1890ff;
+  color: #ffffff;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.upload-icon {
+  font-size: 32px !important;
+  color: #B1B3C0;
+  margin-bottom: 12px;
+  cursor: pointer;
+}
