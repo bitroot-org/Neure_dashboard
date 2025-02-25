@@ -1,28 +1,18 @@
 .slide {
   width: 100%;
-  height: 100%;
-  position: relative;
+  display: flex;
+  flex-direction: column;
   overflow: hidden;
   min-height: 270px;
   border: 1px solid #585151;
   border-radius: 14px;
+  background: #2d2f39;
 }
 
 .content {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  padding: 40px;
-  padding-bottom: 30px;
-  padding-left: 30px;
-  z-index: 2;
-  background: linear-gradient(
-    to top,
-    #2D2F39 0%,
-    rgba(45, 47, 57, 0.5) 50%,
-    rgba(45, 47, 57, 0) 100%
-  );
-  width: 100%;
+  padding: 16px 20px;
+  background: #2d2f39;
+  flex: 1;
 }
 
 .content h1 {
@@ -40,12 +30,9 @@
 }
 
 .background {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 1;
+  flex: 1;
+  position: relative;
+  min-height: 200px; /* Adjust this for your desired image height */
 }
 
 .background-image {
@@ -56,7 +43,58 @@
   height: 100%;
   background-size: cover;
   background-position: center;
-  z-index: 1;
+  border-radius:14px ;
 }
 
+.slide-content-wrapper {
+  display: flex;
+  padding: 0px 16px;
+  justify-content: flex-start; /* Change from center to flex-start */
+  align-items: center; /* Add this to vertically center items */
+}
 
+.date-box {
+  width: 45px;
+  height: 60px;
+  flex-shrink: 0;
+  border: 1px solid #ffffff;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-right: 0px;
+}
+
+.date-day {
+  height: 60%;
+  background-color: transparent;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.date-month {
+  height: 40%;
+  background-color: #fff;
+  color: #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.title-time {
+  display: flex;
+  flex-direction: column;
+}
+
+.title-time h1 {
+  margin: 0 0 8px 0;
+}
+
+.title-time p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.7);
+}

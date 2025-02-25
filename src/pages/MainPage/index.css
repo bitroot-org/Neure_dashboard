@@ -1,6 +1,6 @@
 /* DashboardLayout.css */
 .main-dashboard-layout {
-  padding: 80px;
+  padding: 80px 80px 0px 80px;
   min-height: 100vh;
   background: radial-gradient(
     3000px circle at 50% -60%,
@@ -17,6 +17,7 @@
   align-items: center;
   height: 80px;
   top: 0;
+  padding: 0px 20px;
   background-color: transparent;
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 18px;
@@ -74,7 +75,7 @@
   background-color: rgba(124, 118, 118, 0.448);
   border-radius: 24px;
   height: 48px;
-  padding: 2px 8px;
+  padding: 2px 16px 2px 4px;
 }
 
 .main-user-info h3 {
@@ -87,17 +88,17 @@
   display: flex;
   flex-wrap: nowrap;
   gap: 24px;
-  height: calc(100vh - 200px);
-  min-height: 600px; 
+  flex: 1;
+  min-height: 600px;
 }
 
 .main-dashboard-left,
 .main-dashboard-right {
+  display: flex;
+  flex-direction: column;
   flex: 1;
   max-width: 50%;
   height: 100%; 
-  display: flex;
-  flex-direction: column;
 }
 
 .main-dashboard-left .main-dashboard-right {
@@ -107,15 +108,15 @@
 .main-workshops-content {
   display: flex;
   flex-direction: column;
-  flex: 1; /* Important: this will make it grow */
+  flex: 1;
 }
 
 .main-workshops-header {
-  flex: 0 0 auto;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 16px;
+  width: 100%;
+  padding: 22px;
   z-index: 2;
 }
 
@@ -126,6 +127,9 @@
 }
 
 .main-workshop-banner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   position: relative;
   height: 40%;
   min-height: 400px;
@@ -133,19 +137,18 @@
   overflow: hidden;
   margin-bottom: 24px;
   border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 18px;
+  border-radius: 24px;
 }
 
 .main-workshop-banner::before {
   content: "";
   position: absolute;
-
   width: 100%;
   height: 100%;
-  background: radial-gradient(
-    circle at 70% 100%,
+  background: linear-gradient(
+    to top,
     rgba(68, 74, 250, 0.4) 0%,
-    rgba(23, 209, 101, 0) 60%
+    rgba(23, 209, 101, 0) 20%
   );
   z-index: 1;
   pointer-events: none;
@@ -156,23 +159,9 @@
   position: relative;
   border-radius: 10%;
   padding: 0px 40px 20px 40px;
+  width: 80%;
+  z-index: 2;
 }
-
-.main-workshop-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.main-workshop-info {
-  position: absolute;
-  bottom: 24px;
-  left: 24px;
-  color: white;
-  z-index: 1;
-}
-
-
 
 .main-bottom-cards {
   display: flex;
@@ -186,6 +175,7 @@
   min-height: 350px;
   height: 420px;
   border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 24px;
 }
 
 .main-resource-card {
@@ -252,6 +242,7 @@
   flex: 1;
   min-height: 200px;
   border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 24px;
 }
 
 .main-announcement-content {
@@ -280,16 +271,18 @@
 }
 
 .main-dashboard-right {
-  gap: 24px;
   display: flex;
   flex-direction: column;
+  gap: 24px;
+  height: 100%; /* Ensure full height */
 }
 
 .main-metrics-cards {
+  flex: 0 0 auto; /* Don't grow, don't shrink, use natural height */
+
   display: flex;
   gap: 20px;
-  margin-bottom: 20px;
-  height: 100%;
+  height: 350px;
 }
 
 .main-metrics-cards > * {
@@ -304,7 +297,7 @@
   width: 100%;
   border-radius: 14px;
   background-color: #2a2a2a;
-  border-radius: 14px;
+  border-radius: 24px;
   padding: 20px;
 }
 
@@ -340,12 +333,13 @@
 
 .main-roi-card {
   flex: 1;
-  background: radial-gradient(#33353f 0%, #191a20 100%) !important;
-  height: auto;
   display: flex;
   flex-direction: column;
   padding: 24px;
+  background: radial-gradient(#33353f 0%, #191a20 100%) !important;
   border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 24px;
+  min-height: 100%;
 }
 
 .main-roi-header {
@@ -354,6 +348,7 @@
   align-items: center;
   margin-bottom: 42px;
   height: auto;
+  padding: 12px;
 }
 
 .main-roi-header h3 {
@@ -373,25 +368,28 @@
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 16px;
+  align-content: stretch; /* Stretch to fill container */
   height: auto;
 }
 
 .main-roi-item {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
+  gap: 12px;
   align-items: flex-start;
   background: linear-gradient(180deg, #2d2f39 0%, #191a20 100%) !important;
   border: 1px solid #3f3c3c;
-  padding: 32px;
-  border-radius: 14px;
-  height: 140px;
+  padding: 24px; /* Reduced from 32px to give more room */
+  border-radius: 24px;
+  min-height: 150px; /* Minimum height instead of fixed height */
+  height: auto; /* Allow natural height */
 }
 
 .main-roi-item span {
   font-size: 16px;
-  font-weight: 500;
-  color: #ffffffcb;
+  font-weight: 400;
+  color: #B1B3C0;
 }
 
 .main-percentage {
@@ -537,12 +535,12 @@
   .dashboard-layout {
     padding: 20px;
   }
-  /* 
+  
   .main-content {
     flex-direction: column !important;
     padding: 20px;
     gap: 20px;
-  } */
+  }
 
   .metrics-cards {
     display: grid;

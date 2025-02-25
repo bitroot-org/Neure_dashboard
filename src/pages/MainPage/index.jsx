@@ -230,7 +230,7 @@ const DashboardLayout = () => {
 
   return (
     <Layout className="main-dashboard-layout">
-      <Header className="main-header">
+      <div className="main-header">
         <div className="main-company-title">{metricsData?.companyName}</div>
         <div className="main-header-right">
           <Space size={16} align="center">
@@ -240,10 +240,9 @@ const DashboardLayout = () => {
               <img src="/MusicNotes.png" />
               <h3>Soundscapes</h3>
             </div>
-            <div className="main-header-button">
+            <div className="main-header-button" onClick={() => navigate("/employeesManagement")}>
               <img
                 src="/UserGear.png"
-                onClick={() => navigate("/employeesManagement")}
                 style={{ cursor: "pointer" }}
               />
               <h3>Employess</h3>
@@ -273,7 +272,7 @@ const DashboardLayout = () => {
             </div>
           </Space>
         </div>
-      </Header>
+      </div>
 
       <div className="main-content">
         <div className="main-dashboard-left">
@@ -302,8 +301,8 @@ const DashboardLayout = () => {
                 <PresentationSlide
                   title={workshop?.title}
                   date={formatDate(workshop?.start_time)}
-                  location={workshop?.location}
                   backgroundImage={workshop?.poster_image}
+                  endTime={workshop?.end_time}
                 />
               </div>
             </div>
@@ -388,7 +387,7 @@ const DashboardLayout = () => {
             </div>
           </div>
 
-          <Card className="main-roi-card">
+          <div className="main-roi-card">
             <div className="main-roi-header">
               <h3>ROI</h3>
               <span>Compare to prev. month</span>
@@ -419,7 +418,7 @@ const DashboardLayout = () => {
                 </div>
               </div>
             </div>
-          </Card>
+          </div>
         </div>
       </div>
 
