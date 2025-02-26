@@ -1,13 +1,22 @@
 import React, { useState } from 'react';
-import { Modal, Table, Input } from 'antd';
+import { Modal, Table, Input, Spin, Alert, message } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import './AssignRewardModal.css';
+import { assignReward } from '../../services/api';
 
-const { Search } = Input;
-
-const AssignRewardModal = ({ isOpen, onClose, rewardTitle }) => {
+const AssignRewardModal = ({
+  isOpen,
+  onClose,
+  rewardTitle,
+  rewardId,
+  employeesData = [],
+  isLoading,
+  error
+}) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [searchText, setSearchText] = useState('');
+  const [assigningReward, setAssigningReward] = useState(false);
+
 
   const columns = [
     {
@@ -45,41 +54,6 @@ const AssignRewardModal = ({ isOpen, onClose, rewardTitle }) => {
     },
   ];
 
-  const data = [
-    {
-      key: '1',
-      srNo: 1,
-      fullName: 'Alice Johnson',
-      email: 'example@mail.com',
-      contact: '+919876543210',
-      department: 'Engineering',
-    },
-    {
-      key: '2',
-      srNo: 2,
-      fullName: 'Bob Smith',
-      email: 'example@mail.com',
-      contact: '+919876543210',
-      department: 'Marketing',
-    },
-    {
-      key: '3',
-      srNo: 3,
-      fullName: 'Charlie Brown',
-      email: 'example@mail.com',
-      contact: '+919876543210',
-      department: 'Sales',
-    },
-    {
-      key: '4',
-      srNo: 4,
-      fullName: 'Dave Wilson',
-      email: 'example@mail.com',
-      contact: '+919876543210',
-      department: 'HR',
-    }
-  ];
-
   const onSelectChange = (newSelectedRowKeys) => {
     setSelectedRowKeys(newSelectedRowKeys);
   };
@@ -89,10 +63,50 @@ const AssignRewardModal = ({ isOpen, onClose, rewardTitle }) => {
     onChange: onSelectChange,
   };
 
-  const handleSendReward = () => {
-    console.log('Sending reward to:', selectedRowKeys);
-    onClose();
+  const handleSendReward = async () => {
+    if (selectedRowKeys.length === 0) {
+      message.warning('Please select at least one employee');
+      return;
+    }
+
+    const companyId = localStorage.getItem('companyId');
+
+    if (!companyId) {
+      message.error('Company ID not found');
+      return;
+    }
+
+    setAssigningReward(true);
+
+    try {
+      // For each selected user, assign the reward
+      const assignmentPromises = selectedRowKeys.map(userId =>
+        assignReward({
+          company_id: companyId,
+          user_id: userId,
+          reward_id: rewardId
+        })
+      );
+
+      await Promise.all(assignmentPromises);
+
+      message.success(`Reward successfully assigned to ${selectedRowKeys.length} employee(s)`);
+      onClose();
+    } catch (err) {
+      console.error('Error assigning reward:', err);
+      message.error('Failed to assign reward');
+    } finally {
+      setAssigningReward(false);
+    }
   };
+
+  // Reset selections when modal closes
+  React.useEffect(() => {
+    if (!isOpen) {
+      setSelectedRowKeys([]);
+      setSearchText('');
+    }
+  }, [isOpen]);
 
   return (
     <Modal
@@ -107,8 +121,13 @@ const AssignRewardModal = ({ isOpen, onClose, rewardTitle }) => {
       width={1000}
       className="assign-reward-modal"
       footer={[
-        <button key="send" className="send-reward-btn" onClick={handleSendReward}>
-          Send reward
+        <button
+          key="send"
+          className="send-reward-btn"
+          onClick={handleSendReward}
+          disabled={assigningReward || selectedRowKeys.length === 0}
+        >
+          {assigningReward ? 'Sending...' : 'Send reward'}
         </button>
       ]}
     >
@@ -121,14 +140,23 @@ const AssignRewardModal = ({ isOpen, onClose, rewardTitle }) => {
           className="employee-search"
         />
       </div>
-      <Table
-        rowSelection={rowSelection}
-        columns={columns}
-        dataSource={data}
-        className="employee-selection-table"
-        pagination={false}
-        scroll={{ y: 400 }}
-      />
+
+      {isLoading ? (
+        <div className="loading-spinner">
+          <Spin tip="Loading employees..." />
+        </div>
+      ) : error ? (
+        <Alert message={error} type="error" showIcon />
+      ) : (
+        <Table
+          rowSelection={rowSelection}
+          columns={columns}
+          dataSource={employeesData}
+          className="employee-selection-table"
+          pagination={false}
+          scroll={{ y: 400 }}
+        />
+      )}
     </Modal>
   );
 };

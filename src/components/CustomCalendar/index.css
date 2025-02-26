@@ -1,25 +1,26 @@
 .calendar-container {
   width: 100%;
   height: 100%;
-  background-color:#191A20 !important;
-  border-radius: 14px;
+  background-color: #191a20 !important;
   border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 24px; /* Add this line for rounded corners */
+  overflow: hidden; /* Add this to ensure content doesn't overflow the rounded corners */
 }
 
 .calendar-header {
-  background-color: #2D2F39;
+  background-color: #2d2f39;
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 2%;
-  padding: 14px ;
+  padding: 14px;
 }
 
 .month-title {
   color: #ffffff;
   margin: 0;
-  font-size: 24px;
-
+  font-size: 16px; /* Changed from 24px */
+  font-weight: 500; /* Changed from default */
 }
 
 .nav-button {
@@ -50,7 +51,7 @@
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   gap: 8px;
-  background-color: #191A20;
+  background-color: #191a20;
 }
 
 .calendar-day {
@@ -81,7 +82,7 @@
 }
 
 .calendar-day.selected {
-  background-color: #4CAF50;
+  background-color: #4caf50;
   color: white;
 }
 
@@ -105,8 +106,8 @@
   border: 1px solid #8c8c8c;
   color: #8c8c8c;
   cursor: pointer;
-  width: clamp(20px, 3vw, 35px);
-  height: clamp(20px, 3vw, 35px);
+  width: 35px;
+  height: 35px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -114,7 +115,8 @@
 }
 
 .nav-button:hover {
-  color: #f0f0f0;
+  color: #000;
+  background-color: #ffffff;
 }
 
 .calendar-grid {
@@ -128,12 +130,12 @@
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   margin-bottom: 8px;
-  background-color: #191A20;
+  background-color: #191a20;
 }
 
 .weekday {
-  font-size: clamp(14px, 1.2vw, 26px);
-  font-weight: 600;
+  font-size: 16px; /* Changed from clamp(14px, 1.2vw, 26px) */
+  font-weight: 500; /* Changed from 600 */
   color: #ffffff;
   text-align: center;
   padding: 2%;
@@ -141,8 +143,8 @@
 
 .calendar-day {
   text-align: center;
-  font-size: clamp(16px, 1.5vw, 26px);
-  font-weight: 500;
+  font-size: 16px; /* Changed from clamp(16px, 1.5vw, 26px) */
+  font-weight: 500; /* Already 500 */
   padding: 0;
   cursor: pointer;
   color: #f0f0f0;
@@ -159,7 +161,7 @@
 
 .calendar-day.selected {
   background-color: #4a5346;
-  color: #00D885;
+  color: #00d885;
 }
 
 .calendar-day.today {
@@ -169,12 +171,15 @@
 .calendar-day.prev-month {
   color: #595959;
   text-align: center;
-  font-size: 14px;
+  font-size: 16px; /* Changed from 14px */
+  font-weight: 500; /* Added */
   padding: 4px 0;
 }
 
 .calendar-day.next-month {
   color: #595959;
+  font-size: 16px; /* Added */
+  font-weight: 500; /* Added */
 }
 
 .date-dot {

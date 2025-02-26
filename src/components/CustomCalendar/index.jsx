@@ -1,6 +1,5 @@
 import React from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
-import './index.css';
+import { ArrowRightOutlined, ArrowLeftOutlined } from '@ant-design/icons';import './index.css';
 
 const CustomCalendar = ({ activeDates = [], onDateSelect }) => {
   const [currentDate, setCurrentDate] = React.useState(new Date());
@@ -79,13 +78,13 @@ const CustomCalendar = ({ activeDates = [], onDateSelect }) => {
     <div className="calendar-container">
       <div className="calendar-header">
         <button className="nav-button" onClick={handlePrevMonth}>
-          <ChevronLeft />
+          <ArrowLeftOutlined />
         </button>
         <h2 className="month-title">
           {currentDate.toLocaleString('default', { month: 'long', year: 'numeric' })}
         </h2>
         <button className="nav-button" onClick={handleNextMonth}>
-          <ChevronRight />
+          <ArrowRightOutlined />
         </button>
       </div>
       <div className="calendar-weekdays">

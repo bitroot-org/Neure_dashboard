@@ -209,20 +209,19 @@ export const dummyEmployeeData = [
 
 
 export const sampleData = [
-  { position: '5k', value: 22 },
-  { position: '10k', value: 35 },
-  { position: '15k', value: 42 },
-  { position: '20k', value: 64 },
-  { position: '25k', value: 48 },
-  { position: '30k', value: 52 },
-  { position: '35k', value: 28 },
-  { position: '40k', value: 45 },
-  { position: '45k', value: 72 },
-  { position: '50k', value: 58 },
-  { position: '55k', value: 52 },
-  { position: '60k', value: 48 }
+  { date: 'Jan \'24', value: 22 },
+  { date: 'Feb \'24', value: 35 },
+  { date: 'Mar \'24', value: 42 },
+  { date: 'Apr \'24', value: 64 },
+  { date: 'May \'24', value: 48 },
+  { date: 'Jun \'24', value: 52 },
+  { date: 'Jul \'24', value: 28 },
+  { date: 'Aug \'24', value: 45 },
+  { date: 'Sep \'24', value: 72 },
+  { date: 'Oct \'24', value: 58 },
+  { date: 'Nov \'24', value: 52 },
+  { date: 'Dec \'24', value: 48 }
 ];
-
 // Alternative data set with more variation
 export const alternativeData = [
   { position: '5k', value: 25 },

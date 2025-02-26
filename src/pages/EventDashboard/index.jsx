@@ -115,6 +115,8 @@ const EventDashboard = () => {
             </div>
           </Col>
 
+          <div className="vertical-divider"></div>
+
           <Col xs={24} md={16} lg={18}>
             <div className="workshops-grid">
               {loading ? (
@@ -133,6 +135,7 @@ const EventDashboard = () => {
                         date={formatDate(workshop.start_time)}
                         location={workshop.location}
                         backgroundImage={workshop.poster_image}
+                        endTime={workshop.end_time}
                       />
                     </div>
                   </div>

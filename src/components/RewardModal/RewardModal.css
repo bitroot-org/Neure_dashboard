@@ -120,3 +120,28 @@
   backdrop-filter: blur(8px);
   background-color: var(--modal-backdrop) !important;
 }
+
+/* No data message styles */
+.no-data-message {
+  padding: 40px 0;
+  text-align: center;
+}
+
+.no-data-message p {
+  color: white;
+  font-size: 16px;
+  margin: 0;
+}
+
+/* Loading container styles */
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 0;
+}
+
+/* Style the Spin component text */
+.ant-spin-text {
+  color: white;
+}

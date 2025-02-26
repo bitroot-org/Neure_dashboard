@@ -194,3 +194,23 @@ export const getCompanyMetrics = async (companyId) => {
   });
   return response.data;
 };
+
+export const getAllRewards = async () => {
+  const response = await api.get(`/rewards/getAllRewards`);
+  return response.data;
+}
+
+export const assignReward = async (data) => {
+  const response = await api.post(`/company/assignReward`, data);
+  return response.data;
+}
+
+export const getEmployeeRewardHistory = async (data) => {
+  const response = await api.get(`/company/getEmployeeRewardHistory`, {
+    params: {
+      company_id: data.company_id,
+      reward_id: data.reward_id,
+    },
+  });
+  return response.data;
+}

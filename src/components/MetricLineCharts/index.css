@@ -49,15 +49,14 @@
 }
 
 .custom-tooltip {
-  background-color: #1F2937 !important;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 4px;
-  padding: 8px 12px;
+  background-color: #00D885 !important;
+  border: none;
+  padding: 4px !important;
+  border-radius: 20px !important;margin-left: -40px;
 }
 
 .custom-tooltip p {
-  color: #E5E7EB;
+  color: #000;
   margin: 0;
   font-size: 14px;
-  line-height: 1.5;
 }

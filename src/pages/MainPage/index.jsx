@@ -199,7 +199,7 @@ const DashboardLayout = () => {
   };
 
   const handleViewAllWorkshops = () => {
-    navigate("/eventDashboard");
+    navigate("/workshops");
   };
 
   const handleCompanyGaugeClick = () => {
@@ -211,9 +211,12 @@ const DashboardLayout = () => {
   };
 
   const handleViewWorkshopDetails = () => {
-    navigate("/workshopDetails");
+    if (workshop && workshop.workshop_id) {
+      navigate(`/workshopDetails/${workshop.workshop_id}`); 
+    } else {
+      message.error("Workshop details not available");
+    }
   };
-
   const handleTermsAccept = () => {
     setIsTermsModalVisible(false);
   };

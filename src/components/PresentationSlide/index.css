@@ -10,7 +10,6 @@
 }
 
 .content {
-  padding: 16px 20px;
   background: #2d2f39;
   flex: 1;
 }
@@ -48,9 +47,10 @@
 
 .slide-content-wrapper {
   display: flex;
-  padding: 0px 16px;
-  justify-content: flex-start; /* Change from center to flex-start */
-  align-items: center; /* Add this to vertically center items */
+  padding: 16px 10px 24px 10px;
+  gap: 16px;
+  justify-content: flex-start; 
+  align-items: top; 
 }
 
 .date-box {
@@ -61,6 +61,7 @@
   border-radius: 8px;
   overflow: hidden;
   margin-right: 0px;
+
 }
 
 .date-day {

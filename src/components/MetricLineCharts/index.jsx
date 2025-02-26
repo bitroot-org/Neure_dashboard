@@ -8,7 +8,6 @@ const MetricLineChart = ({ data }) => {
       return (
         <div className="custom-tooltip">
           <p>{`Value: ${payload[0].value}`}</p>
-          <p>{`Position: ${label}`}</p>
         </div>
       );
     }
@@ -28,20 +27,44 @@ const MetricLineChart = ({ data }) => {
       <div className="chart-wrapper">
         <ResponsiveContainer width="100%" height={300}>
           <LineChart data={data} margin={{ top: 20, right: 30, left: 0, bottom: 0 }}>
-            <XAxis 
-              dataKey="position" 
+            <XAxis
+              dataKey="date"
               axisLine={{ stroke: '#4B5563' }}
-              tick={{ fill: '#9CA3AF' }}
+              tick={(props) => {
+                const { x, y, payload } = props;
+                return (
+                  <g transform={`translate(${x + 15},${y})`}> 
+                    <text x={0} y={0} dy={16} textAnchor="middle" fill="#9CA3AF">
+                      {payload.value}
+                    </text>
+                  </g>
+                );
+              }}
+              tickLine={false}
             />
-            <YAxis 
-              axisLine={{ stroke: '#4B5563' }}
-              tick={{ fill: '#9CA3AF' }}
+            <YAxis
+              axisLine={false}
               domain={[0, 100]}
               ticks={[0, 20, 40, 60, 80, 100]}
               tickFormatter={(value) => `${value}%`}
+              tick={(props) => {
+                const { x, y, payload } = props;
+                // Skip rendering the first tick (0%)
+                if (payload.value === 0) {
+                  return null;
+                }
+                return (
+                  <g transform={`translate(${x},${y})`}>
+                    <text x={0} y={0} dx={-10} textAnchor="end" fill="#9CA3AF">
+                      {`${payload.value}%`}
+                    </text>
+                  </g>
+                );
+              }}
+              tickLine={false}
             />
             <Tooltip content={<CustomTooltip />} />
-            <Line 
+            <Line
               type="monotone"
               dataKey="value"
               stroke="#10B981"

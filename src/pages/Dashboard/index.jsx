@@ -37,7 +37,7 @@ const Dashboard = () => {
       });
 
       if (response.status) {
-        setEmployees(response.data.employees);
+        setEmployees(response.data);
         setPagination((prev) => ({
           ...prev,
           total: response.data.total || 0,
@@ -126,14 +126,8 @@ const Dashboard = () => {
     },
     {
       title: "Department",
-      dataIndex: "department",
-      key: "department",
-      filters: [
-        { text: "Customer Support", value: "Customer Support" },
-        { text: "Engineering", value: "Engineering" },
-        { text: "Sales", value: "Sales" },
-      ],
-      onFilter: (value, record) => record.department === value,
+      dataIndex: "department_name",
+      key: "department_name",
     },
     {
       title: "Workshops Attended",

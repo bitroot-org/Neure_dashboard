@@ -1,19 +1,68 @@
-import React from 'react';
-import { Modal, Tabs, Table } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Modal, Tabs, Table, Spin, Alert } from 'antd';
 import './RewardModal.css';
+import { getEmployeeRewardHistory } from '../../services/api';
 
-const RewardModal = ({ isOpen, onClose, rewardTitle }) => {
-  const terms = [
-    "The pass can be redeemed with a minimum of 24 hours' notice, subject to approval based on work schedules and team availability.",
-    "Employees must remain accessible and responsive during working hours to ensure collaboration and productivity.",
-    "All meetings, deadlines, and assigned tasks must be completed as per schedule, just like an in-office workday.",
-    "The pass cannot be combined with paid leave, sick leave, or other time-off requests to extend a break.",
-    "On critical business days (such as company-wide events, client meetings, or deadlines), managers may request an alternate WFH date.",
-    "The pass cannot be transferred or gifted to another employee and is meant for individual use only.",
-    "Employees must log their working hours and daily progress in the designated system or report to their manager as required.",
-    "The company reserves the right to suspend or modify this benefit if it is misused or affects business operations.",
-    "The WFH pass is a privilege aimed at enhancing work-life balance—employees are expected to use it responsibly and ethically."
-  ];
+const RewardModal = ({ isOpen, onClose, rewardTitle, termsAndConditions, rewardId }) => {
+  const [historyData, setHistoryData] = useState([]);
+  const [historyLoading, setHistoryLoading] = useState(false);
+  const [historyError, setHistoryError] = useState(null);
+
+  // Parse terms and conditions
+  const parseTerms = () => {
+    if (!termsAndConditions) {
+      return [];
+    }
+    return termsAndConditions.split('\n');
+  };
+
+  const terms = parseTerms();
+
+  // Fetch reward history when modal opens
+  useEffect(() => {
+    if (isOpen && rewardId) {
+      fetchRewardHistory();
+    }
+  }, [isOpen, rewardId]);
+
+  const fetchRewardHistory = async () => {
+    setHistoryLoading(true);
+    setHistoryError(null);
+
+    try {
+      const companyId = localStorage.getItem('companyId');
+      if (!companyId) {
+        throw new Error('Company ID not found');
+      }
+
+      const response = await getEmployeeRewardHistory({
+        company_id: companyId,
+        reward_id: rewardId
+      });
+
+      // Format the response data for table
+      const formattedHistory = response.data.map((item, index) => ({
+        key: item.id.toString(),
+        srNo: index + 1,
+        fullName: `${item.first_name} ${item.last_name}`,
+        email: item.email,
+        contact: item.phone || 'N/A',
+        department: item.department_name || 'N/A',
+        rewardedOn: new Date(item.awarded_at).toLocaleDateString('en-US', {
+          day: 'numeric',
+          month: 'short',
+          year: 'numeric'
+        })
+      }));
+
+      setHistoryData(formattedHistory);
+      setHistoryLoading(false);
+    } catch (err) {
+      console.error("Error fetching reward history:", err);
+      setHistoryError("Failed to load reward history");
+      setHistoryLoading(false);
+    }
+  };
 
   const columns = [
     {
@@ -49,66 +98,21 @@ const RewardModal = ({ isOpen, onClose, rewardTitle }) => {
     },
   ];
 
-  const historyData = [
-    {
-      key: '1',
-      srNo: 1,
-      fullName: 'Alice Johnson',
-      email: 'example@mail.com',
-      contact: '+919876543210',
-      department: 'Engineering',
-      rewardedOn: '12 Oct 2024',
-    },
-    {
-      key: '1',
-      srNo: 1,
-      fullName: 'Alice Johnson',
-      email: 'example@mail.com',
-      contact: '+919876543210',
-      department: 'Engineering',
-      rewardedOn: '12 Oct 2024',
-    },
-    {
-      key: '1',
-      srNo: 1,
-      fullName: 'Alice Johnson',
-      email: 'example@mail.com',
-      contact: '+919876543210',
-      department: 'Engineering',
-      rewardedOn: '12 Oct 2024',
-    },
-    {
-      key: '1',
-      srNo: 1,
-      fullName: 'Alice Johnson',
-      email: 'example@mail.com',
-      contact: '+919876543210',
-      department: 'Engineering',
-      rewardedOn: '12 Oct 2024',
-    },
-    {
-      key: '1',
-      srNo: 1,
-      fullName: 'Alice Johnson',
-      email: 'example@mail.com',
-      contact: '+919876543210',
-      department: 'Engineering',
-      rewardedOn: '12 Oct 2024',
-    },
-    // Add more data as needed
-  ];
-
   const items = [
     {
       key: '1',
       label: 'Terms & Conditions',
       children: (
         <div className="terms-container">
-          {terms.map((term, index) => (
-            <div key={index} className="term-item">
-              {index + 1}. {term}
-            </div>
-          ))}
+          {terms.length > 0 ? (
+            terms.map((term, index) => (
+              <div key={index} className="term-item">
+                {term}
+              </div>
+            ))
+          ) : (
+            <p>No terms and conditions available.</p>
+          )}
         </div>
       ),
     },
@@ -116,13 +120,26 @@ const RewardModal = ({ isOpen, onClose, rewardTitle }) => {
       key: '2',
       label: 'Reward History',
       children: (
-        <Table
-          columns={columns}
-          dataSource={historyData}
-          pagination={false}
-          scroll={{ x: true }}
-          className="reward-history-table"
-        />
+        <>
+          {historyLoading ? (
+            <div className="loading-container">
+              <Spin tip="Loading history..." />
+            </div>
+          ) : historyError ? (
+            <Alert message={historyError} type="error" showIcon />
+          ) : historyData.length === 0 ? (
+            <div className="no-data-message">
+              <p>No reward history available.</p>
+            </div>
+          ) : (
+            <Table
+              columns={columns}
+              dataSource={historyData}
+              pagination={false}
+              className="reward-history-table"
+            />
+          )}
+        </>
       ),
     },
   ];

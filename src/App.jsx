@@ -113,7 +113,7 @@ function App() {
         />
 
         <Route
-          path="/eventDashboard"
+          path="/workshops"
           element={
             <UserProtectedWrapper>
               <EventDashboard />
