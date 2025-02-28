@@ -8,7 +8,7 @@
   align-items: center;
 }
 
-.settings-content{
+.settings-content {
   padding: 36px;
   width: 1400px;
   border: 1px solid #333;
@@ -112,6 +112,10 @@
   font-size: 14px;
 }
 
+.status-inactive {
+  color: #ff0000;
+}
+
 /* Transaction Table Styles */
 .transaction-table {
   margin: 16px 0px;
@@ -129,17 +133,15 @@
 }
 
 /* Style the table header */
-.transaction-table{
+.transaction-table {
   border-radius: 18px;
 }
-
 
 /* Ensure all cells have the same background */
 .transaction-table .ant-table-thead > tr > th,
 .transaction-table .ant-table-tbody > tr > td {
   background: #282932 !important;
 }
-
 
 /* Remove last row border */
 .transaction-table .ant-table-tbody > tr:last-child > td {
@@ -158,6 +160,17 @@
   border-bottom: 1px solid #333;
   color: #fff;
   padding: 16px;
+}
+
+/* Remove vertical separator lines in table headers */
+.transaction-table .ant-table-thead > tr > th::before {
+  display: none !important;
+}
+
+/* Remove other potential causes of vertical lines */
+.transaction-table .ant-table-cell {
+  border-left: none !important;
+  border-right: none !important;
 }
 
 .download-link {
@@ -179,7 +192,6 @@
   border-radius: 18px;
   margin-top: 20px;
 }
-
 
 .settings-section {
   color: #fff;
@@ -206,6 +218,8 @@
   font-size: 16px;
   font-weight: 500;
   padding: 0 16px;
+  border-radius: 70px;
+  height: 48px;
 }
 
 /* Add these rules at the end of your file */
@@ -219,7 +233,7 @@
 
 /* Modify the existing switch styles */
 .ant-switch {
-  background-color: #3B3D47 !important; /* Grey color for unchecked state */
+  background-color: #3b3d47 !important; /* Grey color for unchecked state */
   height: 24px !important; /* Increased height */
 }
 
@@ -242,4 +256,30 @@
   min-width: 45px !important;
 }
 
+/* Invoice status styling */
+.invoice-status {
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+}
 
+.invoice-status.paid {
+  background-color: rgba(46, 152, 121, 0.15);
+  color: #2e9879;
+}
+
+.invoice-status.pending {
+  background-color: rgba(255, 193, 7, 0.15);
+  color: #ffc107;
+}
+
+.invoice-status.overdue {
+  background-color: rgba(235, 87, 87, 0.15);
+  color: #eb5757;
+}
+
+.invoice-status.cancelled {
+  background-color: rgba(108, 117, 125, 0.15);
+  color: #6c757d;
+}

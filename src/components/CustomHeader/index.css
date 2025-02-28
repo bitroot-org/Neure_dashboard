@@ -53,12 +53,13 @@
 .edit-button {
   display: flex;
   align-items: center;
-  background-color: #ffffff !important;
+  background: linear-gradient(to bottom, #FFFFFF 0%, #797B87 100%) !important;
   color: black !important; 
   padding: 4px 40px;
   border-radius: 20px;
   font-size: 16px;
   font-weight: 500;
+  height: 100%;
 }
 
 .edit-button.ant-btn {

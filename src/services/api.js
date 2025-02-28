@@ -150,8 +150,8 @@ export const getCompanyEmployees = async (companyId, params) => {
 };
 
 export const getTopPerformingEmployee = async (params) => {
-  console.log("Params for employee data: ",params);
-  console.log("Params for employee  company id data: ",params.companyId);
+  console.log("Params for employee data: ", params);
+  console.log("Params for employee  company id data: ", params.companyId);
   const response = await api.get(`/company/getTopPerformingEmployee`, {
     params: {
       company_id: params.companyId,
@@ -198,12 +198,12 @@ export const getCompanyMetrics = async (companyId) => {
 export const getAllRewards = async () => {
   const response = await api.get(`/rewards/getAllRewards`);
   return response.data;
-}
+};
 
 export const assignReward = async (data) => {
   const response = await api.post(`/company/assignReward`, data);
   return response.data;
-}
+};
 
 export const getEmployeeRewardHistory = async (data) => {
   const response = await api.get(`/company/getEmployeeRewardHistory`, {
@@ -213,4 +213,46 @@ export const getEmployeeRewardHistory = async (data) => {
     },
   });
   return response.data;
-}
+};
+
+export const createFeedback = async (data) => {
+  const response = await api.post(`/company/createFeedback`, data);
+  return response.data;
+};
+
+export const getCompanySubscription = async (companyId) => {
+  const response = await api.get(`/company/getCompanySubscription`, {
+    params: {
+      company_id: companyId,
+    },
+  });
+  return response.data;
+};
+
+export const updateCompanySubscription = async (data) => {
+  const response = await api.put(`/company/updateCompanySubscription`, data);
+  return response.data;
+};
+
+export const changePassword = async (data) => {
+  console.log("Data for change password: ", data);
+  const response = await api.post(`/user/changePassword`, data);
+  return response.data;
+};
+
+export const requestDeactivation = async (data) => {
+  const response = await api.post(`/company/requestDeactivation`, data);
+  return response.data;
+};
+
+export const getCompanyInvoices = async (payload) => {
+  console.log("Company id for invoice: ", payload);
+  const response = await api.get(`/company/getCompanyInvoices`, {
+    params: {
+      company_id: payload.company_id,
+      page: payload.page,
+      limit: payload.limit,
+    },
+  });
+  return response.data;
+};

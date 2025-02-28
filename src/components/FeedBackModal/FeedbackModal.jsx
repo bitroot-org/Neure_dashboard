@@ -1,83 +1,6 @@
-// import React, { useState } from "react";
-// import { Modal, Button, Input, Space } from "antd";
-// const { TextArea } = Input;
-// import './index.css'
-
-// const FeedbackModal = ({ isOpen, onClose }) => {
-//   const [feedbackType, setFeedbackType] = useState("");
-
-//   return (
-//     <Modal
-//       open={isOpen}
-//       onCancel={onClose}
-//       footer={null}
-//       closable={true}
-//       className="feedback-modal"
-//     >
-//       <div className="modal-content">
-//         <div className="modal-header">
-//           <h2>Share feedback</h2>
-//         </div>
-//         <div className="feedback-section">
-//           <div className="section-label">Type of feedback</div>
-//           <Space className="button-group">
-//             <Button
-//               className={`feedback-type-btn ${
-//                 feedbackType === "bug" ? "active" : ""
-//               }`}
-//               onClick={() => setFeedbackType("bug")}
-//             >
-//               Bug
-//             </Button>
-//             <Button
-//               className={`feedback-type-btn ${
-//                 feedbackType === "suggestion" ? "active" : ""
-//               }`}
-//               onClick={() => setFeedbackType("suggestion")}
-//             >
-//               Suggestion
-//             </Button>
-//             <Button
-//               className={`feedback-type-btn ${
-//                 feedbackType === "other" ? "active" : ""
-//               }`}
-//               onClick={() => setFeedbackType("other")}
-//             >
-//               Other
-//             </Button>
-//           </Space>
-//         </div>
-
-//         {/* Company Name Section */}
-//         <div className="feedback-section">
-//           <div className="section-label">Company name*</div>
-//           <TextArea
-//             placeholder="Describe in details.."
-//             className="feedback-textarea"
-//             style={{
-//               resize: "none",
-//             }}
-//           />
-//         </div>
-
-//         {/* Submit Button Section */}
-//         <div className="submit-section">
-//           <Button type="primary" className="submit-button">
-//             Submit
-//           </Button>
-//         </div>
-//       </div>
-//     </Modal>
-//   );
-// };
-
-// export default FeedbackModal;
-
-
-
 import React, { useState } from "react";
-import { Modal, Button, Input, Space, Form } from "antd";
-const { TextArea } = Input;
+import { Modal, Button, Form, message } from "antd";
+import {createFeedback} from "../../services/api";
 import './index.css'
 
 const FeedbackModal = ({ isOpen, onClose }) => {
@@ -89,12 +12,47 @@ const FeedbackModal = ({ isOpen, onClose }) => {
     try {
       setIsSubmitting(true);
       const values = await form.validateFields();
-      console.log('Feedback submitted:', { ...values, feedbackType });
+      
+      // Get company ID from localStorage
+      const companyId = localStorage.getItem('companyId');
+      if (!companyId) {
+        throw new Error('Company ID not found');
+      }
+      
+      // Check if feedback type is selected
+      if (!feedbackType) {
+        throw new Error('Please select a feedback type');
+      }
+      
+      // Prepare payload
+      const payload = {
+        company_id: companyId,
+        feedback_type: feedbackType,
+        feedback_description: values.description
+      };
+      
+      // Call API
+      const response = await createFeedback(payload);
+      console.log('Feedback submitted successfully:', response);
+      
+      // Reset form and close modal
       form.resetFields();
       setFeedbackType("");
       onClose();
+      
+      // Show success message
+      message.success('Feedback submitted successfully!');
     } catch (error) {
-      console.error('Validation failed:', error);
+      console.error('Feedback submission failed:', error);
+      
+      // Show appropriate error message
+      if (error.message === 'Please select a feedback type') {
+        message.error('Please select a feedback type');
+      } else if (error.message === 'Company ID not found') {
+        message.error('Company ID not found. Please log in again.');
+      } else {
+        message.error('Failed to submit feedback. Please try again later.');
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -114,48 +72,47 @@ const FeedbackModal = ({ isOpen, onClose }) => {
       closable={true}
       className="feedback-modal"
     >
-      <div className="modal-content">
-        <div className="modal-header">
+      <div className="feedback-modal-content">
+        <div className="feedback-modal-header">
           <h2>Share feedback</h2>
         </div>
 
         <Form form={form} layout="vertical">
           <div className="feedback-section">
-            <div className="section-label">Type of feedback</div>
-            <Space className="button-group">
+            <div className="feedback-section-label">Type of feedback</div>
+            <div className="feedback-button-group">
               {feedbackTypes.map(({ key, label }) => (
                 <Button
                   key={key}
-                  className={`feedback-type-btn ${
-                    feedbackType === key ? "active" : ""
-                  }`}
+                  className={`feedback-type-btn ${feedbackType === key ? "active" : ""
+                    }`}
                   onClick={() => setFeedbackType(key)}
                 >
                   {label}
                 </Button>
               ))}
-            </Space>
+            </div>
           </div>
 
           <div className="feedback-section">
             <Form.Item
               name="description"
-              label={<div className="section-label">Company name*</div>}
+              label={<div className="feedback-section-label">Company name*</div>}
               rules={[
                 { required: true, message: 'Please provide company details' }
               ]}
             >
-              <TextArea
+              <textarea
                 placeholder="Describe in details.."
                 className="feedback-textarea"
               />
             </Form.Item>
           </div>
 
-          <div className="submit-section">
+          <div className="feedback-submit-section">
             <Button
               type="primary"
-              className="submit-button"
+              className="feedback-submit-button"
               onClick={handleSubmit}
               loading={isSubmitting}
             >

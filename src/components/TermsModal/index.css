@@ -5,14 +5,14 @@
 }
 
 .terms-modal .ant-modal-content {
-  background-color: #0D0D11;
+  background-color: #0d0d11;
   color: #e5e5e5;
   border-radius: 8px;
   width: 100%;
 }
 
 .terms-modal .ant-modal-header {
-  background-color: #0D0D11;
+  background-color: #0d0d11;
 }
 
 .terms-modal .ant-modal-title {
@@ -49,13 +49,29 @@
   border: solid 1px #333;
   padding: 24px;
   margin: 16px 0;
-  max-height: 400px;
-  overflow-y: auto; 
+  max-height: 500px; /* Increased from 400px */
+  overflow-y: auto;
   width: 100%;
 }
 
 .terms-text {
   color: #e5e5e5;
+}
+
+.terms-text .main-title {
+  color: #ffffff;
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+.terms-text .sub-title {
+  color: #e5e5e5;
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 12px;
+  text-align: center;
 }
 
 .effective-date {
@@ -94,7 +110,7 @@
 .accept-button {
   min-width: 100px;
   height: 36px;
-  background: linear-gradient(to bottom, #FFFFFF 0%, #797B87 100%) !important;
+  background: linear-gradient(to bottom, #ffffff 0%, #797b87 100%) !important;
   color: black !important;
   border-radius: 50px !important;
   font-size: 16px !important;

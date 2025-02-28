@@ -1,6 +1,7 @@
 /* Modal Base Styles */
 .feedback-modal {
   border-radius: 20px;
+  width: 550px !important;
 }
 
 .ant-modal-mask {
@@ -13,13 +14,13 @@
 }
 
 /* Modal Content Styles */
-.modal-content {
+.feedback-modal-content {
   width: 100%;
   padding: 24px;
 }
 
 /* Modal Header Styles */
-.modal-header {
+.feedback-modal-header {
   display: flex !important;
   justify-content: space-between !important;
   align-items: center !important;
@@ -27,7 +28,7 @@
   border-bottom: 0.1px solid rgb(51, 48, 48) !important;
 }
 
-.modal-header h2 {
+.feedback-modal-header h2 {
   color: white;
   font-size: 24px;
   font-weight: 400;
@@ -47,7 +48,6 @@
   border: 2px solid #2c2a2a !important;
   border-radius: 20px !important;
   padding: 0 !important;
-  
 }
 
 .feedback-modal .ant-modal-header {
@@ -62,7 +62,7 @@
   width: 100%;
 }
 
-.feedback-section .section-label {
+.feedback-section-label {
   margin-bottom: 8px;
   color: white;
 }
@@ -74,7 +74,7 @@
 }
 
 /* Button Group Styles */
-.button-group {
+.feedback-button-group {
   display: flex !important;
   justify-content: space-between;
   gap: 12px !important;
@@ -88,38 +88,40 @@
   min-width: 120px !important;
   height: 48px !important;
   white-space: nowrap !important;
-  background-color: black;
+  background-color: #191A20;
   color: rgb(255, 255, 255);
   border: 0.2px solid rgb(57, 55, 55);
-  border-radius: 8px !important;
+  border-radius: 12px !important;
   transition: all 0.3s ease;
 }
 
 .feedback-type-btn.active,
 .feedback-type-btn.active:hover,
 .feedback-type-btn.active:focus {
-  background-color: black !important;
-  border: 1px solid #2E9879 !important;
-  color: #2E9879 !important;
+  background-color: #191A20 !important;
+  border: 1px solid #00D885 !important;
+  color: #00D885 !important;
 }
 
 .ant-btn.feedback-type-btn:hover,
 .ant-btn.feedback-type-btn:focus {
-  background-color: rgba(255, 255, 255, 0.1) !important;
-  border-color: rgb(152, 159, 152) !important;
-  color: white !important;
+  background-color: #191A20 !important;
+  border-color: #00D885 !important;
+  color: #00D885 !important;
 }
 
 /* Textarea Styles */
 .feedback-textarea {
   height: 120px !important;
-  background-color: black !important;
+  width: 100%;
+  background-color: #191A20 !important;
   color: white !important;
   border: 0.5px solid #302e2e !important;
-  border-radius: 8px !important;
+  border-radius: 12px !important;
   resize: none !important;
   font-size: 16px;
   padding: 12px;
+  font-family: inherit;
 }
 
 .feedback-textarea::placeholder {
@@ -130,6 +132,7 @@
 .feedback-textarea:hover {
   border: 0.5px solid #ffffff !important;
   box-shadow: none !important;
+  outline: none;
 }
 
 .feedback-section:nth-child(3) {
@@ -146,13 +149,13 @@
 }
 
 /* Submit Section Styles */
-.submit-section {
+.feedback-submit-section {
   display: flex;
   justify-content: flex-end;
   margin-top: 24px;
 }
 
-.submit-button {
+.feedback-submit-button {
   background: white !important;
   color: black !important;
   height: 48px !important;
@@ -163,17 +166,17 @@
   transition: all 0.3s ease !important;
 }
 
-.submit-button:hover {
+.feedback-submit-button:hover {
   background: rgba(255, 255, 255, 0.9) !important;
   transform: translateY(-1px);
 }
 
-.submit-button:active {
+.feedback-submit-button:active {
   transform: translateY(1px);
 }
 
 /* Loading State Styles */
-.submit-button.ant-btn-loading {
+.feedback-submit-button.ant-btn-loading {
   opacity: 0.8;
   pointer-events: none;
 }
@@ -183,12 +186,12 @@
   .feedback-type-btn {
     flex: 1 1 calc(50% - 12px) !important;
   }
-  
-  .modal-content {
+
+  .feedback-modal-content {
     padding: 20px;
   }
-  
-  .modal-header h2 {
+
+  .feedback-modal-header h2 {
     font-size: 20px;
   }
 }
@@ -197,16 +200,16 @@
   .feedback-type-btn {
     flex: 1 1 100% !important;
   }
-  
-  .modal-content {
+
+  .feedback-modal-content {
     padding: 16px;
   }
-  
-  .submit-button {
+
+  .feedback-submit-button {
     width: 100%;
   }
-  
-  .submit-section {
+
+  .feedback-submit-section {
     margin-top: 16px;
   }
 }

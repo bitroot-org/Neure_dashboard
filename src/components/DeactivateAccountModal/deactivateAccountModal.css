@@ -1,0 +1,182 @@
+.deactivate-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.deactivate-modal-container {
+  width: 450px;
+  background-color: #0d0d11;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+}
+
+.deactivate-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 20px;
+}
+
+.deactivate-modal-title {
+  margin: 0;
+  color: white;
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.deactivate-modal-close-button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 32px;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+}
+
+.deactivate-modal-divider {
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.1);
+  width: 100%;
+}
+
+.deactivate-form-group {
+  margin: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.deactivate-form-group label {
+  display: block;
+  color: white;
+  font-size: 14px;
+  margin-bottom: 0;
+}
+
+.deactivate-form-group input {
+  width: 100%;
+  padding: 12px 16px;
+  background-color: #191a20;
+  border: none;
+  border-radius: 12px;
+  color: white;
+  font-size: 16px;
+  font-weight: 500;
+  box-sizing: border-box;
+}
+
+.deactivate-form-group input::placeholder {
+  color: #888;
+}
+
+.deactivate-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  padding: 16px 20px;
+}
+
+.deactivate-confirm-button {
+  background: linear-gradient(to bottom, #ffffff 0%, #797b87 100%);
+  border: none;
+  border-radius: 24px;
+  color: #333;
+  font-weight: bold;
+  padding: 12px 30px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.2s;
+}
+
+.deactivate-confirm-button:hover {
+  background: linear-gradient(to bottom, #ffffff, #e6e6e6);
+}
+
+.deactivate-confirm-button.deactivate-disabled {
+  background-color: rgba(255, 255, 255, 0.5);
+  cursor: not-allowed;
+}
+
+/* Antd Select and TextArea styling */
+.deactivate-form-group .ant-select {
+  width: 100%;
+}
+
+.deactivate-form-group .ant-select-selector {
+  background-color: #191a20 !important;
+  border: none !important;
+  border-radius: 12px !important;
+  color: white !important;
+}
+
+.deactivate-form-group .ant-select-selection-placeholder {
+  color: #888 !important;
+}
+
+.deactivate-form-group .ant-input {
+  background-color: #191a20;
+  border: none;
+  border-radius: 12px;
+  color: white;
+}
+
+.deactivate-form-group .ant-input::placeholder {
+  color: #888;
+}
+
+/* Add these styles to style the native HTML elements */
+.deactivate-select {
+  width: 100%;
+  padding: 12px 16px;
+  background-color: #191a20;
+  border: none;
+  border-radius: 12px;
+  color: white;
+  font-size: 16px;
+  font-weight: 500;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml;utf8,<svg fill='white' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+}
+
+.deactivate-select option {
+  background-color: #191a20;
+  color: white;
+}
+
+.deactivate-textarea {
+  width: 100%;
+  padding: 12px 16px;
+  background-color: #191a20;
+  border: none;
+  border-radius: 12px;
+  color: white;
+  font-size: 16px;
+  resize: vertical;
+  min-height: 120px;
+  box-sizing: border-box;
+  font-family: inherit;
+}
+
+.deactivate-textarea::placeholder {
+  color: #888;
+}
+
+.deactivate-select:focus,
+.deactivate-textarea:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2);
+}

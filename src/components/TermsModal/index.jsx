@@ -13,9 +13,9 @@ const TermsModal = ({ isOpen = false, onClose, onAccept }) => {
       open={isOpen}
       onCancel={onClose}
       footer={[
-        <Button 
-          key="accept" 
-          type="primary" 
+        <Button
+          key="accept"
+          type="primary"
           onClick={handleAccept}
           className="accept-button"
         >
@@ -27,63 +27,157 @@ const TermsModal = ({ isOpen = false, onClose, onAccept }) => {
     >
       <div className="terms-content">
         <div className="terms-text">
-          <p className="effective-date">Effective Date: January 1, 2025</p>
-          
+          <h2 className="main-title">TERMS AND CONDITIONS</h2>
+          <h3 className="sub-title">Neure Innovations LLP – Admin Dashboard</h3>
+          <p className="effective-date">Last Updated: February 27, 2025</p>
+
           <p className="welcome-text">
-            Welcome to [Your Company Name] ("we," "our," or "us"). These Terms and 
-            Conditions govern your use of our platform. By accessing or using our services, 
-            you agree to be bound by these terms. If you do not agree, please do not use the 
-            platform.
+            Welcome to the Neure Innovations LLP Admin Dashboard (hereinafter referred to as "Dashboard").
+            This Dashboard is provided by Neure Innovations LLP, a company registered under the laws of India
+            with its principal place of business at [Company Address] (hereinafter referred to as "Neure", "Company", "We", "Us", or "Our").
+          </p>
+
+          <p className="welcome-text">
+            By registering, accessing, or using this Dashboard, you ("Admin", "User", or "You") acknowledge that you have read,
+            understood, and agreed to comply with these Terms and Conditions ("Agreement").
+          </p>
+
+          <p className="welcome-text">
+            If you do not agree to these Terms, you are advised not to use the Dashboard.
           </p>
 
           <div className="terms-section">
-            <h2>1. Use of the Platform</h2>
+            <h2>1. DEFINITIONS</h2>
             <div className="section-content">
-              <p>1.1. You must be at least 18 years old to use our platform.</p>
-              <p>1.2. You are responsible for maintaining the confidentiality of your account 
-                credentials.</p>
-              <p>1.3. Unauthorized use of the platform may result in suspension or termination of 
-                your account.</p>
+              <p>1. Admin/User – The authorized personnel from an organization who have been granted access to manage the Dashboard.</p>
+              <p>2. Organization – The company or institution for which the Admin is using Neure's services.</p>
+              <p>3. Confidential Information – Any information, data, reports, and analytics provided by Neure or the Organization, which is not meant for public disclosure.</p>
+              <p>4. Personal Data – Information related to employees stored on the Dashboard, including but not limited to names, email IDs, department details, and work-related preferences.</p>
+              <p>5. Dashboard – The online platform provided by Neure to manage mental health programs, track employee engagement, and access reports.</p>
+              <p>6. Services – The offerings provided by Neure through the Dashboard, including well-being tracking, data insights, and engagement resources.</p>
             </div>
           </div>
 
           <div className="terms-section">
-            <h2>2. Services Provided</h2>
+            <h2>2. ELIGIBILITY</h2>
             <div className="section-content">
-              <p>2.1. We provide tools and features to support [specific service details, e.g., 
-                employee well-being management].</p>
-              <p>2.2. Features may vary based on your subscription plan.</p>
-            </div>
-          </div>
-        </div>
-
-        <div className="terms-text">
-          <p className="effective-date">Effective Date: January 1, 2025</p>
-          
-          <p className="welcome-text">
-            Welcome to [Your Company Name] ("we," "our," or "us"). These Terms and 
-            Conditions govern your use of our platform. By accessing or using our services, 
-            you agree to be bound by these terms. If you do not agree, please do not use the 
-            platform.
-          </p>
-
-          <div className="terms-section">
-            <h2>1. Use of the Platform</h2>
-            <div className="section-content">
-              <p>1.1. You must be at least 18 years old to use our platform.</p>
-              <p>1.2. You are responsible for maintaining the confidentiality of your account 
-                credentials.</p>
-              <p>1.3. Unauthorized use of the platform may result in suspension or termination of 
-                your account.</p>
+              <p>To use the Dashboard, you must:</p>
+              <p>1. Be an authorized representative of your organization with the necessary permissions to access employee data.</p>
+              <p>2. Ensure that all information provided during registration is accurate and complete.</p>
+              <p>3. Be at least 18 years old and legally capable of entering into a contract under the Indian Contract Act, 1872.</p>
             </div>
           </div>
 
           <div className="terms-section">
-            <h2>2. Services Provided</h2>
+            <h2>3. ADMIN RESPONSIBILITIES</h2>
             <div className="section-content">
-              <p>2.1. We provide tools and features to support [specific service details, e.g., 
-                employee well-being management].</p>
-              <p>2.2. Features may vary based on your subscription plan.</p>
+              <p>As an Admin, you agree to:</p>
+              <p>1. Maintain confidentiality of your login credentials and prevent unauthorized access.</p>
+              <p>2. Use the Dashboard solely for administrative purposes and not misuse any employee data.</p>
+              <p>3. Ensure compliance with applicable data protection laws, including the Digital Personal Data Protection (DPDP) Act, 2023.</p>
+              <p>4. Regularly update and verify the accuracy of employee details stored in the Dashboard.</p>
+              <p>5. Ensure that employee information is not shared, sold, or distributed to third parties without explicit consent.</p>
+              <p>6. Report any security breaches or unauthorized access immediately to Neure's support team.</p>
+            </div>
+          </div>
+
+          <div className="terms-section">
+            <h2>4. DATA PRIVACY & SECURITY</h2>
+            <div className="section-content">
+              <p>1. Data Ownership: The Organization retains ownership of all employee data stored in the Dashboard. Neure acts only as a data processor.</p>
+              <p>2. Confidentiality: All employee information and reports generated by the Dashboard shall be kept confidential.</p>
+              <p>3. Compliance: The Admin must ensure full compliance with:</p>
+              <p>• Digital Personal Data Protection (DPDP) Act, 2023</p>
+              <p>• Information Technology (Reasonable Security Practices and Procedures and Sensitive Personal Data or Information) Rules, 2011</p>
+              <p>• General employment laws & data protection frameworks applicable in India</p>
+              <p>4. Limited Access: Neure will only access dashboard data for technical support or report generation, upon request.</p>
+              <p>5. Data Retention: Employee data will be stored as per Neure's data retention policy and deleted upon termination of services.</p>
+              <p>6. Consent & Notification: Organizations must ensure employee consent before sharing personal data on the Dashboard.</p>
+            </div>
+          </div>
+
+          <div className="terms-section">
+            <h2>5. ACCEPTABLE USE POLICY</h2>
+            <div className="section-content">
+              <p>You agree NOT to:</p>
+              <p>1. Use the Dashboard for any illegal, fraudulent, or unethical activities.</p>
+              <p>2. Modify, reverse-engineer, or attempt to gain unauthorized access to Neure's systems.</p>
+              <p>3. Upload or transmit malicious software, viruses, or harmful code.</p>
+              <p>4. Use any automated tools (bots, scrapers) to extract Dashboard data.</p>
+              <p>5. Share Neure's proprietary content, training materials, or internal reports externally.</p>
+              <p>6. Distribute confidential employee information without explicit authorization.</p>
+            </div>
+          </div>
+
+          <div className="terms-section">
+            <h2>6. TERMINATION & ACCOUNT DEACTIVATION</h2>
+            <div className="section-content">
+              <p>1. Neure reserves the right to terminate or restrict access to the Dashboard if:</p>
+              <p>• Any unauthorized access or misuse of data is detected.</p>
+              <p>• There is non-compliance with these Terms & Conditions.</p>
+              <p>• The Organization fails to adhere to its agreed payment obligations (if any).</p>
+              <p>2. Upon termination, all access to the Dashboard will be revoked, and Neure will initiate data deletion procedures as per legal requirements.</p>
+            </div>
+          </div>
+
+          <div className="terms-section">
+            <h2>7. LIABILITY & INDEMNIFICATION</h2>
+            <div className="section-content">
+              <p><b>7.1 Limitation of Liability</b></p>
+              <p>• Neure Innovations LLP shall not be liable for:</p>
+              <p>• Any data loss, technical failures, or disruptions.</p>
+              <p>• Any misuse of the Dashboard by the Admin User.</p>
+              <p><b>7.2 Indemnification</b></p>
+              <p>• The Admin User agrees to indemnify and hold harmless Neure Innovations LLP from any claims arising from unauthorized data usage, breaches, or misuse of the Dashboard.</p>
+            </div>
+          </div>
+
+          <div className="terms-section">
+            <h2>8. USAGE LIMITATIONS & FAIR USE POLICY</h2>
+            <div className="section-content">
+              <p>• The dashboard is designed for well-being and engagement purposes only.</p>
+              <p>• Misuse, including but not limited to sharing confidential data, unauthorized third-party access, or using the platform for non-approved purposes, will result in termination of access.</p>
+            </div>
+          </div>
+
+          <div className="terms-section">
+            <h2>9. TERMINATION & SUSPENSION</h2>
+            <div className="section-content">
+              <p>• Neure reserves the right to suspend or terminate access if:</p>
+              <p>• The Admin violates any terms of this agreement.</p>
+              <p>• There is suspected misuse, fraud, or data breach.</p>
+              <p>• The Company's agreement with Neure expires or is terminated.</p>
+            </div>
+          </div>
+
+          <div className="terms-section">
+            <h2>10. LIABILITY & DISCLAIMER</h2>
+            <div className="section-content">
+              <p>• Neure does not guarantee specific outcomes or improvements in employee well-being based on dashboard usage.</p>
+              <p>• Neure is not liable for any unauthorized access, data breaches due to Admin negligence, or external factors beyond reasonable control.</p>
+            </div>
+          </div>
+
+          <div className="terms-section">
+            <h2>11. MODIFICATIONS TO TERMS</h2>
+            <div className="section-content">
+              <p>• Neure may update or modify these terms at any time.</p>
+              <p>• Admins will be notified of changes, and continued use of the dashboard implies acceptance of updated terms.</p>
+            </div>
+          </div>
+
+          <div className="terms-section">
+            <h2>12. GOVERNING LAW & DISPUTE RESOLUTION</h2>
+            <div className="section-content">
+              <p>• These terms are governed by the laws of India.</p>
+              <p>• Any disputes shall be resolved through arbitration in Mumbai, Maharashtra, as per the Arbitration and Conciliation Act, 1996.</p>
+            </div>
+          </div>
+
+          <div className="terms-section">
+            <h2>13. ACCEPTANCE OF TERMS</h2>
+            <div className="section-content">
+              <p>By registering as an Admin, you acknowledge that you have read, understood, and agree to abide by these Terms and Conditions.</p>
             </div>
           </div>
         </div>

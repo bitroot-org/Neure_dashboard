@@ -11,7 +11,9 @@ const CustomHeader = ({
   showFilterButton = false,
   onEditClick,
   defaultFilterValue = 'Monthly',
-  buttonText = 'Edit'
+  buttonText = 'Edit',
+  buttonDisabled = false,
+  buttonLoading = false
 }) => {
   const navigate = useNavigate();
   const [filterValue, setFilterValue] = React.useState(defaultFilterValue);
@@ -42,7 +44,7 @@ const CustomHeader = ({
                     onError={() => setBackIconLoaded(false)}
                   />
                 ) : (
-                  <ArrowLeftOutlined style={{ fontSize: '24px', color: '#fff', fontWeight:"400" }} />
+                  <ArrowLeftOutlined style={{ fontSize: '24px', color: '#fff', fontWeight: "400" }} />
                 )
               }
               onClick={handleBack}
@@ -66,6 +68,8 @@ const CustomHeader = ({
           {showEditButton && (
             <Button
               onClick={onEditClick}
+              disabled={buttonDisabled}
+              loading={buttonLoading}
               className="edit-button"
             >
               {buttonText}
