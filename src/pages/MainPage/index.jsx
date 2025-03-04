@@ -339,7 +339,7 @@ const DashboardLayout = () => {
               </div>
               <Card
                 className="main-rewards-card"
-                onClick={() => navigate("/rewards")}
+                onClick={() => navigate("/rewardsAndRecognition")}
                 style={{ cursor: "pointer" }}
               >
                 <div className="main-rewards-content">
@@ -377,7 +377,7 @@ const DashboardLayout = () => {
             <div>
               <Card
                 className="main-resource-card"
-                onClick={() => navigate("/rewardsAndRecognition")}
+                onClick={() => navigate("/resources")}
                 style={{ cursor: "pointer" }}
               >
                 <div className="main-resource-content">
