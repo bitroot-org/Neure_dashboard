@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 import CustomHeader from "../../components/CustomHeader";
 import { UploadOutlined } from "@ant-design/icons";
+import { message } from "antd"; // Import Ant Design message for feedback
 import "./addNewEmployee.css";
+import { createEmployee } from "../../services/api";
 
 const AddNewEmployee = () => {
   // Employee type: "single" or "bulk"
   const [employeeType, setEmployeeType] = useState("single");
+  const [loading, setLoading] = useState(false); // Add loading state
 
   // Form state for single employee
   const [formData, setFormData] = useState({
@@ -31,10 +34,64 @@ const AddNewEmployee = () => {
     }));
   };
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form Values:", formData);
-    // Further processing for single employee...
+    setLoading(true);
+
+    try {
+      // Get company_id from localStorage or another source
+      const companyId = localStorage.getItem("companyId");
+
+      // Map form data to API structure
+      const employeeData = {
+        company_id: companyId,
+        email: formData.email,
+        phone: formData.contact,
+        username: `${formData.firstName.toLowerCase()}.${formData.lastName.toLowerCase()}`, // Generate username
+        first_name: formData.firstName,
+        last_name: formData.lastName,
+        gender: formData.gender,
+        date_of_birth: "",
+        job_title: "", 
+        age: parseInt(formData.age),
+        department_id: getDepartmentId(formData.department), // Function to map department name to ID
+        city: formData.city
+      };
+
+      const response = await createEmployee(employeeData);
+
+      message.success("Employee added successfully!");
+      console.log("API Response:", response);
+
+      // Reset form
+      setFormData({
+        firstName: "",
+        lastName: "",
+        email: "",
+        contact: "",
+        gender: "",
+        age: "",
+        department: "",
+        city: "",
+      });
+
+    } catch (error) {
+      console.error("Error adding employee:", error);
+      message.error("Failed to add employee. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Helper function to map department names to IDs
+  const getDepartmentId = (departmentName) => {
+    const departmentMap = {
+      engineering: 1,
+      marketing: 2,
+      sales: 3,
+      hr: 4
+    };
+    return departmentMap[departmentName] || 1;
   };
 
   const handleFileUpload = (e) => {
@@ -194,15 +251,19 @@ const AddNewEmployee = () => {
             </div>
             <div className="custom-divider"></div>
             <div className="submit-container">
-              <button className="submit-btn" type="submit">
-                Confirm
+              <button
+                className="submit-btn"
+                type="submit"
+                disabled={loading}
+              >
+                {loading ? "Processing..." : "Confirm"}
               </button>
             </div>
           </form>
         ) : (
           <div>
             <div className="bulk-upload-container">
-            <input
+              <input
                 type="file"
                 accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
                 onChange={handleFileUpload}
@@ -220,8 +281,12 @@ const AddNewEmployee = () => {
             </div>
             <div className="custom-divider"></div>
             <div className="submit-container">
-              <button className="submit-btn" type="submit">
-                Confirm
+              <button
+                className="submit-btn"
+                onClick={handleBulkUploadSubmit}
+                disabled={loading}
+              >
+                {loading ? "Processing..." : "Confirm"}
               </button>
             </div>
           </div>

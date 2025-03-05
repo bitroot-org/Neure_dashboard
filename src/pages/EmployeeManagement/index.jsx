@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Card, Table, Typography, Space, Empty } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
+import { useNavigate } from "react-router-dom"; // Add this import
 import "./index.css";
 import CustomHeader from "../../components/CustomHeader";
 import { getTopPerformingEmployee } from "../../services/api";
@@ -16,6 +17,8 @@ const EmployeeDashboard = () => {
     pageSize: 10,
     total: 0,
   });
+
+  const navigate = useNavigate();
 
   const fetchEmployees = async (page = 1, pageSize = 10) => {
     try {
@@ -48,6 +51,14 @@ const EmployeeDashboard = () => {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  const handleRemoveEmployee = () => {
+    navigate('/removeEmployee');
+  };
+
+  const handleAddEmployee = () => {
+    navigate('/addNewEmployee');
+  };
 
   const metrics = [
     { title: "Total Employees", value: 250, change: "+5%" },
@@ -183,8 +194,18 @@ const EmployeeDashboard = () => {
           />
         </div>
         <div className="employee-action-buttons">
-          <button className="add-employee-btn">Add Employee</button>
-          <button className="remove-employee-btn">Remove Employee</button>
+          <button
+            className="add-employee-btn"
+            onClick={handleAddEmployee}
+          >
+            Add Employee
+          </button>          
+          <button
+            className="remove-employee-btn"
+            onClick={handleRemoveEmployee}
+          >
+            Remove Employee
+          </button>
         </div>
       </div>
 

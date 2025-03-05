@@ -1,41 +1,195 @@
 import React, { useState, useEffect } from "react";
-import { Table, Card, Empty, message } from "antd";
-import { SearchOutlined } from "@ant-design/icons";
+import { Table, Card, Empty, message, Modal } from "antd";
+import { SearchOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
 import CustomHeader from "../../components/CustomHeader";
-import { getTopPerformingEmployee } from "../../services/api";
+import { getTopPerformingEmployee, removeEmployee, searchEmployees } from "../../services/api";
 import ErrorBoundary from "../../components/ErrorBoundary";
 import "./removeEmployee.css";
+
+const { confirm } = Modal;
 
 const RemoveEmployee = () => {
   // Initialize employees state before using it
   const [employees, setEmployees] = useState([]);
+  const [selectedEmployees, setSelectedEmployees] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [searchText, setSearchText] = useState("");
 
-  const fetchEmployees = async (page = 1, pageSize = 10) => {
+  function useDebounce(value, delay) {
+    const [debouncedValue, setDebouncedValue] = useState(value);
+
+    useEffect(() => {
+      // Set a timeout to update the debounced value after delay
+      const timer = setTimeout(() => {
+        setDebouncedValue(value);
+      }, delay);
+
+      // Cleanup the timeout if value changes before delay expires
+      return () => {
+        clearTimeout(timer);
+      };
+    }, [value, delay]);
+
+    return debouncedValue;
+  }
+
+  const debouncedSearchText = useDebounce(searchText, 1000);
+
+  useEffect(() => {
+    fetchEmployees(1, 10, debouncedSearchText);
+  }, [debouncedSearchText]);
+
+  const handleSearchChange = (e) => {
+    setSearchText(e.target.value);
+  };
+
+  // Updated fetchEmployees function that chooses API based on search term
+  const fetchEmployees = async (page = 1, pageSize = 10, searchTerm = "") => {
     try {
-      const response = await getTopPerformingEmployee({
-        companyId: 1,
-        page,
-        limit: pageSize,
-      });
-      if (response.status) {
+      setLoading(true);
+      const company_id = localStorage.getItem("companyId") || 1;
+
+      let response;
+
+      if (searchTerm && searchTerm.trim() !== "") {
+        // Use search API when search term exists
+        response = await searchEmployees({
+          company_id,
+          search_term: searchTerm,
+          page,
+          limit: pageSize
+        });
+      } else {
+        // Use regular API when no search term
+        response = await getTopPerformingEmployee({
+          companyId: company_id, // Note: API uses companyId not company_id
+          page,
+          limit: pageSize
+        });
+      }
+
+      if (response && response.status) {
         setEmployees(response.data);
+        // Clear selections when search results change
+        setSelectedEmployees([]);
       }
     } catch (error) {
+      console.error("Error fetching employees:", error);
       message.error("Failed to fetch employees");
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchEmployees();
+    fetchEmployees(); // Initial load with no search term
   }, []);
+
+  // Handle checkbox selection
+  const handleSelect = (employeeId) => {
+    console.log("Selecting employee with ID:", employeeId);
+    setSelectedEmployees((prev) => {
+      if (prev.includes(employeeId)) {
+        return prev.filter((id) => id !== employeeId);
+      } else {
+        return [...prev, employeeId];
+      }
+    });
+  };
+
+  // Handle select all checkboxes
+  const handleSelectAll = (checked) => {
+    if (checked) {
+      // Use the same ID field (user_id or id) that's used in individual selections
+      setSelectedEmployees(employees.map(emp => emp.user_id || emp.id));
+    } else {
+      setSelectedEmployees([]);
+    }
+  };
+
+  // Handle removal of selected employees
+  const handleRemoveEmployees = () => {
+    if (selectedEmployees.length === 0) {
+      message.warning("Please select employees to remove");
+      return;
+    }
+
+    confirm({
+      title: 'Are you sure you want to remove these employees?',
+      icon: <ExclamationCircleOutlined />,
+      content: `You are about to remove ${selectedEmployees.length} employee(s). This action cannot be undone.`,
+      okText: 'Yes, Remove',
+      okType: 'danger',
+      cancelText: 'Cancel',
+      async onOk() {
+        try {
+          setLoading(true);
+          const company_id = localStorage.getItem("companyId") || 1;
+
+          let response;
+
+          // Handle single vs multiple employee removal differently
+          if (selectedEmployees.length === 1) {
+            // For single employee removal
+            response = await removeEmployee({
+              company_id,
+              user_id: selectedEmployees[0]
+            });
+          } else {
+            // For multiple employee removal
+            response = await removeEmployee({
+              company_id,
+              user_ids: selectedEmployees
+            });
+          }
+
+          // Handle the response
+          if (response && response.status) {
+            message.success(`${selectedEmployees.length} employee(s) removed successfully`);
+            setSelectedEmployees([]);
+            fetchEmployees(); // Refresh the list
+          } else {
+            throw new Error("Failed to remove employees");
+          }
+        } catch (error) {
+          console.error("Error removing employees:", error);
+          message.error("Failed to remove employees. Please try again.");
+        } finally {
+          setLoading(false);
+        }
+      },
+    });
+  };
 
   const columns = [
     {
-      title: "Select",
+      title: (
+        <input
+          type="checkbox"
+          className="green-checkbox"
+          // Only check when we have employees and all are selected
+          checked={
+            employees.length > 0 &&
+            selectedEmployees.length === employees.length
+          }
+          onChange={(e) => handleSelectAll(e.target.checked)}
+        />
+      ),
       key: "select",
-      render: () => <input type="checkbox" className="green-checkbox" />,
+      render: (_, record) => {
+        const employeeId = record.user_id || record.id;
+        return (
+          <input
+            type="checkbox"
+            className="green-checkbox"
+            checked={selectedEmployees.includes(employeeId)}
+            onChange={() => handleSelect(employeeId)}
+          />
+        );
+      },
       width: 60,
     },
+    // Other columns remain the same
     {
       title: "Sr no.",
       key: "serialNumber",
@@ -111,10 +265,19 @@ const RemoveEmployee = () => {
               type="text"
               placeholder="Search name, department"
               className="employee-search"
+              value={searchText}
+              onChange={handleSearchChange}
             />
           </div>
           <div className="employee-action-buttons">
-            <button className="add-employee-btn">Remove</button>
+            <button
+              className={`${selectedEmployees.length === 0 ? 'disabled-btn' : ''}`}
+              onClick={handleRemoveEmployees}
+              disabled={selectedEmployees.length === 0 || loading}
+              title={selectedEmployees.length === 0 ? "Select employees to remove" : "Remove selected employees"}
+            >
+              Remove
+            </button>
           </div>
         </div>
         <Table
@@ -122,6 +285,8 @@ const RemoveEmployee = () => {
           columns={columns}
           dataSource={employees}
           pagination={false}
+          loading={loading}
+          rowKey="id"
           locale={{
             emptyText: (
               <div

@@ -256,3 +256,25 @@ export const getCompanyInvoices = async (payload) => {
   });
   return response.data;
 };
+
+export const createEmployee = async (data) => {
+  const response = await api.post(`/company/createEmployee`, data);
+  return response.data;
+}
+
+export const removeEmployee = async (data) => {
+  const response = await api.put(`/company/removeEmployee`, data);
+  return response.data;
+}
+
+export const searchEmployees = async (data) => {
+  const response = await api.get(`/company/searchEmployees`, {
+    params: {
+      company_id: data.company_id,
+      search_term: data.search_term,
+      page: data.page,
+      limit: data.limit,
+    },
+  });
+  return response.data;
+}

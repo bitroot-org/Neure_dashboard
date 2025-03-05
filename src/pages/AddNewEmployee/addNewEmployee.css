@@ -85,8 +85,13 @@
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 12px;
   background-color: transparent;
-  color: #5a5656;
+  color: #ffffff;
   font-size: 16px;
+}
+
+.form-item select option{
+  background-color: #fff;
+  color: #000;
 }
 
 .form-container .submit-container {
