@@ -1,6 +1,10 @@
 /* SoundscapeContainer.css */
 .soundscape-container {
-  background-color: #000;
+  background: radial-gradient(
+    3000px circle at 50% -60%,
+    #33353f 10%,
+    #0d0d11 50%
+  );  
   padding: 80px;
   width: 100%;
   min-height: 100vh;

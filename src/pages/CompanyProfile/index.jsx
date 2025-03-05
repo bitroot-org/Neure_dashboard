@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { Avatar, Typography, Select, Input, message, Spin, Radio, Slider, InputNumber } from "antd";
+import { Avatar, Typography, Slider, InputNumber, message, Spin, Radio } from "antd";
 import { getCompanyById } from "../../services/api";
 import "./index.css";
 import CustomHeader from "../../components/CustomHeader";
@@ -8,7 +8,7 @@ import { updateCompanyInfo } from "../../services/api";
 
 const { Text } = Typography;
 
-const CompanyHeader = ({ companyInfo, isEditable, onEditClick }) => (
+const CompanyHeader = ({ companyInfo, isEditable, onEditClick, onDomainChange }) => (
   <div className="header-container">
     <div className="left-part">
       <div className="avatar-container">
@@ -22,7 +22,16 @@ const CompanyHeader = ({ companyInfo, isEditable, onEditClick }) => (
       </div>
       <div className="header-text">
         <Text className="company-name">{companyInfo.company_name}</Text>
-        <Text className="company-email">{companyInfo.email_domain}</Text>
+        {isEditable ? (
+          <input
+            className="domain-input"
+            value={companyInfo.email_domain}
+            onChange={(e) => onDomainChange(e.target.value)}
+            placeholder="Enter email domain"
+          />
+        ) : (
+          <Text className="company-email">{companyInfo.email_domain}</Text>
+        )}
       </div>
     </div>
     <div className="right-part">
@@ -39,22 +48,12 @@ const CompanyHeader = ({ companyInfo, isEditable, onEditClick }) => (
 const CompanyForm = ({ companyInfo, contactInfo, disabled, onChange }) => {
   const [value, setValue] = useState(companyInfo.company_size || 500);
 
-  const getSizeRange = (size) => {
-    if (!size) return "10-50";
-    if (size <= 50) return "10-50";
-    if (size <= 200) return "51-200";
-    if (size <= 500) return "201-500";
-    return "500+";
-  };
-
-  const handleSizeChange = (value) => {
-    const sizeMap = {
-      "10-50": 50,
-      "51-200": 200,
-      "201-500": 500,
-      "500+": 1000
-    };
-    onChange('company', 'company_size', sizeMap[value]);
+  // Handle slider/input change
+  const handleValueChange = (newValue) => {
+    if (!disabled) {
+      setValue(newValue);
+      onChange('company', 'company_size', newValue);
+    }
   };
 
   return (
@@ -76,58 +75,25 @@ const CompanyForm = ({ companyInfo, contactInfo, disabled, onChange }) => {
 
           <div className="input-group">
             <label className="input-label">Number of employees*</label>
-            <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-              <div style={{ position: "relative", flex: 1 }}>
-                <div
-                  style={{
-                    position: "absolute",
-                    left: 0,
-                    top: "50%",
-                    transform: "translateY(-10%)",
-                    height: "8px",
-                    backgroundColor: "#4ADE80",
-                    width: `${value / 100}%`,
-                    zIndex: 3,
-                    borderRadius: "2px",
-                  }}
-                />
-                <input
-                  type="range"
-                  min="1"
-                  max="10000"
-                  value={value}
-                  onChange={(e) => !disabled && setValue(e.target.value)}
-                  disabled={disabled}
-                  style={{
-                    width: "100%",
-                    appearance: "none",
-                    background: "transparent",
-                    cursor: "pointer",
-                    position: "relative",
-                    zIndex: 2,
-                    opacity: disabled ? 0.5 : 1,
-                  }}
-                  className="custom-slider"
-                />
-              </div>
-              <input
-                type="number"
-                min="1"
-                max="10000"
+            <div className="slider-container">
+              <Slider
+                min={1}
+                max={10000}
                 value={value}
-                onChange={(e) => !disabled && setValue(e.target.value)}
+                onChange={handleValueChange}
+                disabled={false}
+                tooltip={{ formatter: (val) => `${val} employees` }}
+                className="custom-ant-slider"
+              />
+              <InputNumber
+                min={1}
+                max={10000}
+                value={value}
+                onChange={handleValueChange}
+                disabled={disabled}
+                className="custom-ant-input-number"
                 style={{
-                  backgroundColor: "#191A20",
-                  borderRadius: "12px",
-                  border: "2px solid rgba(255, 255, 255, 0.1)",
-                  padding: "8px 12px",
-                  width: "80px",
-                  color: "white",
-                  fontSize: "16px",
-                  outline: "none",
-                  textAlign: "center",
-                  cursor: disabled ? "not-allowed" : "text",
-                  opacity: disabled ? 0.5 : 1,
+                  width: 80,
                 }}
               />
             </div>
@@ -166,7 +132,9 @@ const CompanyForm = ({ companyInfo, contactInfo, disabled, onChange }) => {
               disabled={disabled}
               onChange={(e) => {
                 if (!disabled) {
-                  const [firstName, lastName] = e.target.value.split(' ');
+                  const parts = e.target.value.split(' ');
+                  const firstName = parts[0] || '';
+                  const lastName = parts.slice(1).join(' ') || '';
                   onChange('contact_person', 'first_name', firstName);
                   onChange('contact_person', 'last_name', lastName);
                 }
@@ -191,7 +159,7 @@ const CompanyForm = ({ companyInfo, contactInfo, disabled, onChange }) => {
             <input
               className="custom-input"
               value={contactInfo.email}
-              disabled={disabled}
+              disabled={true}
               onChange={(e) => !disabled && onChange('contact_person', 'email', e.target.value)}
             />
           </div>
@@ -251,6 +219,10 @@ const CompanyProfile = () => {
     }));
   };
 
+  const handleDomainChange = (value) => {
+    handleInputChange('company', 'email_domain', value);
+  };
+
   const handleSubmit = async () => {
     try {
       console.log('Form Data:', formData);
@@ -290,12 +262,14 @@ const CompanyProfile = () => {
             companyInfo={formData?.company}
             isEditable={isEditable}
             onEditClick={handleEditSave}
+            onDomainChange={handleDomainChange}
           />
           <CompanyForm
             companyInfo={formData?.company}
             contactInfo={formData?.contact_person}
             disabled={!isEditable}
             onChange={handleInputChange}
+            onDomainChange={handleDomainChange}
           />
         </>
       )}

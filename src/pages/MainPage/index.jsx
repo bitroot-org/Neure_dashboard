@@ -212,7 +212,7 @@ const DashboardLayout = () => {
 
   const handleViewWorkshopDetails = () => {
     if (workshop && workshop.workshop_id) {
-      navigate(`/workshopDetails/${workshop.workshop_id}`); 
+      navigate(`/workshopDetails/${workshop.workshop_id}`);
     } else {
       message.error("Workshop details not available");
     }
@@ -312,32 +312,25 @@ const DashboardLayout = () => {
 
             <div className="main-bottom-cards">
               <div className="main-left-cards">
-                <Card
+                <div
                   className="main-announcement-card"
                   onClick={() => navigate("/announcements")}
                   style={{ cursor: "pointer" }}
                 >
-                  <div className="main-announcement-content">
-                    <h3>Anouncements</h3>
-                    <div className="main-announcement-icon">
-                      <img src="Marketing.png" alt="marketing icon" />
-                    </div>
-                  </div>
-                </Card>
-                <Card
+                  <h3>Anouncements</h3>
+                  <img src="Marketing.png" alt="marketing icon" />
+                </div>
+
+                <div
                   className="main-support-card"
                   onClick={() => navigate("/support")}
                   style={{ cursor: "pointer" }}
                 >
-                  <div className="main-support-content">
-                    <div className="main-support-icon">
-                      <img src="support.png" alt="support icon" />
-                    </div>
-                    <h3>Help & support</h3>
-                  </div>
-                </Card>
+                  <img src="support.png" alt="support icon" />
+                  <h3>Help & support</h3>
+                </div>
               </div>
-              <Card
+              <div
                 className="main-rewards-card"
                 onClick={() => navigate("/rewardsAndRecognition")}
                 style={{ cursor: "pointer" }}
@@ -354,11 +347,11 @@ const DashboardLayout = () => {
                   >
                     COMING SOON !
                   </h3>
-                  <div className="main-rewards-illustration">
-                    <img src="./winner.png" alt="Rewards and Recognition" />
-                  </div>
                 </div>
-              </Card>
+
+                <img src="./winner.png" alt="Rewards and Recognition" />
+
+              </div>
             </div>
           </div>
         </div>
@@ -374,19 +367,14 @@ const DashboardLayout = () => {
               onClick={handleCompanyGaugeClick}
               style={{ cursor: "pointer" }}
             />
-            <div>
-              <Card
-                className="main-resource-card"
-                onClick={() => navigate("/resources")}
-                style={{ cursor: "pointer" }}
-              >
-                <div className="main-resource-content">
-                  <h3>Resources</h3>
-                  <div className="main-resource-illustration">
-                    <img src="./resources.png" alt="Rewards and Recognition" />
-                  </div>
-                </div>
-              </Card>
+
+            <div
+              className="main-resource-card"
+              onClick={() => navigate("/resources")}
+              style={{ cursor: "pointer" }}
+            >
+              <h3>Resources</h3>
+              <img src="./resources.png" alt="Rewards and Recognition" />
             </div>
           </div>
 

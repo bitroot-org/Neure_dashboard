@@ -21,7 +21,7 @@
   display: flex;
   justify-content: space-between;
   width: 1200px;
-  align-items: flex-end; /* This aligns children to the baseline */
+  align-items: flex-end; 
 }
 
 .header-container .left-part {
@@ -150,6 +150,7 @@
 .input-group {
   display: flex;
   flex-direction: column;
+  gap: 4px;
 }
 
 .input-label {
@@ -246,11 +247,32 @@
   margin: 10px 0;
 }
 
+.domain-input {
+  background-color: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  font-size: 14px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  outline: none;
+  width: 100%;
+  margin-top: 4px;
+}
+
+.domain-input:focus {
+  border-color: #4ADE80;
+  box-shadow: 0 0 0 2px rgba(74, 222, 128, 0.2);
+}
+
 /* Responsive Breakpoints */
 @media screen and (max-width: 1500px) {
   .form-container {
     width: 100%;
     padding: 0 20px;
+  }
+
+  .header-container {
+    width: 100%;
   }
 }
 
@@ -341,3 +363,53 @@
 .ant-select-item-option:hover {
   background-color: #333333 !important;
 }
+
+
+.slider-container {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+/* Ant Design Slider custom styling */
+.custom-ant-slider {
+  flex: 1;
+}
+
+.ant-slider-rail {
+  height: 8px !important;
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  border-radius: 4px !important;
+}
+
+.ant-slider-track {
+  height: 8px !important;
+  background-color: #4ADE80 !important;
+  border-radius: 4px !important;
+}
+
+.ant-slider-handle {
+  width: 16px !important;
+  height: 16px !important;
+  margin-top: 2px !important;
+  background-color: transparent !important;
+}
+
+.custom-ant-input-number {
+  background-color: transparent !important;
+  border: 2px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 12px !important;
+  color: white !important;
+}
+
+.custom-ant-input-number .ant-input-number-input {
+  color: white !important;
+  text-align: center;
+}
+
+.custom-ant-input-number[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed !important;
+}
+
+
