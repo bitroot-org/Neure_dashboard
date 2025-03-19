@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react"; 
 import { Card, Table, Typography, Space, Empty } from "antd";
+import { CompanyDataContext } from "../../context/CompanyContext"; // Add this import
 import { SearchOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom"; // Add this import
 import "./index.css";
 import CustomHeader from "../../components/CustomHeader";
+
 import { getTopPerformingEmployee } from "../../services/api";
 
 const { Title } = Typography;
@@ -17,6 +19,8 @@ const EmployeeDashboard = () => {
     pageSize: 10,
     total: 0,
   });
+  const { companyData } = useContext(CompanyDataContext);
+
 
   const navigate = useNavigate();
 
@@ -61,10 +65,26 @@ const EmployeeDashboard = () => {
   };
 
   const metrics = [
-    { title: "Total Employees", value: 250, change: "+5%" },
-    { title: "Departments", value: 8, change: "+30%" },
-    { title: "New Hires", value: 15, change: "+20%" },
-    { title: "Active Projects", value: 35, change: "+10%" },
+    { 
+      title: "Total Employees", 
+      value: companyData?.total_employees || 0, // Changed from totalEmployees
+      change: "+5%" 
+    },
+    { 
+      title: "Departments", 
+      value: companyData?.total_departments || 0, // Changed from totalDepartments
+      change: "+30%" 
+    },
+    { 
+      title: "Active Employees", 
+      value: companyData?.active_employees || 0, // Changed from activeEmployees
+      change: "+20%" 
+    },
+    { 
+      title: "Inactive Employees", 
+      value: companyData?.inactive_employees || 0, // Changed from inactiveEmployees
+      change: "+10%" 
+    },
   ];
 
   const columns = [

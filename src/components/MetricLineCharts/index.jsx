@@ -17,7 +17,7 @@ const MetricLineChart = ({ data }) => {
   return (
     <div className="chart-container">
       <div className="chart-header">
-        <h3>Metric 2</h3>
+        <h3>Company Well-being Index</h3>
         <select className="period-selector">
           <option>Monthly</option>
           <option>Weekly</option>

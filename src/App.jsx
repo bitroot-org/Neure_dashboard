@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import "./index.css";
 
-import LoginPage from "./pages/Login";
+import LoginPage from "./pages/Login/Login";
 // import SignUpPage from './pages/Onboarding'
 import OnboardingFlow from "./pages/Onboarding";
 import Dashboard from "./pages/Dashboard";
@@ -20,7 +20,7 @@ import Settings from "./pages/Settings";
 import Article from "./pages/Article";
 import RemoveEmployee from "./pages/RemoveEmployee";
 import AddNewEmployee from "./pages/AddNewEmployee";
-import Soundscapes from "./pages/Soundscapes";
+import Soundscapes from "./pages/Soundscapes/Soundscapes";
 import RewardsAndRecognition from "./pages/RewardsAndRecognition";
 
 function App() {

@@ -4,8 +4,7 @@ import { EyeOutlined, EyeInvisibleOutlined } from "@ant-design/icons";
 import { UserDataContext } from "../../context/UserContext";
 import { useNavigate } from "react-router-dom";
 import { loginUser } from "../../services/api";
-import "./index.css";
-import axios from "axios";
+import "./Login.css";
 
 const { Title, Text } = Typography;
 
@@ -42,6 +41,7 @@ const LoginPage = () => {
           firstName: response.data.user.first_name,
           lastName: response.data.user.last_name,
         },
+        profileUrl: response.data.user.profile_url,
       };
 
       setUser(userData);

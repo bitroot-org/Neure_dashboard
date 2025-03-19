@@ -36,10 +36,12 @@ const EventDashboard = () => {
         });
 
         if (data.status) {
-          setWorkshops(data.data.workshops);
-          setTotalPages(data.data.pagination.totalPages);
+          console.log("API Response for workshops:", data.data);
+
+          setWorkshops(data.data); // Ensure this is an array
+          setTotalPages(data.pagination.totalPages);
           // Only set error if workshops array is empty
-          if (data.data.workshops.length === 0) {
+          if (data.data.length === 0) {
             setError("No workshops available.");
           }
         } else {
@@ -59,7 +61,6 @@ const EventDashboard = () => {
       try {
         const companyId = localStorage.getItem("companyId");
         const data = await getWorkshopDates(companyId);
-        console.log("API Response:", data);
 
         if (data.status && Array.isArray(data.data)) {
           const formattedDates = data.data.map((date) => {
@@ -127,7 +128,7 @@ const EventDashboard = () => {
                 workshops.map((workshop) => (
                   <div key={workshop.workshop_id} className="workshop-item">
                     <div
-                      style={{ cursor: "Pointer" }}
+                      style={{ cursor: "pointer" }}
                       onClick={() => handleWorkshopClick(workshop.workshop_id)}
                     >
                       <PresentationSlide

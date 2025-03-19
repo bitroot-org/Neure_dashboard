@@ -2,11 +2,6 @@
   max-width: 100%;
   margin: 0 auto;
   padding: 80px;
-  background: radial-gradient(
-    3000px circle at 50% -60%,
-    #33353f 30%,
-    #0d0d11 50%
-  );  
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -29,7 +24,6 @@
 .section-card h3 {
   font-size: 24px;
   font-weight: 400;
-  font-family: sans-serif;
   color: #fff;
 }
 
@@ -98,14 +92,12 @@
   color: #b1b3c0;
   font-size: 16px;
   font-weight: 400;
-  font-family: sans-serif;
 }
 
 .plan-item .value {
   font-size: 20px;
   color: #fff;
   font-weight: 700;
-  font-family: sans-serif;
 }
 
 .status-badge {
@@ -203,7 +195,6 @@
 
 .settings-title {
   font-size: 18px;
-  font-family: sans-serif;
   font-weight: 700;
   margin-bottom: 4px;
 }
@@ -211,7 +202,6 @@
 .settings-description {
   color: rgba(255, 255, 255, 0.8);
   font-size: 16px;
-  font-family: sans-serif;
   font-weight: 400;
 }
 

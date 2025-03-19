@@ -1,64 +1,62 @@
 .gauge-container {
+  background: linear-gradient(180deg, #2D2F39 0%, #191A20 100%);
+  border-radius: 20px;
+  padding: 32px 0px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.gauge-container::before {
+  content: '';
+  position: absolute;
+  bottom: -40%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 700px;
+  height: 400px;
+  background: radial-gradient(
+    circle at center,
+    rgba(var(--glow-color), 0.3) 0%,
+    rgba(var(--glow-color), 0.15) 25%,
+    rgba(var(--glow-color), 0.05) 50%,
+    transparent 70%
+  );
+  filter: blur(20px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.gauge-title {
+  position: relative;
+  z-index: 1;
+  color: white;
+  font-size: 24px;
+  font-weight: 500;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.gauge-wrapper {
+  position: relative;
+  z-index: 1;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: linear-gradient(145deg, #2D2F39 0%, #191A20 100%);
-  border-radius: 18px;
-  min-height: 350px;
-  max-height: 450px;
-  width: 100%;
-  height: 100%;
+}
+
+.gauge-status {
+  position: relative;
+  z-index: 1;
   color: white;
-  border: 1px solid #3a3939;
-  padding: 10px;
-
-}
-
-.gauge-container h2 {
-  color: #ffffff;
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 500;
-  margin: 8px;
-  padding-top: 20px;
-}
-
-.gauge-canvas {
-  display: block;
-  margin: 0 auto;
-  width: 100%;
-  height: calc(100% - 40px); /* Account for header */
-}
-
-
-@media screen and (max-width: 768px) {
-  .gauge-container {
-
-    min-height: 300px;
-  }
-  
-  .gauge-canvas {
-    height: 260px; /* Fixed height minus header space */
-  }
-}
-
-@media screen and (max-width: 479px){
-  .gauge-container {
- /* Fixed height for mobile */
-    min-height: 300px;
-  }
-  
-  .gauge-canvas {
-    height: 260px; /* Fixed height minus header space */
-  }
-}
-
-@media screen and (max-width: 1024px){
-  .gauge-container {
-/* Fixed height for mobile */
-    min-height: 300px;
-  }
-  
-  .gauge-canvas {
-    height: 260px; /* Fixed height minus header space */
-  }
+  margin-top: 10px;
 }

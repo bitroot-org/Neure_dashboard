@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Row, Col, Spin, Alert } from "antd";
+import { Row, Col, Spin, Alert, Empty } from "antd";
 import { useNavigate } from "react-router-dom";
 import "./index.css";
 import CustomHeader from "../../components/CustomHeader";
 import CustomPagination from "../../components/CustomPagination";
 import ArticleCard from "../../components/ArticleCard";
-import axios from "axios";
+import { getArticles } from "../../services/api";
+import { ToolOutlined } from '@ant-design/icons';
 
 const Resources = () => {
   const [activeTab, setActiveTab] = useState("articles");
@@ -17,23 +18,17 @@ const Resources = () => {
   const token = localStorage.getItem("authToken");
   const navigate = useNavigate();
 
-
   useEffect(() => {
     const fetchArticles = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(
-          `${import.meta.env.VITE_BASE_URL}/article/articles`,
-          {
-            params: { page: currentPage },
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        if (response.data.status && response.data.data.articles.length > 0) {
-          setArticles(response.data.data.articles);
-          setTotalPages(response.data.data.pagination.totalPages);
+        const response = await getArticles({
+          currentPage: currentPage,
+        });
+
+        if (response.status && response.data.articles.length > 0) {
+          setArticles(response.data.articles);
+          setTotalPages(response.data.pagination.totalPages);
           setError(null);
         } else {
           setError("Oops! There are no articles to display.");
@@ -44,10 +39,11 @@ const Resources = () => {
         setLoading(false);
       }
     };
+
     if (activeTab === "articles") {
       fetchArticles();
     }
-  }, [currentPage, token, activeTab]);
+  }, [currentPage, activeTab]);
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
@@ -113,8 +109,15 @@ const Resources = () => {
             />
           </div>
         ) : (
-          <div className="scrollable-content">
-            <p>tools content goes here...</p>
+          <div className="scrollable-content no-tools">
+            <Empty
+              image={<ToolOutlined style={{ fontSize: '64px', color: '#00d885' }} />}
+              description={
+                <span>
+                  No tools available right now. Stay tuned for future updates!
+                </span>
+              }
+            />
           </div>
         )}
       </div>

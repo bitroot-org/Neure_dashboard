@@ -23,9 +23,8 @@ import { useNavigate, useLocation } from "react-router-dom";
 import "./index.css";
 import CompanyHealthGauge from "../../components/CompanyHealthGauge";
 import { UserDataContext } from "../../context/UserContext";
-import axios from "axios";
+import { CompanyDataContext } from "../../context/CompanyContext";
 import PresentationSlide from "../../components/PresentationSlide";
-import UserStats from "../../components/UserStats";
 import {
   logoutUser,
   getWorkshops,
@@ -50,7 +49,7 @@ const DashboardLayout = () => {
   const pageSize = 1;
   const currentPage = 1;
 
-  console.log("User from Mian dashboard ", user);
+  const { companyData } = useContext(CompanyDataContext);
 
   useEffect(() => {
     const companyId = localStorage.getItem("companyId");
@@ -66,10 +65,10 @@ const DashboardLayout = () => {
         });
         console.log("getWorkshops response:", data);
         if (data.status) {
-          setWorkshop(data.data.workshops[0]);
-          console.log("Workshop data:", data.data.workshops);
-          setTotalPages(data.data.pagination.totalPages);
-          if (data.data.workshops.length === 0) {
+          setWorkshop(data.data[0]);
+          console.log("Workshop data:", data.data);
+          // setTotalPages(data.pagination.totalPages);
+          if (data.data.length === 0) {
             setError("No workshops available.");
           }
         } else {
@@ -190,10 +189,6 @@ const DashboardLayout = () => {
     }
   };
 
-  const handleProfileClickManagement = () => {
-    navigate("/employeesManagement");
-  };
-
   const handleProfileClick = () => {
     navigate("/companyProfile");
   };
@@ -206,9 +201,6 @@ const DashboardLayout = () => {
     navigate("/dashboard");
   };
 
-  const handleUserStatsClick = () => {
-    navigate("/dashboard");
-  };
 
   const handleViewWorkshopDetails = () => {
     if (workshop && workshop.workshop_id) {
@@ -229,6 +221,14 @@ const DashboardLayout = () => {
   // Add this handler function along with your other handlers
   const handleSettingsClick = () => {
     navigate("/settings");
+  };
+
+  const getStressStatus = (stressLevel) => {
+    if (stressLevel <= 20) return "Excellent";
+    if (stressLevel <= 40) return "Good";
+    if (stressLevel <= 60) return "Moderate";
+    if (stressLevel <= 80) return "High";
+    return "Critical";
   };
 
   return (
@@ -260,7 +260,7 @@ const DashboardLayout = () => {
             </div>
 
             <div className="main-user-info">
-              <Avatar className="main-avatar">{getInitial()}</Avatar>
+              <img className="main-avatar" src={metricsData?.companyProfileUrl} />
               <h3 className="main-user-name">
                 {`${user.fullName.firstName} ${user.fullName.lastName}`}
                 <Dropdown
@@ -318,7 +318,7 @@ const DashboardLayout = () => {
                   style={{ cursor: "pointer" }}
                 >
                   <h3>Anouncements</h3>
-                  <img src="Marketing.png" alt="marketing icon" />
+                  <img src="announcement.svg" alt="marketing icon" />
                 </div>
 
                 <div
@@ -326,7 +326,7 @@ const DashboardLayout = () => {
                   onClick={() => navigate("/support")}
                   style={{ cursor: "pointer" }}
                 >
-                  <img src="support.png" alt="support icon" />
+                  <img src="support.svg" alt="support icon" />
                   <h3>Help & support</h3>
                 </div>
               </div>
@@ -349,7 +349,7 @@ const DashboardLayout = () => {
                   </h3>
                 </div>
 
-                <img src="./winner.png" alt="Rewards and Recognition" />
+                <img src="./winner.svg" alt="Rewards and Recognition" />
 
               </div>
             </div>
@@ -358,15 +358,17 @@ const DashboardLayout = () => {
 
         <div className="main-dashboard-right">
           <div className="main-metrics-cards">
-            <CompanyHealthGauge
-              className="main-metric-card"
-              value={50}
-              maxValue={100}
-              title="Project performance"
-              status="Average"
-              onClick={handleCompanyGaugeClick}
-              style={{ cursor: "pointer" }}
-            />
+            <div className="company-health-card">
+              <CompanyHealthGauge
+                className="main-metric-card"
+                value={(companyData.stress_level)}
+                maxValue={100}
+                title="Company Well-being Index"
+                status={getStressStatus(companyData.stress_level)}
+                onClick={handleCompanyGaugeClick}
+                style={{ cursor: "pointer" }}
+              />
+            </div>
 
             <div
               className="main-resource-card"
@@ -374,7 +376,7 @@ const DashboardLayout = () => {
               style={{ cursor: "pointer" }}
             >
               <h3>Resources</h3>
-              <img src="./resources.png" alt="Rewards and Recognition" />
+              <img src="./resources.svg" alt="Rewards and Recognition" />
             </div>
           </div>
 
@@ -387,25 +389,25 @@ const DashboardLayout = () => {
               <div className="main-roi-item">
                 <span>Stress Levels</span>
                 <div className="main-percentage">
-                  85% <img src="/Downward.png" />
+                  {Math.round(companyData.stress_level)}% <img src="/Downward.png" />
                 </div>
               </div>
               <div className="main-roi-item">
                 <span>Psychological Safety Index (PSI)</span>
                 <div className="main-percentage">
-                  85% <img src="Upward.png" />
+                  {Math.round(companyData.psychological_safety_index)}% <img src="Upward.png" />
                 </div>
               </div>
               <div className="main-roi-item">
                 <span>Employee Retention</span>
                 <div className="main-percentage">
-                  85% <img src="Upward.png" />
+                  {Math.round(companyData.retention_rate)}% <img src="Upward.png" />
                 </div>
               </div>
               <div className="main-roi-item">
                 <span>Employee Engagement</span>
                 <div className="main-percentage">
-                  85% <img src="/Downward.png" />
+                  {Math.round(companyData.engagement_score)}% <img src="/Downward.png" />
                 </div>
               </div>
             </div>

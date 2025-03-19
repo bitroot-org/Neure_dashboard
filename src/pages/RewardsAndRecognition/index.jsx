@@ -101,7 +101,7 @@ const RewardsAndRecognition = () => {
       try {
         const response = await getAllRewards();
         // Navigate through the nested data structure
-        const rewardsData = response.data.data;
+        const rewardsData = response.data;
         setRewards(rewardsData);
         setLoading(false);
       } catch (err) {
@@ -139,7 +139,7 @@ const RewardsAndRecognition = () => {
         {rewards.map((reward) => (
           <RewardCard
             key={reward.id}
-            icon={reward.icon}
+            icon={reward.icon_url}
             title={reward.title}
             termsAndConditions={reward.terms_and_conditions}
             rewardId={reward.id}

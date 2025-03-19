@@ -11,7 +11,8 @@ const UserContext = ({ children }) => {
         fullName: {
             firstName: '',
             lastName: ''
-        }
+        },
+        profileUrl: '',
     })
     const [isLoading, setIsLoading] = useState(true)
 
@@ -39,7 +40,7 @@ const UserContext = ({ children }) => {
     }
 
     if (isLoading) {
-        return null // or loading spinner
+        return null
     }
 
     return (

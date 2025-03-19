@@ -3,7 +3,7 @@
   height: 100%;
   min-height: 300px;
   background: linear-gradient(145deg, #2D2F39 0%, #191A20 100%);
-  border-radius: 12px;
+  border-radius: 20px;
   border: 1px solid #2c2c2c;
   position: relative;
   overflow: hidden;
@@ -32,7 +32,6 @@
 }
 
 .stats-container {
-  font-family: Satoshi, sans-serif;
   display: flex;
   flex-direction: column;
   justify-content: space-around;

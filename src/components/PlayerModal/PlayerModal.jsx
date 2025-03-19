@@ -2,64 +2,82 @@ import React, { useState, useEffect } from 'react';
 import { HeartOutlined, EllipsisOutlined } from '@ant-design/icons';
 import './PlayerModal.css';
 
-const PlayerModal = ({ isOpen, onClose, track }) => {
-  const [isPlaying, setIsPlaying] = useState(true);
+const PlayerModal = ({ isOpen, onClose, track, audio }) => {
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
 
   useEffect(() => {
-    // Reset state when a new track is loaded
-    if (track) {
-      setIsPlaying(true);
-      setCurrentTime(0);
+    if (audio) {
+      // Update duration when audio metadata is loaded
+      const handleLoadedMetadata = () => {
+        setDuration(audio.duration);
+        setCurrentTime(audio.currentTime);
+      };
 
-      // Convert duration string to seconds if available
-      if (track.duration) {
-        const [minutes, seconds] = track.duration.split(':').map(Number);
-        setDuration(minutes * 60 + seconds);
-      } else {
-        // Default duration if not provided
-        setDuration(5 * 60);
+      // Update current time while playing
+      const handleTimeUpdate = () => {
+        setCurrentTime(audio.currentTime);
+      };
+
+      // Handle audio errors
+      const handleError = (e) => {
+        console.error('Audio error in modal:', e);
+      };
+
+      audio.addEventListener('loadedmetadata', handleLoadedMetadata);
+      audio.addEventListener('timeupdate', handleTimeUpdate);
+      audio.addEventListener('error', handleError);
+
+      // Set initial values if already loaded
+      if (audio.duration) {
+        setDuration(audio.duration);
+        setCurrentTime(audio.currentTime);
       }
-    }
-  }, [track]);
 
-  // Update current time every second when playing
-  useEffect(() => {
-    let interval;
-    if (isPlaying && currentTime < duration) {
-      interval = setInterval(() => {
-        setCurrentTime(prevTime => {
-          const newTime = prevTime + 1;
-          return newTime <= duration ? newTime : duration;
-        });
-      }, 1000);
+      return () => {
+        audio.removeEventListener('loadedmetadata', handleLoadedMetadata);
+        audio.removeEventListener('timeupdate', handleTimeUpdate);
+        audio.removeEventListener('error', handleError);
+      };
     }
-    return () => clearInterval(interval);
-  }, [isPlaying, currentTime, duration]);
+  }, [audio]);
 
   const togglePlayPause = () => {
-    setIsPlaying(!isPlaying);
+    if (!audio) return;
+
+    if (audio.paused) {
+      audio.play().catch(e => console.error('Error playing audio:', e));
+    } else {
+      audio.pause();
+    }
   };
 
   const formatTime = (timeInSeconds) => {
+    if (!timeInSeconds || isNaN(timeInSeconds)) return '0:00';
     const minutes = Math.floor(timeInSeconds / 60);
     const seconds = Math.floor(timeInSeconds % 60);
     return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
   };
 
   const handleProgressChange = (e) => {
-    const newTime = parseInt(e.target.value);
-    setCurrentTime(newTime);
+    const newTime = parseFloat(e.target.value);
+    if (audio && !isNaN(newTime) && isFinite(newTime)) {
+      try {
+        audio.currentTime = newTime;
+        setCurrentTime(newTime);
+      } catch (e) {
+        console.error('Error setting audio time:', e);
+      }
+    }
   };
 
   if (!isOpen) return null;
 
   return (
-    <div className="modal-overlay">
+    <div className="soundscape-modal-overlay">
       <div className="player-modal">
         <div
-          className="modal-background"
+          className="soundscape-modal-background"
           style={{ backgroundImage: `url(${track?.imageUrl || 'https://plus.unsplash.com/premium_photo-1683140707316-42df87760f3f?w=500&auto=format&fit=crop&q=60'})` }}
         />
         <div className="modal-header">
@@ -71,7 +89,7 @@ const PlayerModal = ({ isOpen, onClose, track }) => {
           </button>
         </div>
 
-        <div className="modal-content">
+        <div className="soundscape-modal-content">
           <div className="track-conatiner">
             <div className="track-image-container">
               <img
@@ -84,7 +102,7 @@ const PlayerModal = ({ isOpen, onClose, track }) => {
             <div className="track-details">
               <div className='track-info'>
                 <h2 className="track-title">{track.title}</h2>
-                <p className="track-author">{track.author}</p>
+                {track.author && <p className="track-author">{track.author}</p>}
               </div>
 
               <div className="track-actions">
@@ -103,14 +121,14 @@ const PlayerModal = ({ isOpen, onClose, track }) => {
               <input
                 type="range"
                 min="0"
-                max={duration}
-                value={currentTime}
+                max={duration || 100}
+                value={currentTime || 0}
                 onChange={handleProgressChange}
                 className="progress-slider"
               />
               <div className="time-display">
                 <span>{formatTime(currentTime)}</span>
-                <span>{track.duration || formatTime(duration)}</span>
+                <span>{formatTime(duration)}</span>
               </div>
             </div>
 
@@ -127,7 +145,7 @@ const PlayerModal = ({ isOpen, onClose, track }) => {
                 </svg>
               </button>
               <button className="control-button play-pause" onClick={togglePlayPause}>
-                {isPlaying ? (
+                {!audio?.paused ? (
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M10 4H6V20H10V4Z" fill="currentColor" />
                     <path d="M18 4H14V20H18V4Z" fill="currentColor" />

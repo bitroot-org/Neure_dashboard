@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Table, Space, Card, message } from "antd";
 import { ArrowUpOutlined, ArrowDownOutlined } from "@ant-design/icons";
 import MetricLineChart from "../../components/MetricLineCharts";
@@ -7,6 +7,7 @@ import "./index.css";
 import CompanyHealthGauge from "../../components/CompanyHealthGauge";
 import UserStats from "../../components/UserStats";
 import CustomHeader from "../../components/CustomHeader";
+import { CompanyDataContext } from "../../context/CompanyContext";
 import { getTopPerformingEmployee, getCompanyMetrics } from "../../services/api";
 
 const Dashboard = () => {
@@ -19,6 +20,8 @@ const Dashboard = () => {
     pageSize: 10,
     total: 0,
   });
+
+  const { companyData } = useContext(CompanyDataContext);
 
   const fetchEmployees = async (page = 1, pageSize = 10) => {
     try {
@@ -83,29 +86,29 @@ const Dashboard = () => {
 
   const statsData = [
     {
-      title: "Employee Engagement",
-      value: "85%",
+      title: "Stress Levels",
+      value: `${Math.round(companyData.stress_level)}%`,
       change: 4.5,
       status: "up",
       description: "Up from past month",
     },
     {
-      title: "Employee Turnover",
-      value: "85%",
+      title: "Psychological Safety Index (PSI)",
+      value: `${Math.round(companyData.psychological_safety_index)}%`,
       change: 1.5,
       status: "up",
       description: "Up from past month",
     },
     {
-      title: "Stress Levels",
-      value: "85%",
+      title: "Employee Retention",
+      value: `${Math.round(companyData.retention_rate)}%`,
       change: 3.5,
       status: "down",
       description: "Down from past month",
     },
     {
-      title: "Employee Retention",
-      value: "85%",
+      title: "Employee Engagement",
+      value: `${Math.round(companyData.engagement_score)}%`,
       change: 1.5,
       status: "up",
       description: "Up from past month",
@@ -150,24 +153,25 @@ const Dashboard = () => {
     },
   ];
 
-  const data = {
-    totalUsers: 512,
-    activeUsers: 500,
-    inactiveUsers: 12,
-    lastUpdated: "21 Apr",
+  const getStressStatus = (stressLevel) => {
+    if (stressLevel <= 20) return "Excellent";
+    if (stressLevel <= 40) return "Good";
+    if (stressLevel <= 60) return "Moderate";
+    if (stressLevel <= 80) return "High";
+    return "Critical";
   };
 
   return (
     <div className="dashboard-containers">
       <CustomHeader title="Dashboard" showFilterButton="true" />
       <div className="stats-grid">
-        <div className="left-metrics">
+        <div className="roi-left-metrics">
           <CompanyHealthGauge
             className="metric-card"
-            value={500}
+            value={(companyData.stress_level)}
             title="Project performance"
             lastCheckDate="31 Jan"
-            status="Average"
+            status={getStressStatus(companyData.stress_level)}
             style={{ cursor: "pointer" }}
           />
           <UserStats data={metricsData} style={{ cursor: "pointer" }} />
@@ -175,18 +179,19 @@ const Dashboard = () => {
 
         <div className="right-stats">
           {statsData.map((stat, index) => (
-            <div key={index} className="stat-card">
+            <div key={index} className="dash-roi-stat-card">
               <h3>{stat.title}</h3>
-              <div className=""></div>
-              <div className="stat-value">{stat.value}</div>
-              <div className={`stat-change ${stat.status}`}>
-                {stat.status === "up" ? (
-                  <img src="CaretUp.png" />
-                ) : (
-                  <img src="CaretDown.png" />
-                )}
-                <span>{stat.change}%</span>
+              <div className="dashboard-stat">
+                <div className="stat-value">{stat.value}</div>
+                <div className={`stat-change ${stat.status}`}>
+                  {stat.status === "up" ? (
+                    <img src="CaretUp.png" />
+                  ) : (
+                    <img src="CaretDown.png" />
+                  )}
+                </div>
               </div>
+
             </div>
           ))}
         </div>

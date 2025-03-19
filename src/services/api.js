@@ -95,16 +95,19 @@ export const logoutUser = async () => {
 };
 
 export const getWorkshopDates = async (companyId) => {
-  const response = await api.get("/workshop/getWorkshopDates", {
-    params: {
-      company_id: companyId,
-    },
-  });
+  const response = await api.get(
+    "/workshop/getWorkshopDatesByCompanyIdOrUserId",
+    {
+      params: {
+        company_id: companyId,
+      },
+    }
+  );
   return response.data;
 };
 
 export const getWorkshops = async (params) => {
-  const response = await api.get("/workshop/getWorkshopsByCompanyId", {
+  const response = await api.get("/workshop/getWorkshopsByCompanyIdOrUserId", {
     params: {
       company_id: params.companyId,
       page: params.currentPage,
@@ -260,12 +263,12 @@ export const getCompanyInvoices = async (payload) => {
 export const createEmployee = async (data) => {
   const response = await api.post(`/company/createEmployee`, data);
   return response.data;
-}
+};
 
 export const removeEmployee = async (data) => {
   const response = await api.put(`/company/removeEmployee`, data);
   return response.data;
-}
+};
 
 export const searchEmployees = async (data) => {
   const response = await api.get(`/company/searchEmployees`, {
@@ -277,4 +280,32 @@ export const searchEmployees = async (data) => {
     },
   });
   return response.data;
-}
+};
+
+export const getArticles = async (params) => {
+  try {
+    const response = await api.get("/article/articles", {
+      params: {
+        page: params.currentPage || 1,
+        limit: 6,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error;
+  }
+};
+
+export const getSoundscapes = async (params) => {
+  try {
+    const response = await api.get("/soundscapes", {
+      params: {
+        page: params.currentPage || 1,
+        limit: 10,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error;
+  }
+};
