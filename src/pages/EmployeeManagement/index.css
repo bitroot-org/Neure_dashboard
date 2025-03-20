@@ -1,8 +1,9 @@
 .employee-dashboard {
   padding: 80px;
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
-
 
 .section-title {
   color: #ffffff !important;
@@ -74,7 +75,7 @@
 
 .employee-metric-data {
   display: flex;
-  align-items: baseline; 
+  align-items: baseline;
   justify-content: space-between;
   padding: 10px;
   width: 100%;
@@ -130,13 +131,14 @@
   border-radius: 8px;
   overflow-x: auto;
   width: 100%;
+  min-width: 100%;
 }
 .ant-table-wrapper {
   overflow-x: auto !important;
 }
 
 .employee-table .ant-table {
-  background-color: #191A20;
+  background-color: #191a20;
   border: 1px solid #434343;
   border-radius: 18px;
 }
@@ -146,7 +148,7 @@
 }
 
 .employee-table .ant-table-thead > tr > th {
-  background-color: #191A20 !important;
+  background-color: #191a20 !important;
   color: #ffffff !important;
   border-bottom: 1px solid #434343 !important;
   white-space: nowrap;
@@ -162,7 +164,7 @@
 }
 
 .employee-table .ant-table-tbody > tr > td {
-  background-color: #191A20 !important;
+  background-color: #191a20 !important;
 }
 
 .employee-table .ant-table-tbody > tr:hover > td {
@@ -198,7 +200,6 @@
   background-color: #434343;
   color: #ffffff;
 }
-
 
 /* Fix for dropdown menus */
 .ant-dropdown-menu {
@@ -256,10 +257,10 @@
 .employee-search {
   width: 400px;
   height: 48px;
-  padding: 8px 12px 8px 36px; 
+  padding: 8px 12px 8px 36px;
   border: 1px solid #434343;
   border-radius: 12px;
-  background-color: #191A20;
+  background-color: #191a20;
   color: #ffffff;
 }
 
@@ -281,7 +282,7 @@
 .employee-action-buttons button {
   margin-left: 14px;
   padding: 8px 16px;
-  background: linear-gradient(to bottom, #FFFFFF 0%, #797B87 100%);
+  background: linear-gradient(to bottom, #ffffff 0%, #797b87 100%);
   border: none;
   border-radius: 70px;
   color: #191a20;
@@ -289,7 +290,6 @@
   cursor: pointer;
   height: 48px;
   border-bottom: none;
-
 }
 
 .employee-action-buttons .remove-employee-btn {
@@ -336,5 +336,27 @@
 
   .employee-table .ant-pagination {
     padding: 0 12px;
+  }
+}
+
+/* Add these styles to existing CSS */
+.employee-table-container {
+  margin-bottom: 20px;
+  overflow-x: auto;
+}
+
+/* Style pagination container */
+.pagination-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+  padding: 0 20px;
+}
+
+/* Responsive styles */
+@media screen and (max-width: 768px) {
+  .pagination-container {
+    justify-content: center;
+    padding: 0;
   }
 }

@@ -1,10 +1,13 @@
-import React, { useState, useEffect, useContext } from "react"; 
-import { Card, Table, Typography, Space, Empty } from "antd";
-import { CompanyDataContext } from "../../context/CompanyContext"; // Add this import
+import React, { useState, useEffect, useContext, useCallback } from "react";
+import { debounce } from 'lodash';
+import { Card, Table, Typography, message, Empty } from "antd";
+import { CompanyDataContext } from "../../context/CompanyContext";
 import { SearchOutlined } from "@ant-design/icons";
-import { useNavigate } from "react-router-dom"; // Add this import
+import { useNavigate } from "react-router-dom";
 import "./index.css";
 import CustomHeader from "../../components/CustomHeader";
+import CustomPagination from '../../components/CustomPagination';
+
 
 import { getTopPerformingEmployee } from "../../services/api";
 
@@ -14,6 +17,7 @@ const EmployeeDashboard = () => {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [employees, setEmployees] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState('');
   const [pagination, setPagination] = useState({
     current: 1,
     pageSize: 10,
@@ -21,20 +25,33 @@ const EmployeeDashboard = () => {
   });
   const { companyData } = useContext(CompanyDataContext);
 
-
   const navigate = useNavigate();
 
-  const fetchEmployees = async (page = 1, pageSize = 10) => {
+  const debouncedSearch = useCallback(
+    debounce((searchValue) => {
+      fetchEmployees(1, pagination.pageSize, searchValue);
+    }, 800),
+    []
+  );
+
+
+  const fetchEmployees = async (page = 1, pageSize = 10, searchTerm = '') => {
     try {
       setLoading(true);
       const response = await getTopPerformingEmployee({
-        companyId: 1,
+        companyId: companyData?.companyId,
         page,
         limit: pageSize,
+        search: searchTerm // Fix the search parameter name
       });
 
       if (response.status) {
         setEmployees(response.data);
+        setPagination({
+          current: response.pagination.current_page,
+          pageSize: response.pagination.per_page,
+          total: response.pagination.total
+        });
       }
     } catch (error) {
       message.error("Failed to fetch employees");
@@ -43,9 +60,18 @@ const EmployeeDashboard = () => {
     }
   };
 
+  const handleSearchChange = (e) => {
+    const value = e.target.value;
+    setSearchTerm(value);
+    debouncedSearch(value);
+  };
+
+  // Update the useEffect for initial data fetch
   useEffect(() => {
-    fetchEmployees(pagination.current, pagination.pageSize);
-  }, []);
+    if (companyData?.companyId) {
+      fetchEmployees(pagination.current, pagination.pageSize, searchTerm);
+    }
+  }, [companyData?.companyId]); // Add companyId as dependency
 
   useEffect(() => {
     const handleResize = () => {
@@ -64,26 +90,30 @@ const EmployeeDashboard = () => {
     navigate('/addNewEmployee');
   };
 
+  const handlePageChange = (page) => {
+    fetchEmployees(page, pagination.pageSize, searchTerm);
+  };
+
   const metrics = [
-    { 
-      title: "Total Employees", 
+    {
+      title: "Total Employees",
       value: companyData?.total_employees || 0, // Changed from totalEmployees
-      change: "+5%" 
+      change: "+5%"
     },
-    { 
-      title: "Departments", 
+    {
+      title: "Departments",
       value: companyData?.total_departments || 0, // Changed from totalDepartments
-      change: "+30%" 
+      change: "+30%"
     },
-    { 
-      title: "Active Employees", 
+    {
+      title: "Active Employees",
       value: companyData?.active_employees || 0, // Changed from activeEmployees
-      change: "+20%" 
+      change: "+20%"
     },
-    { 
-      title: "Inactive Employees", 
+    {
+      title: "Inactive Employees",
       value: companyData?.inactive_employees || 0, // Changed from inactiveEmployees
-      change: "+10%" 
+      change: "+10%"
     },
   ];
 
@@ -209,6 +239,8 @@ const EmployeeDashboard = () => {
           <SearchOutlined className="search-icon" />
           <input
             type="text"
+            value={searchTerm}
+            onChange={handleSearchChange}
             placeholder="Search name, department"
             className="employee-search"
           />
@@ -219,7 +251,7 @@ const EmployeeDashboard = () => {
             onClick={handleAddEmployee}
           >
             Add Employee
-          </button>          
+          </button>
           <button
             className="remove-employee-btn"
             onClick={handleRemoveEmployee}
@@ -260,6 +292,14 @@ const EmployeeDashboard = () => {
           ),
         }}
       />
+
+      <div style={{ marginTop: '20px' }}>
+        <CustomPagination
+          currentPage={pagination.current}
+          totalPages={Math.ceil(pagination.total / pagination.pageSize)}
+          onPageChange={handlePageChange}
+        />
+      </div>
     </div>
   );
 };

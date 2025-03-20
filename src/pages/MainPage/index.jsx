@@ -17,6 +17,7 @@ import {
   DownOutlined,
   UserOutlined,
   LogoutOutlined,
+  MenuOutlined, // Add this import
 } from "@ant-design/icons";
 import { Dropdown } from "antd";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -42,6 +43,7 @@ const DashboardLayout = () => {
   const [error, setError] = useState(null);
   const [metricsData, setMetricsData] = useState(null);
   const [isTermsModalVisible, setIsTermsModalVisible] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const { user, setUser } = useContext(UserDataContext);
@@ -110,7 +112,6 @@ const DashboardLayout = () => {
     fetchMetrics();
   }, []);
 
-  // Add this useEffect to show modal when navigating from success page
   useEffect(() => {
     if (location.state?.showTerms) {
       setIsTermsModalVisible(true);
@@ -231,6 +232,15 @@ const DashboardLayout = () => {
     return "Critical";
   };
 
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
+  const truncateName = (name, maxLength) => {
+    if (name.length <= maxLength) return name;
+    return name.substring(0, maxLength) + '...';
+  };
+
   return (
     <Layout className="main-dashboard-layout">
       <div className="main-header">
@@ -262,7 +272,7 @@ const DashboardLayout = () => {
             <div className="main-user-info">
               <img className="main-avatar" src={metricsData?.companyProfileUrl} />
               <h3 className="main-user-name">
-                {`${user.fullName.firstName} ${user.fullName.lastName}`}
+                {truncateName(`${user.fullName.firstName} ${user.fullName.lastName}`, 15)}
                 <Dropdown
                   menu={{ items: menuItems, onClick: handleMenuClick }}
                   placement="bottomRight"
@@ -273,9 +283,43 @@ const DashboardLayout = () => {
                 </Dropdown>
               </h3>
             </div>
+            <MenuOutlined className="hamburger-menu" onClick={toggleMenu} />
           </Space>
         </div>
       </div>
+
+      {isMenuOpen && (
+        <div className="mobile-menu">
+          <div className="mobile-menu-item" onClick={() => navigate("/soundscapes")}>
+            <img src="/MusicNotes.png" style={{ width: 20, marginRight: 12 }} />
+            Soundscapes
+          </div>
+          <div className="mobile-menu-item" onClick={() => navigate("/employeesManagement")}>
+            <img src="/UserGear.png" style={{ width: 20, marginRight: 12 }} />
+            Employees
+          </div>
+          <div className="mobile-menu-item" onClick={handleSettingsClick}>
+            <img src="/GearSix.png" style={{ width: 20, marginRight: 12 }} />
+            Settings
+          </div>
+          <div className="mobile-menu-item" onClick={() => navigate("/announcements")}>
+            <img src="/announcement.svg" style={{ width: 20, marginRight: 12 }} />
+            Announcements
+          </div>
+          <div className="mobile-menu-item" onClick={() => navigate("/support")}>
+            <img src="/support.svg" style={{ width: 20, marginRight: 12 }} />
+            Help & Support
+          </div>
+          <div className="mobile-menu-item" onClick={handleProfileClick}>
+            <UserOutlined style={{ fontSize: 16, marginRight: 12 }} />
+            Profile Details
+          </div>
+          <div className="mobile-menu-item" onClick={handleLogout}>
+            <LogoutOutlined style={{ fontSize: 16, marginRight: 12 }} />
+            Logout
+          </div>
+        </div>
+      )}
 
       <div className="main-content">
         <div className="main-dashboard-left">

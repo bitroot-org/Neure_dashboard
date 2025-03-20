@@ -23,6 +23,8 @@ const Dashboard = () => {
 
   const { companyData } = useContext(CompanyDataContext);
 
+  console.log("Company data:", companyData);
+
   const fetchEmployees = async (page = 1, pageSize = 10) => {
     try {
       setLoading(true);
