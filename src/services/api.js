@@ -1,7 +1,10 @@
 import axios from "axios";
 
+console.log('API Base URL:', import.meta.env.VITE_API_URL);
+
+
 const api = axios.create({
-  baseURL: import.meta.env.VITE_BASE_URL,
+  baseURL: import.meta.env.VITE_API_URL,
   timeout: 10000,
   headers: {
     "Content-Type": "application/json",
@@ -13,7 +16,7 @@ const refreshToken = async () => {
   const token = localStorage.getItem("refreshToken");
   try {
     const response = await axios.post(
-      `${import.meta.env.VITE_BASE_URL}/api/user/refresh-token`,
+      `${import.meta.env.VITE_API_URL}/api/user/refresh-token`,
       {},
       {
         headers: {
@@ -29,6 +32,8 @@ const refreshToken = async () => {
 
 // Request interceptor
 api.interceptors.request.use((config) => {
+  console.log('API Base URL:', import.meta.env.VITE_API_URL);
+
   const token = localStorage.getItem("accessToken");
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
@@ -68,6 +73,8 @@ api.interceptors.response.use(
 
 export const loginUser = async (email, password) => {
   try {
+    console.log('Attempting login with URL:', import.meta.env.VITE_API_URL + '/user/login');
+
     const response = await api.post("/user/login", {
       email,
       password,
@@ -283,7 +290,7 @@ export const searchEmployees = async (data) => {
 
 export const getArticles = async (params) => {
   try {
-    const response = await api.get("/article/articles", {
+    const response = await api.get("/article/getArticles", {
       params: {
         page: params.currentPage || 1,
         limit: 6,
@@ -297,7 +304,7 @@ export const getArticles = async (params) => {
 
 export const getSoundscapes = async (params) => {
   try {
-    const response = await api.get("/soundscapes", {
+    const response = await api.get("/soundscapes/getSoundscapes", {
       params: {
         page: params.currentPage || 1,
         limit: 10,
