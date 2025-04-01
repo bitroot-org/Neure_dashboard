@@ -202,7 +202,6 @@ const DashboardLayout = () => {
     navigate("/dashboard");
   };
 
-
   const handleViewWorkshopDetails = () => {
     if (workshop && workshop.workshop_id) {
       navigate(`/workshopDetails/${workshop.workshop_id}`);
@@ -238,7 +237,7 @@ const DashboardLayout = () => {
 
   const truncateName = (name, maxLength) => {
     if (name.length <= maxLength) return name;
-    return name.substring(0, maxLength) + '...';
+    return name.substring(0, maxLength) + "...";
   };
 
   return (
@@ -247,17 +246,18 @@ const DashboardLayout = () => {
         <div className="main-company-title">{metricsData?.companyName}</div>
         <div className="main-header-right">
           <Space size={16} align="center">
-            <div className="main-header-button"
+            <div
+              className="main-header-button"
               onClick={() => navigate("/soundscapes")}
             >
               <img src="/MusicNotes.png" />
               <h3>Soundscapes</h3>
             </div>
-            <div className="main-header-button" onClick={() => navigate("/employeesManagement")}>
-              <img
-                src="/UserGear.png"
-                style={{ cursor: "pointer" }}
-              />
+            <div
+              className="main-header-button"
+              onClick={() => navigate("/employeesManagement")}
+            >
+              <img src="/UserGear.png" style={{ cursor: "pointer" }} />
               <h3>Employess</h3>
             </div>
             <div
@@ -270,9 +270,15 @@ const DashboardLayout = () => {
             </div>
 
             <div className="main-user-info">
-              <img className="main-avatar" src={metricsData?.companyProfileUrl} />
+              <img
+                className="main-avatar"
+                src={metricsData?.company_profile_url}
+              />
               <h3 className="main-user-name">
-                {truncateName(`${user.fullName.firstName} ${user.fullName.lastName}`, 15)}
+                {truncateName(
+                  `${user.fullName.firstName} ${user.fullName.lastName}`,
+                  15
+                )}
                 <Dropdown
                   menu={{ items: menuItems, onClick: handleMenuClick }}
                   placement="bottomRight"
@@ -290,11 +296,17 @@ const DashboardLayout = () => {
 
       {isMenuOpen && (
         <div className="mobile-menu">
-          <div className="mobile-menu-item" onClick={() => navigate("/soundscapes")}>
+          <div
+            className="mobile-menu-item"
+            onClick={() => navigate("/soundscapes")}
+          >
             <img src="/MusicNotes.png" style={{ width: 20, marginRight: 12 }} />
             Soundscapes
           </div>
-          <div className="mobile-menu-item" onClick={() => navigate("/employeesManagement")}>
+          <div
+            className="mobile-menu-item"
+            onClick={() => navigate("/employeesManagement")}
+          >
             <img src="/UserGear.png" style={{ width: 20, marginRight: 12 }} />
             Employees
           </div>
@@ -302,11 +314,20 @@ const DashboardLayout = () => {
             <img src="/GearSix.png" style={{ width: 20, marginRight: 12 }} />
             Settings
           </div>
-          <div className="mobile-menu-item" onClick={() => navigate("/announcements")}>
-            <img src="/announcement.svg" style={{ width: 20, marginRight: 12 }} />
+          <div
+            className="mobile-menu-item"
+            onClick={() => navigate("/announcements")}
+          >
+            <img
+              src="/announcement.svg"
+              style={{ width: 20, marginRight: 12 }}
+            />
             Announcements
           </div>
-          <div className="mobile-menu-item" onClick={() => navigate("/support")}>
+          <div
+            className="mobile-menu-item"
+            onClick={() => navigate("/support")}
+          >
             <img src="/support.svg" style={{ width: 20, marginRight: 12 }} />
             Help & Support
           </div>
@@ -393,8 +414,7 @@ const DashboardLayout = () => {
                   </h3>
                 </div>
 
-                <img src="./winner.svg" alt="Rewards and Recognition" />
-
+                <img src="Rewards.svg" alt="Rewards and Recognition" />
               </div>
             </div>
           </div>
@@ -402,17 +422,15 @@ const DashboardLayout = () => {
 
         <div className="main-dashboard-right">
           <div className="main-metrics-cards">
-            <div className="company-health-card">
-              <CompanyHealthGauge
-                className="main-metric-card"
-                value={(companyData.stress_level)}
-                maxValue={100}
-                title="Company Well-being Index"
-                status={getStressStatus(companyData.stress_level)}
-                onClick={handleCompanyGaugeClick}
-                style={{ cursor: "pointer" }}
-              />
-            </div>
+            <CompanyHealthGauge
+              className="main-company-health-gauge"
+              value={companyData.stress_level}
+              maxValue={100}
+              title="Company Well-being Index"
+              status={getStressStatus(companyData.stress_level)}
+              onClick={handleCompanyGaugeClick}
+              style={{ cursor: "pointer" }}
+            />
 
             <div
               className="main-resource-card"
@@ -433,25 +451,29 @@ const DashboardLayout = () => {
               <div className="main-roi-item">
                 <span>Stress Levels</span>
                 <div className="main-percentage">
-                  {Math.round(companyData.stress_level)}% <img src="/Downward.png" />
+                  {Math.round(companyData.stress_level)}%{" "}
+                  <img src="/Downward.png" />
                 </div>
               </div>
               <div className="main-roi-item">
                 <span>Psychological Safety Index (PSI)</span>
                 <div className="main-percentage">
-                  {Math.round(companyData.psychological_safety_index)}% <img src="Upward.png" />
+                  {Math.round(companyData.psychological_safety_index)}%{" "}
+                  <img src="Upward.png" />
                 </div>
               </div>
               <div className="main-roi-item">
                 <span>Employee Retention</span>
                 <div className="main-percentage">
-                  {Math.round(companyData.retention_rate)}% <img src="Upward.png" />
+                  {Math.round(companyData.retention_rate)}%{" "}
+                  <img src="Upward.png" />
                 </div>
               </div>
               <div className="main-roi-item">
                 <span>Employee Engagement</span>
                 <div className="main-percentage">
-                  {Math.round(companyData.engagement_score)}% <img src="/Downward.png" />
+                  {Math.round(companyData.engagement_score)}%{" "}
+                  <img src="/Downward.png" />
                 </div>
               </div>
             </div>

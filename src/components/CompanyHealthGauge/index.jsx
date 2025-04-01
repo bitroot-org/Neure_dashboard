@@ -7,6 +7,7 @@ const CompanyHealthGauge = ({
   title = "Stress level",
   status = "Optimum",
   onClick,
+  style, // Accept style prop
 }) => {
   // Get the glow color based on value
   const getGlowColor = (value) => {
@@ -22,7 +23,8 @@ const CompanyHealthGauge = ({
       className="gauge-container"
       onClick={onClick}
       style={{
-        '--glow-color': glowColor
+        '--glow-color': glowColor,
+        ...style // Merge any additional styles passed from parent
       }}
     >
       <h2 className="gauge-title">{title}</h2>

@@ -1,14 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import CustomHeader from "../../components/CustomHeader";
 import { UploadOutlined } from "@ant-design/icons";
-import { message } from "antd"; // Import Ant Design message for feedback
+import { message, Spin, DatePicker, ConfigProvider } from "antd"; // Added Spin for loading state
 import "./addNewEmployee.css";
-import { createEmployee } from "../../services/api";
+import { createEmployee, getDepartments } from "../../services/api";
+import moment from "moment"; // Import moment for date handling
 
 const AddNewEmployee = () => {
   // Employee type: "single" or "bulk"
   const [employeeType, setEmployeeType] = useState("single");
-  const [loading, setLoading] = useState(false); // Add loading state
+  const [loading, setLoading] = useState(false);
+  const [departments, setDepartments] = useState([]);
+  const [fetchingDepartments, setFetchingDepartments] = useState(true);
 
   // Form state for single employee
   const [formData, setFormData] = useState({
@@ -17,10 +20,32 @@ const AddNewEmployee = () => {
     email: "",
     contact: "",
     gender: "",
-    age: "",
+    dateOfBirth: null, // Changed from age to dateOfBirth
     department: "",
     city: "",
   });
+
+  // Fetch departments on component mount
+  useEffect(() => {
+    const fetchDepartments = async () => {
+      try {
+        setFetchingDepartments(true);
+        const response = await getDepartments();
+        if (response.status) {
+          setDepartments(response.data);
+        } else {
+          message.error("Failed to fetch departments");
+        }
+      } catch (error) {
+        console.error("Error fetching departments:", error);
+        message.error("Failed to load departments");
+      } finally {
+        setFetchingDepartments(false);
+      }
+    };
+
+    fetchDepartments();
+  }, []);
 
   const onTypeChange = (type) => {
     setEmployeeType(type);
@@ -31,6 +56,14 @@ const AddNewEmployee = () => {
     setFormData((prev) => ({
       ...prev,
       [name]: value,
+    }));
+  };
+
+  // Handle date picker change
+  const handleDateChange = (date) => {
+    setFormData((prev) => ({
+      ...prev,
+      dateOfBirth: date ? date.format("YYYY-MM-DD") : null,
     }));
   };
 
@@ -47,15 +80,14 @@ const AddNewEmployee = () => {
         company_id: companyId,
         email: formData.email,
         phone: formData.contact,
-        username: `${formData.firstName.toLowerCase()}.${formData.lastName.toLowerCase()}`, // Generate username
+        username: `${formData.firstName.toLowerCase()}.${formData.lastName.toLowerCase()}`,
         first_name: formData.firstName,
         last_name: formData.lastName,
         gender: formData.gender,
-        date_of_birth: "",
-        job_title: "", 
-        age: parseInt(formData.age),
-        department_id: getDepartmentId(formData.department), // Function to map department name to ID
-        city: formData.city
+        date_of_birth: formData.dateOfBirth, // Use date of birth instead of age
+        job_title: "",
+        department_id: parseInt(formData.department),
+        city: formData.city,
       };
 
       const response = await createEmployee(employeeData);
@@ -70,28 +102,16 @@ const AddNewEmployee = () => {
         email: "",
         contact: "",
         gender: "",
-        age: "",
+        dateOfBirth: null, // Reset date of birth
         department: "",
         city: "",
       });
-
     } catch (error) {
       console.error("Error adding employee:", error);
       message.error("Failed to add employee. Please try again.");
     } finally {
       setLoading(false);
     }
-  };
-
-  // Helper function to map department names to IDs
-  const getDepartmentId = (departmentName) => {
-    const departmentMap = {
-      engineering: 1,
-      marketing: 2,
-      sales: 3,
-      hr: 4
-    };
-    return departmentMap[departmentName] || 1;
   };
 
   const handleFileUpload = (e) => {
@@ -114,7 +134,9 @@ const AddNewEmployee = () => {
           <h3 className="section-title">Type</h3>
           <div className="type-buttons">
             <button
-              className={`type-btn ${employeeType === "single" ? "active" : ""}`}
+              className={`type-btn ${
+                employeeType === "single" ? "active" : ""
+              }`}
               onClick={() => onTypeChange("single")}
               type="button"
             >
@@ -185,7 +207,7 @@ const AddNewEmployee = () => {
                 />
               </div>
             </div>
-            {/* Row 3: Gender & Age */}
+            {/* Row 3: Gender & Date of Birth (replacing Age) */}
             <div className="form-row">
               <div className="form-item">
                 <label htmlFor="gender">Gender*</label>
@@ -205,37 +227,64 @@ const AddNewEmployee = () => {
                 </select>
               </div>
               <div className="form-item">
-                <label htmlFor="age">Age*</label>
-                <input
-                  id="age"
-                  type="number"
-                  name="age"
-                  placeholder="Age"
-                  value={formData.age}
-                  onChange={handleChange}
-                  required
-                />
+                <label htmlFor="dateOfBirth">Date of Birth*</label>
+                <ConfigProvider
+                  theme={{
+                    components: {
+                      DatePicker: {
+                        colorText: "#fff",
+                        colorTextPlaceholder: "rgba(255, 255, 255, 0.5)",
+                        colorBgContainer: "transparent",
+                        colorBorder: "rgba(255, 255, 255, 0.1)",
+                        borderRadius: 12,
+                      },
+                    },
+                  }}
+                >
+                  <DatePicker
+                    id="dateOfBirth"
+                    style={{
+                      width: "100%",
+                      height: "48px",
+                    }}
+                    className="custom-datepicker"
+                    placeholder="Select Date of Birth"
+                    onChange={handleDateChange}
+                    value={
+                      formData.dateOfBirth ? moment(formData.dateOfBirth) : null
+                    }
+                    format="YYYY-MM-DD"
+                    required
+                  />
+                </ConfigProvider>
               </div>
             </div>
             {/* Row 4: Department & City */}
             <div className="form-row">
               <div className="form-item">
                 <label htmlFor="department">Department*</label>
-                <select
-                  id="department"
-                  name="department"
-                  value={formData.department}
-                  onChange={handleChange}
-                  required
-                >
-                  <option value="" disabled>
-                    Select Department
-                  </option>
-                  <option value="engineering">Engineering</option>
-                  <option value="marketing">Marketing</option>
-                  <option value="sales">Sales</option>
-                  <option value="hr">HR</option>
-                </select>
+                {fetchingDepartments ? (
+                  <div className="loading-spinner">
+                    <Spin size="small" />
+                  </div>
+                ) : (
+                  <select
+                    id="department"
+                    name="department"
+                    value={formData.department}
+                    onChange={handleChange}
+                    required
+                  >
+                    <option value="" disabled>
+                      Select Department
+                    </option>
+                    {departments.map((dept) => (
+                      <option key={dept.id} value={dept.id}>
+                        {dept.department_name}
+                      </option>
+                    ))}
+                  </select>
+                )}
               </div>
               <div className="form-item">
                 <label htmlFor="city">City*</label>
@@ -254,7 +303,7 @@ const AddNewEmployee = () => {
               <button
                 className="submit-btn"
                 type="submit"
-                disabled={loading}
+                disabled={loading || fetchingDepartments}
               >
                 {loading ? "Processing..." : "Confirm"}
               </button>
@@ -277,7 +326,6 @@ const AddNewEmployee = () => {
               <p className="upload-instructions">
                 Drop your CSV file here , or <span>click to browse</span>
               </p>
-
             </div>
             <div className="custom-divider"></div>
             <div className="submit-container">
@@ -290,7 +338,6 @@ const AddNewEmployee = () => {
               </button>
             </div>
           </div>
-
         )}
       </div>
     </div>

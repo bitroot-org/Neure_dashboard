@@ -7,7 +7,7 @@ const CompanyContext = ({ children }) => {
   const [companyData, setCompanyData] = useState({
     companyId: '',
     companyName: '',
-    companyProfileUrl: '',
+    company_profile_url: '',
     totalEmployees: 0,
     activeEmployees: 0,
     inactiveEmployees: 0,

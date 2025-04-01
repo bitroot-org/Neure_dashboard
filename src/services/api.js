@@ -315,3 +315,12 @@ export const getSoundscapes = async (params) => {
     throw error.response?.data || error;
   }
 };
+
+export const getDepartments = async () => {
+  try {
+    const response = await api.get("/company/getDepartments");
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error;
+  }
+}

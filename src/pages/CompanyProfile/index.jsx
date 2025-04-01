@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Avatar, Typography, Slider, InputNumber, message, Spin, Radio } from "antd";
-import { getCompanyById } from "../../services/api";
 import "./index.css";
 import CustomHeader from "../../components/CustomHeader";
-import { updateCompanyInfo } from "../../services/api";
+import { updateCompanyInfo, getCompanyById } from "../../services/api";
 
 const { Text } = Typography;
 
@@ -100,22 +99,6 @@ const CompanyForm = ({ companyInfo, contactInfo, disabled, onChange }) => {
           </div>
 
         </div>
-
-        {/* <div className="input-group">
-          <label className="input-label">Company size*</label>
-          <Radio.Group
-            className="size-radio-group"
-            value={getSizeRange(companyInfo.company_size)}
-            disabled={disabled}
-            onChange={(e) => handleSizeChange(e.target.value)}
-          >
-            {sizeOptions.map(size => (
-              <Radio.Button key={size} value={size}>
-                {size}
-              </Radio.Button>
-            ))}
-          </Radio.Group>
-        </div> */}
       </div>
 
       <div className="divider" />
