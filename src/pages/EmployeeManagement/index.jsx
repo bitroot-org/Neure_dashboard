@@ -11,8 +11,6 @@ import CustomPagination from '../../components/CustomPagination';
 
 import { getTopPerformingEmployee } from "../../services/api";
 
-const { Title } = Typography;
-
 const EmployeeDashboard = () => {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [employees, setEmployees] = useState([]);
@@ -71,7 +69,7 @@ const EmployeeDashboard = () => {
     if (companyData?.companyId) {
       fetchEmployees(pagination.current, pagination.pageSize, searchTerm);
     }
-  }, [companyData?.companyId]); // Add companyId as dependency
+  }, [companyData]); // Change dependency to watch entire companyData object
 
   useEffect(() => {
     const handleResize = () => {
