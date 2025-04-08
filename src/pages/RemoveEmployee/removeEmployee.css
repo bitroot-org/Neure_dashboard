@@ -15,8 +15,6 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin: 24px 0px;
-  padding-top: 20px;
 }
 
 .employee-action-buttons button {
@@ -32,8 +30,6 @@
   border: none !important;
 
 }
-
-
 
 .employee-action-buttons button:hover {
   box-shadow: 2px 4px 4px rgba(175, 173, 173, 0.8) !important;
@@ -66,3 +62,4 @@
   background-color: #3DAC70;
   box-shadow: 0 2px 8px rgba(74, 222, 128, 0.3);
 }
+

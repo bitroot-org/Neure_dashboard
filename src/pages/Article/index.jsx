@@ -1,24 +1,30 @@
 import React from "react";
-import { Typography } from "antd";
 import { useLocation } from "react-router-dom";
+import { CalendarOutlined, ClockCircleOutlined } from "@ant-design/icons";
 import "./Articles.css";
 import CustomHeader from "../../components/CustomHeader";
-
-const { Text, Title } = Typography;
 
 const Article = () => {
   const { state } = useLocation();
   const article = state?.article;
 
   if (!article) {
-    return <div>No Article Data was provided.</div>;
+    return (
+      <div className="article-details">
+        <CustomHeader title="Article" showBackButton={true} />
+        <div className="no-article-message">
+          <h2>No Article Data Available</h2>
+          <p>The article you're looking for could not be found or was not provided.</p>
+        </div>
+      </div>
+    );
   }
 
   const { title, created_at, reading_time, image_url, content } = article;
   const formattedDate = new Date(created_at).toLocaleDateString("en-GB", {
     day: "2-digit",
     month: "short",
-    year: "2-digit",
+    year: "numeric",
   });
 
   return (
@@ -30,22 +36,24 @@ const Article = () => {
           style={{ backgroundImage: `url(${image_url})` }}
         />
         <div className="blog-card__content">
-          <h1 className="blog-card__title">
-            {title}
-          </h1>
+          <h1 className="blog-card__title">{title}</h1>
 
           <div className="blog-card__meta">
-            <p className="blog-card_date">{formattedDate}</p>
-            <p className="blog-card__dot">
-              •
-            </p>
-            <p>{reading_time} min read</p>
+            <div className="blog-card__meta-item">
+              <CalendarOutlined /> <span>{formattedDate}</span>
+            </div>
+            <div className="blog-card__dot">•</div>
+            <div className="blog-card__meta-item">
+              <ClockCircleOutlined /> <span>{reading_time} min read</span>
+            </div>
           </div>
 
           {content && (
-            <Text className="blog-card__excerpt">
-              {content}
-            </Text>
+            <div className="blog-card__excerpt">
+              {content.split('\n').map((paragraph, index) => (
+                paragraph.trim() && <p key={index}>{paragraph}</p>
+              ))}
+            </div>
           )}
         </div>
       </div>

@@ -120,6 +120,28 @@ const DashboardLayout = () => {
     }
   }, [location]);
 
+  // Add click outside handler to close mobile menu
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      // Check if the menu is open and the click is outside the menu and not on the hamburger icon
+      if (isMenuOpen &&
+          !event.target.closest('.mobile-menu') &&
+          !event.target.closest('.hamburger-menu')) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    // Add event listener when menu is open
+    if (isMenuOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    // Clean up the event listener
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isMenuOpen]);
+
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleDateString("en-GB", {
@@ -258,7 +280,7 @@ const DashboardLayout = () => {
               onClick={() => navigate("/employeesManagement")}
             >
               <img src="/UserGear.png" style={{ cursor: "pointer" }} />
-              <h3>Employess</h3>
+              <h3>Employees</h3>
             </div>
             <div
               className="main-header-button"
@@ -298,25 +320,40 @@ const DashboardLayout = () => {
         <div className="mobile-menu">
           <div
             className="mobile-menu-item"
-            onClick={() => navigate("/soundscapes")}
+            onClick={() => {
+              navigate("/soundscapes");
+              setIsMenuOpen(false);
+            }}
           >
             <img src="/MusicNotes.png" style={{ width: 20, marginRight: 12 }} />
             Soundscapes
           </div>
           <div
             className="mobile-menu-item"
-            onClick={() => navigate("/employeesManagement")}
+            onClick={() => {
+              navigate("/employeesManagement");
+              setIsMenuOpen(false);
+            }}
           >
             <img src="/UserGear.png" style={{ width: 20, marginRight: 12 }} />
             Employees
           </div>
-          <div className="mobile-menu-item" onClick={handleSettingsClick}>
+          <div
+            className="mobile-menu-item"
+            onClick={() => {
+              handleSettingsClick();
+              setIsMenuOpen(false);
+            }}
+          >
             <img src="/GearSix.png" style={{ width: 20, marginRight: 12 }} />
             Settings
           </div>
           <div
             className="mobile-menu-item"
-            onClick={() => navigate("/announcements")}
+            onClick={() => {
+              navigate("/announcements");
+              setIsMenuOpen(false);
+            }}
           >
             <img
               src="/announcement.svg"
@@ -326,16 +363,31 @@ const DashboardLayout = () => {
           </div>
           <div
             className="mobile-menu-item"
-            onClick={() => navigate("/support")}
+            onClick={() => {
+              navigate("/support");
+              setIsMenuOpen(false);
+            }}
           >
             <img src="/support.svg" style={{ width: 20, marginRight: 12 }} />
             Help & Support
           </div>
-          <div className="mobile-menu-item" onClick={handleProfileClick}>
+          <div
+            className="mobile-menu-item"
+            onClick={() => {
+              handleProfileClick();
+              setIsMenuOpen(false);
+            }}
+          >
             <UserOutlined style={{ fontSize: 16, marginRight: 12 }} />
             Profile Details
           </div>
-          <div className="mobile-menu-item" onClick={handleLogout}>
+          <div
+            className="mobile-menu-item"
+            onClick={() => {
+              handleLogout();
+              setIsMenuOpen(false);
+            }}
+          >
             <LogoutOutlined style={{ fontSize: 16, marginRight: 12 }} />
             Logout
           </div>

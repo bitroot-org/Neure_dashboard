@@ -1,10 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Tabs, List, Space } from "antd";
-import {
-  allData,
-  announcementsData,
-  notificationsData,
-} from "../../constants/faqData";
+import { Tabs, List, Space, Empty, Spin } from "antd";
 import "./index.css";
 import CustomHeader from "../../components/CustomHeader";
 import { getNotificationAndAnnouncements } from "../../services/api";
@@ -45,9 +40,9 @@ const AnnouncementsAndNotifications = () => {
   const getItemIcon = (type) => {
     switch (type) {
       case "notification":
-        return <img src="notifications.png" alt="notification icon" />;
+        return <img src="notifications.png" alt="notification icon" className="item-icon" />;
       default:
-        return <img src="announcements.png" alt="announcement icon" />;
+        return <img src="announcements.png" alt="announcement icon" className="item-icon" />;
     }
   };
 
@@ -61,8 +56,11 @@ const AnnouncementsAndNotifications = () => {
 
   const renderList = (items) => (
     <List
-      loading={loading}
+      loading={{ spinning: loading, indicator: <Spin size="large" /> }}
       dataSource={items}
+      locale={{
+        emptyText: <Empty description="No items to display" image={Empty.PRESENTED_IMAGE_SIMPLE} />
+      }}
       renderItem={(item) => (
         <List.Item key={item.id} className="list-item">
           <List.Item.Meta
@@ -77,7 +75,9 @@ const AnnouncementsAndNotifications = () => {
               <div>
                 <p className="item-description">{item.content}</p>
                 <small className="item-meta">
-                {`${item.type || 'Announcement'} • ${formatDate(item.created_at)}`}
+                  <span className="item-type">{item.type || 'Announcement'}</span>
+                  <span className="item-dot">•</span>
+                  <span className="item-date">{formatDate(item.created_at)}</span>
                 </small>
               </div>
             }
@@ -88,7 +88,7 @@ const AnnouncementsAndNotifications = () => {
   );
 
   const getAllItems = () => {
-    return [...data.announcements, ...data.notifications].sort((a, b) => 
+    return [...data.announcements, ...data.notifications].sort((a, b) =>
       new Date(b.created_at) - new Date(a.created_at)
     );
   };

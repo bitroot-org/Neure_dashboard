@@ -180,6 +180,42 @@
   background: linear-gradient(45deg, #444, #333);
   border-radius: 4px;
   margin-right: 16px;
+  position: relative;
+  overflow: hidden;
+}
+
+.soundscapes-tune-thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.soundscapes-tune-playing-indicator {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: #1DB954; /* Spotify green */
+  font-size: 10px;
+  padding: 2px 4px;
+  text-align: center;
+}
+
+.soundscapes-tune-play-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  margin-right: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.soundscapes-tune-play-button img {
+  width: 24px;
+  height: 24px;
 }
 
 .soundscapes-tune-info {
@@ -333,4 +369,167 @@
     grid-template-columns: repeat(2, 1fr);
     gap: 32px;
   }
+}
+
+/* Responsive styles */
+@media screen and (max-width: 1024px) {
+  .soundscapes-container {
+    padding: 20px;
+  }
+
+  .soundscapes-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .soundscapes-search {
+    width: 100%;
+  }
+
+  .soundscapes-carousel {
+    padding: 20px 0;
+  }
+
+  .soundscapes-carousel-content {
+    gap: 15px;
+  }
+
+  .soundscapes-carousel-card {
+    min-width: 200px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .soundscapes-container {
+    padding: 15px;
+  }
+
+  .soundscapes-title {
+    font-size: 24px;
+  }
+
+  .soundscapes-carousel-card {
+    min-width: 160px;
+  }
+
+  .soundscapes-tune-item {
+    padding: 10px;
+  }
+
+  .soundscapes-player {
+    padding: 10px;
+    flex-direction: column;
+    gap: 10px;
+    height: auto;
+  }
+
+  .soundscapes-now-playing {
+    width: 100%;
+  }
+
+  .soundscapes-player-controls {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .soundscapes-player-actions {
+    display: none; /* Hide on mobile to save space */
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .soundscapes-container {
+    padding: 10px 0;
+  }
+
+  .soundscapes-title {
+    font-size: 20px;
+  }
+
+  .soundscapes-carousel-controls {
+    display: none; /* Hide carousel controls on small screens */
+  }
+
+  .soundscapes-carousel-content {
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding-bottom: 10px;
+  }
+
+  .soundscapes-carousel-card {
+    min-width: 140px;
+    scroll-snap-align: start;
+  }
+
+  .soundscapes-tune-thumbnail {
+    width: 40px;
+    height: 40px;
+  }
+
+  .soundscapes-tune-info h3 {
+    font-size: 14px;
+  }
+
+  .soundscapes-tune-info p {
+    font-size: 12px;
+  }
+
+  .soundscapes-player {
+    padding: 8px;
+  }
+
+  .soundscapes-track-info h3 {
+    font-size: 14px;
+  }
+
+  .soundscapes-track-info p {
+    font-size: 12px;
+  }
+
+  .soundscapes-player-controls button {
+    width: 32px;
+    height: 32px;
+  }
+
+  .soundscapes-player-controls button img {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+/* Menu styles */
+.soundscapes-menu-container {
+  position: relative;
+}
+
+.soundscapes-menu {
+  position: absolute;
+  right: 0;
+  top: 100%;
+  background: #2d2f39;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  z-index: 100;
+  min-width: 150px;
+  overflow: hidden;
+}
+
+.soundscapes-footer-menu {
+  bottom: 100%;
+  top: auto;
+  right: 0;
+}
+
+.soundscapes-menu-item {
+  padding: 10px 15px;
+  cursor: pointer;
+  color: #fff;
+  font-size: 14px;
+  transition: background-color 0.2s;
+}
+
+.soundscapes-menu-item:hover {
+  background-color: rgba(255, 255, 255, 0.1);
 }

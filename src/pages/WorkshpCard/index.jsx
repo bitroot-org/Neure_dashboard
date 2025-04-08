@@ -61,6 +61,16 @@ const WorkshopCard = () => {
     fetchWorkshopDetails();
   }, [workshopId]);
 
+  // Add this handler function before the return statement
+  const handleDownload = () => {
+    if (workshop.pdf_url) {
+      // Open PDF in new tab
+      window.open(workshop.pdf_url, '_blank');
+    } else {
+      message.error('PDF not available');
+    }
+  };
+
   if (loading) return <Spin size="large" />;
   if (!workshop) return <div>Workshop not found</div>;
 
@@ -101,8 +111,12 @@ const WorkshopCard = () => {
               <EnvironmentOutlined className="detail-icon" />
               <Text>{workshop.location}</Text>
             </div> */}
-            <button className='download-button'>
-              Download worksheet
+            <button 
+              className='download-button' 
+              onClick={handleDownload}
+              disabled={!workshop.pdf_url}
+            >
+              {workshop.pdf_url ? 'Download worksheet' : 'No worksheet available'}
             </button>
           </div>
 

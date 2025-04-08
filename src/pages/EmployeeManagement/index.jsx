@@ -207,11 +207,6 @@ const EmployeeDashboard = () => {
           <Card key={index} className="metric-card">
             <div className="metric-header">
               <h3 className="metric-title">{metric.title}</h3>
-              {/* <button>
-                  <span className="dot"></span>
-                  <span className="dot"></span>
-                  <span className="dot"></span>
-                </button> */}
             </div>
 
             <div className="employee-metric-data">

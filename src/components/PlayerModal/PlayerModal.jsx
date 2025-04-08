@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { HeartOutlined, EllipsisOutlined } from '@ant-design/icons';
 import './PlayerModal.css';
 
-const PlayerModal = ({ isOpen, onClose, track, audio }) => {
+const PlayerModal = ({ isOpen, onClose, track, audio, onPrevious, onNext }) => {
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
 
@@ -42,6 +42,21 @@ const PlayerModal = ({ isOpen, onClose, track, audio }) => {
     }
   }, [audio]);
 
+  // Handle click outside to close modal
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (isOpen && !event.target.closest('.soundscape-modal-content') &&
+          !event.target.closest('.soundscape-modal-close')) {
+        onClose();
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isOpen, onClose]);
+
   const togglePlayPause = () => {
     if (!audio) return;
 
@@ -71,14 +86,22 @@ const PlayerModal = ({ isOpen, onClose, track, audio }) => {
     }
   };
 
-  if (!isOpen) return null;
+  // Don't render if modal is not open or track is null/undefined
+  if (!isOpen || !track) return null;
+
+  // Create a default track object if some properties are missing
+  const safeTrack = {
+    title: track.title || "Unknown Track",
+    author: track.author || "",
+    image: track.image || "https://plus.unsplash.com/premium_photo-1683140707316-42df87760f3f?w=500&auto=format&fit=crop&q=60"
+  };
 
   return (
     <div className="soundscape-modal-overlay">
       <div className="player-modal">
         <div
           className="soundscape-modal-background"
-          style={{ backgroundImage: `url(${track?.imageUrl || 'https://plus.unsplash.com/premium_photo-1683140707316-42df87760f3f?w=500&auto=format&fit=crop&q=60'})` }}
+          style={{ backgroundImage: `url(${safeTrack.image})` }}
         />
         <div className="modal-header">
           <div className="now-playing-text">Now playing</div>
@@ -93,16 +116,16 @@ const PlayerModal = ({ isOpen, onClose, track, audio }) => {
           <div className="track-conatiner">
             <div className="track-image-container">
               <img
-                src={track.image || "https://plus.unsplash.com/premium_photo-1683140707316-42df87760f3f?w=500&auto=format&fit=crop&q=60"}
-                alt={track.title}
+                src={safeTrack.image}
+                alt={safeTrack.title}
                 className="track-image"
               />
             </div>
 
             <div className="track-details">
               <div className='track-info'>
-                <h2 className="track-title">{track.title}</h2>
-                {track.author && <p className="track-author">{track.author}</p>}
+                <h2 className="track-title">{safeTrack.title}</h2>
+                {safeTrack.author && <p className="track-author">{safeTrack.author}</p>}
               </div>
 
               <div className="track-actions">
@@ -138,7 +161,11 @@ const PlayerModal = ({ isOpen, onClose, track, audio }) => {
                   <path d="M18 9L21 12L18 15M18 4L21 7L18 10M3 20L12 12L21 20M3 4L12 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </button>
-              <button className="control-button previous">
+              <button
+                className="control-button previous"
+                onClick={onPrevious}
+                title="Previous track"
+              >
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M19 20L9 12L19 4V20Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                   <path d="M5 4V20" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
@@ -156,7 +183,11 @@ const PlayerModal = ({ isOpen, onClose, track, audio }) => {
                   </svg>
                 )}
               </button>
-              <button className="control-button next">
+              <button
+                className="control-button next"
+                onClick={onNext}
+                title="Next track"
+              >
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M5 4L15 12L5 20V4Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                   <path d="M19 4V20" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
