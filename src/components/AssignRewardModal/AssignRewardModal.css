@@ -3,6 +3,8 @@
   border-radius: 12px;
   color: white;
   border: 1px solid rgba(255, 255, 255, 0.2);
+  width: 100%;
+  max-width: 100%;
 }
 
 
@@ -35,6 +37,60 @@
   height: 48px;
   max-width: 400px; /* adjust as needed */
   margin: 18px 0px;
+}
+
+/* Responsive styles */
+@media screen and (max-width: 768px) {
+  .assign-modal-header h3 {
+    font-size: 20px;
+  }
+
+  .reward-type {
+    font-size: 14px;
+  }
+
+  .employee-search-container {
+    height: 42px;
+    margin: 14px 0px;
+  }
+
+  .employee-search {
+    font-size: 14px;
+    padding: 6px 6px 6px 32px;
+  }
+
+  .assign-reward-modal .ant-table {
+    font-size: 14px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .assign-modal-header h3 {
+    font-size: 18px;
+  }
+
+  .reward-type {
+    font-size: 12px;
+  }
+
+  .employee-search-container {
+    height: 38px;
+    margin: 12px 0px;
+  }
+
+  .employee-search {
+    font-size: 12px;
+    padding: 4px 4px 4px 28px;
+  }
+
+  .assign-reward-modal .ant-table {
+    font-size: 12px;
+  }
+
+  .assign-reward-modal .ant-modal-close {
+    top: 10px !important;
+    right: 10px !important;
+  }
 }
 
 .employee-search {

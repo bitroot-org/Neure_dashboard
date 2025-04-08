@@ -62,10 +62,37 @@ const WorkshopCard = () => {
   }, [workshopId]);
 
   // Add this handler function before the return statement
+  // const handleDownload = () => {
+  //   if (workshop.pdf_url) {
+  //     // Create an anchor element
+  //     const link = document.createElement('a');
+  //     link.href = workshop.pdf_url;
+      
+  //     // Set download attribute with filename (extract from URL or use default)
+  //     const fileName = workshop.pdf_url.split('/').pop() || `${workshop.title.replace(/\s+/g, '_')}.pdf`;
+  //     link.download = fileName;
+      
+  //     // Append to body, click and remove
+  //     document.body.appendChild(link);
+  //     link.click();
+  //     document.body.removeChild(link);
+  //   } else {
+  //     message.error('PDF not available');
+  //   }
+  // };
+
   const handleDownload = () => {
     if (workshop.pdf_url) {
-      // Open PDF in new tab
-      window.open(workshop.pdf_url, '_blank');
+      try {
+        // Open in a new tab instead of trying to force download
+        window.open(workshop.pdf_url, '_blank');
+        
+        // Inform the user
+        message.info('Opening PDF in a new tab');
+      } catch (error) {
+        console.error('PDF access error:', error);
+        message.error('Unable to access the PDF. The file might be restricted.');
+      }
     } else {
       message.error('PDF not available');
     }

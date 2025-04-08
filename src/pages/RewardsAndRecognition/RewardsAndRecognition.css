@@ -2,12 +2,13 @@
   padding: 80px;
   max-width: 100%;
   margin: 0 auto;
-  
+  background-color: #191A20;
+  min-height: 100vh;
 }
 
 .rewards-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
   gap: 30px;
   padding: 20px 0;
 }
@@ -84,18 +85,104 @@
 }
 
 /* Mobile Responsiveness */
-@media (max-width: 768px) {
-  .rewards-grid {
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+@media (max-width: 1024px) {
+  .rewardRecognition-dashboard-container {
+    padding: 40px;
   }
-  
-  .reward-card {
-    padding: 15px;
+
+  .rewards-grid {
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 24px;
+  }
+
+  .rewardRecognition-card {
+    height: 260px;
+  }
+
+  .card-title h3 {
+    font-size: 22px;
+  }
+}
+
+@media (max-width: 768px) {
+  .rewardRecognition-dashboard-container {
+    padding: 20px;
+  }
+
+  .rewards-grid {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    padding: 16px 0;
+  }
+
+  .rewardRecognition-card {
+    padding: 16px;
+    height: 240px;
+    gap: 12px;
+  }
+
+  .card-icon {
+    width: 56px;
+    height: 56px;
+    margin-bottom: 8px;
+  }
+
+  .card-title h3 {
+    font-size: 20px;
+  }
+
+  .card-actions {
+    padding: 0 16px;
+  }
+
+  .btn-details, .btn-send {
+    height: 44px;
+    font-size: 15px;
   }
 }
 
 @media (max-width: 480px) {
+  .rewardRecognition-dashboard-container {
+    padding: 16px;
+  }
+
   .rewards-grid {
     grid-template-columns: 1fr;
+    gap: 16px;
+    padding: 12px 0;
+  }
+
+  .rewardRecognition-card {
+    padding: 16px;
+    height: 220px;
+    gap: 10px;
+  }
+
+  .card-icon {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 6px;
+  }
+
+  .card-title h3 {
+    font-size: 18px;
+  }
+
+  .card-actions {
+    padding: 0 12px;
+    gap: 8px;
+  }
+
+  .btn-details, .btn-send {
+    height: 40px;
+    font-size: 14px;
+    padding: 6px 12px;
+  }
+
+  .loading-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
   }
 }

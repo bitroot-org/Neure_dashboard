@@ -4,6 +4,8 @@
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 18px;
   color: white;
+  width: 100%;
+  max-width: 100%;
 }
 
 .reward-modal .ant-modal-close {
@@ -84,6 +86,44 @@
 /* Table Styles */
 .reward-history-table {
   color: white;
+}
+
+/* Responsive styles */
+@media screen and (max-width: 768px) {
+  .reward-modal .ant-modal-title {
+    font-size: 20px;
+  }
+
+  .terms-container {
+    font-size: 16px;
+  }
+
+  .reward-history-table .ant-table {
+    font-size: 14px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .reward-modal .ant-modal-title {
+    font-size: 18px;
+  }
+
+  .reward-modal .ant-modal-close {
+    top: 10px !important;
+    right: 10px !important;
+  }
+
+  .terms-container {
+    font-size: 14px;
+  }
+
+  .term-item {
+    margin-bottom: 8px;
+  }
+
+  .reward-history-table .ant-table {
+    font-size: 12px;
+  }
 }
 
 .reward-history-table .ant-table {

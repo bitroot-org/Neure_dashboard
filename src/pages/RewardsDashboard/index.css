@@ -1,6 +1,7 @@
 .rewards-dashboard {
   padding: 80px;
   min-height: 100vh;
+  background-color: #191a20;
 }
 
 .rewards-metrics-section {
@@ -105,7 +106,7 @@
   left: 0;
   top: 0;
   bottom: 0;
-  width: 4px; 
+  width: 4px;
   border-radius: 2px;
   height: 90%;
 }
@@ -183,58 +184,113 @@
 
 /* Responsive styles */
 @media screen and (max-width: 1024px) {
+  .rewards-dashboard {
+    padding: 40px;
+  }
+
   .rewards-metrics-section {
     grid-template-columns: 1fr 1fr;
+    gap: 20px;
   }
-  
+
   .rewards-employees-card {
     grid-column: span 2;
     height: 380px;
   }
+
+  .metrics-graph {
+    height: 500px;
+  }
 }
 
 @media screen and (max-width: 768px) {
-  .dashboard-container {
-    padding: 16px;
+  .rewards-dashboard {
+    padding: 20px;
   }
 
-  .metrics-section {
+  .rewards-metrics-section {
     grid-template-columns: 1fr;
     gap: 16px;
   }
-  
-  .employees-card {
+
+  .rewards-employees-card {
     grid-column: auto;
+    height: auto;
   }
-  
-  .happiness-content h2 {
+
+  .rewards-happiness-info h2 {
     font-size: 36px;
   }
-  
+
   .graph-header {
     flex-direction: column;
     gap: 12px;
     align-items: flex-start;
   }
-  
-  .stat-content {
+
+  .rewards-stat-content {
     flex-direction: column;
     text-align: center;
+    align-items: center;
   }
-  
+
   .stat-info {
     text-align: center;
+  }
+
+  .metrics-graph {
+    height: 400px;
+  }
+
+  .employee-name {
+    font-size: 18px;
+  }
+
+  .employee-points {
+    font-size: 14px;
   }
 }
 
 /* Adjust container padding for very small screens */
 @media screen and (max-width: 480px) {
-  .dashboard-container {
-    padding: 12px;
+  .rewards-dashboard {
+    padding: 16px;
   }
-  
-  .metrics-section {
+
+  .rewards-metrics-section {
     gap: 12px;
+  }
+
+  .rewards-happiness-info h2 {
+    font-size: 32px;
+  }
+
+  .rewards-happiness-info p {
+    font-size: 16px;
+  }
+
+  .stat-info h3 {
+    font-size: 20px;
+  }
+
+  .stat-info p {
+    font-size: 16px;
+  }
+
+  .metrics-graph {
+    height: 300px;
+  }
+
+  .graph-header h3 {
+    font-size: 18px;
+  }
+
+  .employee-name {
+    font-size: 16px;
+  }
+
+  .employee-points {
+    font-size: 12px;
   }
 }
 
