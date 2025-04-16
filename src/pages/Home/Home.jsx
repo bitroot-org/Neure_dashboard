@@ -32,6 +32,7 @@ import {
   getCompanyMetrics,
 } from "../../services/api";
 import TermsModal from "../../components/TermsModal";
+import { motion } from "framer-motion";
 
 const { Header, Content, Footer } = Layout;
 
@@ -240,55 +241,79 @@ const Home = () => {
     return name.substring(0, maxLength) + "...";
   };
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2, // adds delay between children animations
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: {
+      opacity: 0,
+      y: 20,
+      scale: 0.95,
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: {
+        type: "spring",
+        duration: 0.5,
+      },
+    },
+  };
+
   return (
     <Layout className="main-dashboard-layout">
       <div className="main-header">
         <div className="main-company-title">{metricsData?.companyName}</div>
         <div className="main-header-right">
-            <div
-              className="main-header-button"
-              onClick={() => navigate("/soundscapes")}
-            >
-              <img src="/MusicNotes.png" />
-              <h3>Soundscapes</h3>
-            </div>
-            <div
-              className="main-header-button"
-              onClick={() => navigate("/employeesManagement")}
-            >
-              <img src="/UserGear.png" style={{ cursor: "pointer" }} />
-              <h3>Employess</h3>
-            </div>
-            <div
-              className="main-header-button"
-              onClick={handleSettingsClick}
-              style={{ cursor: "pointer" }}
-            >
-              <img src="/GearSix.png" />
-              <h3>Settings</h3>
-            </div>
+          <div
+            className="main-header-button"
+            onClick={() => navigate("/soundscapes")}
+          >
+            <img src="/MusicNotes.png" />
+            <h3>Soundscapes</h3>
+          </div>
+          <div
+            className="main-header-button"
+            onClick={() => navigate("/employeesManagement")}
+          >
+            <img src="/UserGear.png" style={{ cursor: "pointer" }} />
+            <h3>Employess</h3>
+          </div>
+          <div
+            className="main-header-button"
+            onClick={handleSettingsClick}
+            style={{ cursor: "pointer" }}
+          >
+            <img src="/GearSix.png" />
+            <h3>Settings</h3>
+          </div>
 
-            <div className="main-user-info">
-              <img
-                className="main-avatar"
-                src={metricsData?.company_profile_url}
-              />
-              <h3 className="main-user-name">
-                {truncateName(
-                  `${user.fullName.firstName}`,
-                  15
-                )}
-                <Dropdown
-                  menu={{ items: menuItems, onClick: handleMenuClick }}
-                  placement="bottomRight"
-                  trigger={["click"]}
-                  overlayStyle={{ minWidth: "160px" }}
-                >
-                  <DownOutlined style={{ marginLeft: 18, cursor: "pointer" }} />
-                </Dropdown>
-              </h3>
-            </div>
-            <MenuOutlined className="hamburger-menu" onClick={toggleMenu} />
+          <div className="main-user-info">
+            <img
+              className="main-avatar"
+              src={metricsData?.company_profile_url}
+            />
+            <h3 className="main-user-name">
+              {truncateName(`${user.fullName.firstName}`, 15)}
+              <Dropdown
+                menu={{ items: menuItems, onClick: handleMenuClick }}
+                placement="bottomRight"
+                trigger={["click"]}
+                overlayStyle={{ minWidth: "160px" }}
+              >
+                <DownOutlined style={{ marginLeft: 18, cursor: "pointer" }} />
+              </Dropdown>
+            </h3>
+          </div>
+          <MenuOutlined className="hamburger-menu" onClick={toggleMenu} />
         </div>
       </div>
 
@@ -340,10 +365,20 @@ const Home = () => {
         </div>
       )}
 
-      <div className="main-content">
+      <motion.div
+        className="main-content"
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+      >
+        {" "}
         <div className="main-dashboard-left">
           <div className="main-workshops-content">
-            <div className="main-workshop-banner">
+            <motion.div
+              className="main-workshop-banner"
+              variants={itemVariants}
+            >
+              {" "}
               <div className="main-workshops-header">
                 <h2>Upcoming Workshops</h2>
                 <Button
@@ -371,29 +406,33 @@ const Home = () => {
                   endTime={workshop?.end_time}
                 />
               </div>
-            </div>
+            </motion.div>
 
             <div className="main-bottom-cards">
               <div className="main-left-cards">
-                <div
+                <motion.div
+                  variants={itemVariants}
                   className="main-announcement-card"
                   onClick={() => navigate("/announcements")}
                   style={{ cursor: "pointer" }}
                 >
                   <h3>Anouncements</h3>
                   <img src="announcement.svg" alt="marketing icon" />
-                </div>
+                </motion.div>
 
-                <div
+                <motion.div
+                  variants={itemVariants}
                   className="main-support-card"
                   onClick={() => navigate("/support")}
                   style={{ cursor: "pointer" }}
                 >
                   <img src="support.svg" alt="support icon" />
                   <h3>Help & support</h3>
-                </div>
+                </motion.div>
               </div>
-              <div
+
+              <motion.div
+                variants={itemVariants}
                 className="main-rewards-card"
                 onClick={() => navigate("/rewardsAndRecognition")}
                 style={{ cursor: "pointer" }}
@@ -413,34 +452,37 @@ const Home = () => {
                 </div>
 
                 <img src="Rewards.svg" alt="Rewards and Recognition" />
-              </div>
+              </motion.div>
             </div>
           </div>
         </div>
-
+        
         <div className="main-dashboard-right">
           <div className="main-metrics-cards">
-            <CompanyHealthGauge
-              className="main-company-health-gauge"
-              value={companyData.stress_level}
-              maxValue={100}
-              title="Company Well-being Index"
-              status={getStressStatus(companyData.stress_level)}
-              onClick={handleCompanyGaugeClick}
-              style={{ cursor: "pointer" }}
-            />
+            <motion.div variants={itemVariants}>
+              <CompanyHealthGauge
+                className="main-company-health-gauge"
+                value={companyData.stress_level}
+                maxValue={100}
+                title="Company Well-being Index"
+                status={getStressStatus(companyData.stress_level)}
+                onClick={handleCompanyGaugeClick}
+                style={{ cursor: "pointer" }}
+              />
+            </motion.div>
 
-            <div
+            <motion.div
+              variants={itemVariants}
               className="main-resource-card"
               onClick={() => navigate("/resources")}
               style={{ cursor: "pointer" }}
             >
               <h3>Resources</h3>
               <img src="./resources.svg" alt="Rewards and Recognition" />
-            </div>
+            </motion.div>
           </div>
 
-          <div className="main-roi-card">
+          <motion.div variants={itemVariants} className="main-roi-card">
             <div className="main-roi-header">
               <h3>ROI</h3>
               <span>Compare to prev. month</span>
@@ -450,34 +492,66 @@ const Home = () => {
                 <span>Stress Levels</span>
                 <div className="main-percentage">
                   {Math.round(companyData.stress_level)}%{" "}
-                  <img src={companyData.stress_trend === "no_change" ? "Upward.png" : companyData.stress_trend === "up" ? "Upward.png" : "/Downward.png"} />
+                  <img
+                    src={
+                      companyData.stress_trend === "no_change"
+                        ? "Upward.png"
+                        : companyData.stress_trend === "up"
+                        ? "Upward.png"
+                        : "/Downward.png"
+                    }
+                  />
                 </div>
               </div>
               <div className="main-roi-item">
                 <span>Psychological Safety Index (PSI)</span>
                 <div className="main-percentage">
                   {Math.round(companyData.psychological_safety_index)}%{" "}
-                  <img src={companyData.psi_trend === "no_change" ? "Upward.png" : companyData.psi_trend === "up" ? "Upward.png" : "/Downward.png"} />
+                  <img
+                    src={
+                      companyData.psi_trend === "no_change"
+                        ? "Upward.png"
+                        : companyData.psi_trend === "up"
+                        ? "Upward.png"
+                        : "/Downward.png"
+                    }
+                  />
                 </div>
               </div>
               <div className="main-roi-item">
                 <span>Employee Retention</span>
                 <div className="main-percentage">
                   {Math.round(companyData.retention_rate)}%{" "}
-                  <img src={companyData.retention_trend === "no_change" ? "Upward.png" : companyData.retention_trend === "up" ? "Upward.png" : "/Downward.png"} />
+                  <img
+                    src={
+                      companyData.retention_trend === "no_change"
+                        ? "Upward.png"
+                        : companyData.retention_trend === "up"
+                        ? "Upward.png"
+                        : "/Downward.png"
+                    }
+                  />
                 </div>
               </div>
               <div className="main-roi-item">
                 <span>Employee Engagement</span>
                 <div className="main-percentage">
                   {Math.round(companyData.engagement_score)}%{" "}
-                  <img src={companyData.engagement_trend === "no_change" ? "Upward.png" : companyData.engagement_trend === "up" ? "Upward.png" : "/Downward.png"} />
+                  <img
+                    src={
+                      companyData.engagement_trend === "no_change"
+                        ? "Upward.png"
+                        : companyData.engagement_trend === "up"
+                        ? "Upward.png"
+                        : "/Downward.png"
+                    }
+                  />
                 </div>
               </div>
             </div>
-          </div>
+          </motion.div>
         </div>
-      </div>
+      </motion.div>
 
       <Footer className="main-footer">
         <div className="main-footer-content">
