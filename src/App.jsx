@@ -15,7 +15,7 @@ import Resources from "./pages/Resources";
 import RewardsDashboard from "./pages/RewardsDashboard";
 import CompanyProfile from "./pages/CompanyProfile";
 import WorkshopCard from "./pages/WorkshpCard";
-import DashboardLayout from "./pages/MainPage";
+import DashboardLayout from "./pages/Home/Home";
 import UserProtectedWrapper from "./pages/UserProtectedWrapper";
 import EventDashboard from "./pages/EventDashboard";
 import Settings from "./pages/Settings";

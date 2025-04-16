@@ -35,7 +35,7 @@ import TermsModal from "../../components/TermsModal";
 
 const { Header, Content, Footer } = Layout;
 
-const DashboardLayout = () => {
+const Home = () => {
   const [hasNotifications, setHasNotifications] = useState(false);
   const [workshop, setWorkshop] = useState(null);
   const [totalPages, setTotalPages] = useState(1);
@@ -498,4 +498,4 @@ const DashboardLayout = () => {
   );
 };
 
-export default DashboardLayout;
+export default Home;
