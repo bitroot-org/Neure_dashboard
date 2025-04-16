@@ -102,3 +102,47 @@
 .filter-select .ant-select-arrow {
   color: rgba(255, 255, 255, 0.65) !important;
 }
+
+/* Add these new styles */
+.attendee-button {
+  height: 48px;
+  padding: 0 24px;
+  border-radius: 70px;
+  font-size: 16px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 140px;
+}
+
+.check-in {
+  background: linear-gradient(180deg, #FFFFFF 0%, #797B87 100%) !important;
+  border: none !important;
+  color: #000000 !important;
+}
+
+/* Update disabled state styles */
+.attendee-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed !important;
+}
+
+/* Ensure gradient remains visible when disabled */
+.check-in:disabled {
+  background: linear-gradient(180deg, #FFFFFF 0%, #797B87 100%) !important;
+  color: #000000 !important;
+  opacity: 0.6;
+}
+
+.view-attendees {
+  background: transparent !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: #ffffff !important;
+  margin-right: 12px;
+}
+
+/* Optional: Style for disabled button hover state */
+.attendee-button:disabled:hover {
+  opacity: 0.6;
+}

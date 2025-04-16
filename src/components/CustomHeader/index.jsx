@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Select } from 'antd';
+import { Button, Select, Tooltip } from 'antd';
 import { ArrowLeftOutlined, EditOutlined, FilterOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import './index.css';
@@ -9,11 +9,15 @@ const CustomHeader = ({
   showBackButton = true,
   showEditButton = false,
   showFilterButton = false,
+  showAttendeeButtons = false,
   onEditClick,
+  onViewAttendeesClick,
+  onCheckInClick,
   defaultFilterValue = 'Monthly',
   buttonText = 'Edit',
   buttonDisabled = false,
-  buttonLoading = false
+  buttonLoading = false,
+  buttonTooltip = ''
 }) => {
   const navigate = useNavigate();
   const [filterValue, setFilterValue] = React.useState(defaultFilterValue);
@@ -63,6 +67,29 @@ const CustomHeader = ({
               className="filter-select"
               suffixIcon={<FilterOutlined style={{ fontSize: '16px', color: '#fff' }} />}
             />
+          )}
+
+          {showAttendeeButtons && (
+            <>
+              <Tooltip title={buttonTooltip}>
+                <Button
+                  onClick={onViewAttendeesClick}
+                  className="attendee-button view-attendees"
+                  disabled={buttonDisabled}
+                >
+                  View attendees
+                </Button>
+              </Tooltip>
+              <Tooltip title={buttonTooltip}>
+                <Button
+                  onClick={onCheckInClick}
+                  className="attendee-button check-in"
+                  disabled={buttonDisabled}
+                >
+                  Check-in
+                </Button>
+              </Tooltip>
+            </>
           )}
 
           {showEditButton && (

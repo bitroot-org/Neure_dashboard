@@ -1,36 +1,53 @@
 import React, { useState, useEffect } from "react";
 import { Tabs, List, Space } from "antd";
-import {
-  allData,
-  announcementsData,
-  notificationsData,
-} from "../../constants/faqData";
 import "./index.css";
 import CustomHeader from "../../components/CustomHeader";
-import { getNotificationAndAnnouncements } from "../../services/api";
+import { getNotificationAndAnnouncements, getAnnouncements, getNotifications } from "../../services/api";
 
 const AnnouncementsAndNotifications = () => {
   const [activeTab, setActiveTab] = useState("all");
   const [data, setData] = useState({ announcements: [], notifications: [] });
   const [loading, setLoading] = useState(true);
 
+  const companyId = localStorage.getItem("companyId");
+  const userData = JSON.parse(localStorage.getItem("userData"));
+  const userId = userData.id;
+  
+
   const fetchData = async (tab) => {
     try {
       setLoading(true);
       const params = {
-        company_id: 1, // Replace with actual company_id
-        page: 1,
+        companyId: companyId, // Replace with actual company_id
+        // userId: userId,    // Replace with actual user_id
+        currentPage: 1,
         limit: 10,
       };
 
       if (tab === "announcements") {
-        params.is_announcement = 1;
+        const response = await getAnnouncements(params);
+        setData(prevData => ({
+          ...prevData,
+          announcements: response.data.announcements
+        }));
       } else if (tab === "notifications") {
-        params.is_notification = 1;
+        const response = await getNotifications(params);
+        setData(prevData => ({
+          ...prevData,
+          notifications: response.data.notifications
+        }));
+      } else {
+        // For "all" tab, fetch both
+        const [announcementsRes, notificationsRes] = await Promise.all([
+          getAnnouncements(params),
+          getNotifications(params)
+        ]);
+        
+        setData({
+          announcements: announcementsRes.data.announcements,
+          notifications: notificationsRes.data.notifications || []
+        });
       }
-
-      const response = await getNotificationAndAnnouncements(params);
-      setData(response.data);
     } catch (error) {
       console.error("Error fetching data:", error);
     } finally {
@@ -42,13 +59,11 @@ const AnnouncementsAndNotifications = () => {
     fetchData(activeTab);
   }, [activeTab]);
 
-  const getItemIcon = (type) => {
-    switch (type) {
-      case "notification":
-        return <img src="notifications.png" alt="notification icon" />;
-      default:
-        return <img src="announcements.png" alt="announcement icon" />;
+  const getItemIcon = (type, item) => {
+    if (item.source === 'notification' || item.type) {
+      return <img src="/notifications.png" alt="notification icon" />;
     }
+    return <img src="/announcements.png" alt="announcement icon" />;
   };
 
   const formatDate = (dateString) => {
@@ -66,7 +81,7 @@ const AnnouncementsAndNotifications = () => {
       renderItem={(item) => (
         <List.Item key={item.id} className="list-item">
           <List.Item.Meta
-            avatar={getItemIcon(item.type)}
+            avatar={getItemIcon(item.type, item)}
             title={
               <Space>
                 <span className="item-title">{item.title}</span>
@@ -77,7 +92,7 @@ const AnnouncementsAndNotifications = () => {
               <div>
                 <p className="item-description">{item.content}</p>
                 <small className="item-meta">
-                {`${item.type || 'Announcement'} • ${formatDate(item.created_at)}`}
+                  {`${item.type || item.audience_type || 'Notification'} • ${formatDate(item.created_at)}`}
                 </small>
               </div>
             }
@@ -88,9 +103,18 @@ const AnnouncementsAndNotifications = () => {
   );
 
   const getAllItems = () => {
-    return [...data.announcements, ...data.notifications].sort((a, b) => 
-      new Date(b.created_at) - new Date(a.created_at)
-    );
+    // Combine both arrays and mark their source
+    const combinedItems = [
+      ...data.announcements.map(item => ({ ...item, source: 'announcement' })),
+      ...data.notifications.map(item => ({ ...item, source: 'notification' }))
+    ];
+
+    // Sort by date in descending order (newest first)
+    return combinedItems.sort((a, b) => {
+      const dateA = new Date(a.created_at);
+      const dateB = new Date(b.created_at);
+      return dateB - dateA;
+    });
   };
 
   return (

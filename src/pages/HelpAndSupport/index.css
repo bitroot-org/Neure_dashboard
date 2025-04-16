@@ -1,8 +1,7 @@
 /* Base styles */
 .faq-container {
-  padding: 80px;
+  padding: 40px 80px;
   min-height: 100vh;
-  background-color: #191a20;
   overflow-x: hidden;
   color: white;
   width: 100%;

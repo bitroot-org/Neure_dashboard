@@ -28,12 +28,11 @@ const UserStats = ({ data, onClick, loading }) => {
   };
 
   return (
-    <Card className="stats-card" style={{ cursor: onClick ? 'pointer' : 'default' }} onClick={onClick}>
       <div className="stats-container">
-        <Title className="stats-title">Total users</Title>
+        <h1 className="stats-title">Total users</h1>
         
         <div className="total-number">
-          <Title className='user-count'>{data?.total_employees}</Title>
+          <h1 className='user-count'>{data?.total_employees}</h1>
         </div>
 
         <div className="users-status">
@@ -48,11 +47,10 @@ const UserStats = ({ data, onClick, loading }) => {
           </div>
         </div>
 
-        <Text className="last-updated">
+        <h1 className="last-updated">
           Last updated on {formatDate(data?.last_employee_joined)}
-        </Text>
+        </h1>
       </div>
-    </Card>
   );
 };
 

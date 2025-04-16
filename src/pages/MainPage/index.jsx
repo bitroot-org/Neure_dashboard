@@ -245,7 +245,6 @@ const DashboardLayout = () => {
       <div className="main-header">
         <div className="main-company-title">{metricsData?.companyName}</div>
         <div className="main-header-right">
-          <Space size={16} align="center">
             <div
               className="main-header-button"
               onClick={() => navigate("/soundscapes")}
@@ -276,7 +275,7 @@ const DashboardLayout = () => {
               />
               <h3 className="main-user-name">
                 {truncateName(
-                  `${user.fullName.firstName} ${user.fullName.lastName}`,
+                  `${user.fullName.firstName}`,
                   15
                 )}
                 <Dropdown
@@ -290,7 +289,6 @@ const DashboardLayout = () => {
               </h3>
             </div>
             <MenuOutlined className="hamburger-menu" onClick={toggleMenu} />
-          </Space>
         </div>
       </div>
 
@@ -452,28 +450,28 @@ const DashboardLayout = () => {
                 <span>Stress Levels</span>
                 <div className="main-percentage">
                   {Math.round(companyData.stress_level)}%{" "}
-                  <img src="/Downward.png" />
+                  <img src={companyData.stress_trend === "no_change" ? "Upward.png" : companyData.stress_trend === "up" ? "Upward.png" : "/Downward.png"} />
                 </div>
               </div>
               <div className="main-roi-item">
                 <span>Psychological Safety Index (PSI)</span>
                 <div className="main-percentage">
                   {Math.round(companyData.psychological_safety_index)}%{" "}
-                  <img src="Upward.png" />
+                  <img src={companyData.psi_trend === "no_change" ? "Upward.png" : companyData.psi_trend === "up" ? "Upward.png" : "/Downward.png"} />
                 </div>
               </div>
               <div className="main-roi-item">
                 <span>Employee Retention</span>
                 <div className="main-percentage">
                   {Math.round(companyData.retention_rate)}%{" "}
-                  <img src="Upward.png" />
+                  <img src={companyData.retention_trend === "no_change" ? "Upward.png" : companyData.retention_trend === "up" ? "Upward.png" : "/Downward.png"} />
                 </div>
               </div>
               <div className="main-roi-item">
                 <span>Employee Engagement</span>
                 <div className="main-percentage">
                   {Math.round(companyData.engagement_score)}%{" "}
-                  <img src="/Downward.png" />
+                  <img src={companyData.engagement_trend === "no_change" ? "Upward.png" : companyData.engagement_trend === "up" ? "Upward.png" : "/Downward.png"} />
                 </div>
               </div>
             </div>

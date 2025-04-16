@@ -14,6 +14,16 @@ const MetricLineChart = ({ data }) => {
     return null;
   };
 
+  const formatXAxisTick = (dateStr) => {
+    const [year, month] = dateStr.split('-');
+    const monthNames = {
+      '01': 'JAN', '02': 'FEB', '03': 'MAR', '04': 'APR',
+      '05': 'MAY', '06': 'JUN', '07': 'JUL', '08': 'AUG',
+      '09': 'SEP', '10': 'OCT', '11': 'NOV', '12': 'DEC'
+    };
+    return `${monthNames[month]} ${year.slice(2)}`;
+  };
+
   return (
     <div className="chart-container">
       <div className="chart-header">
@@ -26,20 +36,28 @@ const MetricLineChart = ({ data }) => {
       </div>
       <div className="chart-wrapper">
         <ResponsiveContainer width="100%" height={300}>
-          <LineChart data={data} margin={{ top: 20, right: 30, left: 0, bottom: 0 }}>
+          <LineChart data={data} margin={{ top: 20, right: 30, left: 0, bottom: 20 }}>
             <XAxis
               dataKey="date"
               axisLine={{ stroke: '#4B5563' }}
               tick={(props) => {
                 const { x, y, payload } = props;
                 return (
-                  <g transform={`translate(${x + 15},${y})`}> 
-                    <text x={0} y={0} dy={16} textAnchor="middle" fill="#9CA3AF">
-                      {payload.value}
+                  <g transform={`translate(${x},${y})`}> 
+                    <text 
+                      x={0} 
+                      y={0} 
+                      dy={12} 
+                      textAnchor="middle" 
+                      fill="#9CA3AF"
+                      fontSize="11px"
+                    >
+                      {formatXAxisTick(payload.value)}
                     </text>
                   </g>
                 );
               }}
+              interval={0}
               tickLine={false}
             />
             <YAxis
@@ -49,13 +67,19 @@ const MetricLineChart = ({ data }) => {
               tickFormatter={(value) => `${value}%`}
               tick={(props) => {
                 const { x, y, payload } = props;
-                // Skip rendering the first tick (0%)
                 if (payload.value === 0) {
                   return null;
                 }
                 return (
                   <g transform={`translate(${x},${y})`}>
-                    <text x={0} y={0} dx={-10} textAnchor="end" fill="#9CA3AF">
+                    <text 
+                      x={0} 
+                      y={0} 
+                      dx={-10} 
+                      textAnchor="end" 
+                      fill="#9CA3AF"
+                      fontSize="11px"
+                    >
                       {`${payload.value}%`}
                     </text>
                   </g>

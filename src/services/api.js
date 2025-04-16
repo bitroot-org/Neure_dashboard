@@ -125,10 +125,12 @@ export const getWorkshops = async (params) => {
   return response.data;
 };
 
-export const getWorkshopDetails = async (workshopId) => {
+export const getWorkshopDetails = async (workshopId, companyId) => {
+  console.log("Company id for workshop: ", companyId);
   const response = await api.get(`/workshop/getWorkshopDetails`, {
     params: {
       workshop_id: workshopId,
+      company_id: companyId,
     },
   });
   return response.data;
@@ -324,3 +326,66 @@ export const getDepartments = async () => {
     throw error.response?.data || error;
   }
 }
+
+export const getStressTrends = async (companyId) => {
+  try {
+    const response = await api.get(`/company/stress-trends/${companyId}`);
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error;
+  }
+}
+
+export const markAttendance = async (data) => {
+  try {
+    const response = await api.post(`/workshop/mark-attendance`, data);
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error;
+  }
+}
+
+export const getWorkshopAttendees = async (workshopId, companyId) => {
+  try {
+    const response = await api.get(`/workshop/attendance/${workshopId}`, {
+      params: {
+        comapny_id: companyId,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error;
+  }
+}
+
+
+export const getAnnouncements = async (params) => {
+  try {
+    const response = await api.get(`announcements/list`, {
+      params: {
+        company_id: params.companyId,
+        page: params.currentPage,
+        limit: params.limit,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error;
+  }
+};
+
+export const getNotifications = async (params) => {
+  try {
+    const response = await api.get(`notifications/list`, {
+      params: {
+        user_id: params.userId,
+        company_id: params.companyId,
+        page: params.currentPage,
+        limit: params.limit,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error;
+  }
+};

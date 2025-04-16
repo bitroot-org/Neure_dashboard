@@ -1,13 +1,12 @@
 import React, { useState, useEffect, useContext, useCallback } from "react";
-import { debounce } from 'lodash';
+import { debounce } from "lodash";
 import { Card, Table, Typography, message, Empty } from "antd";
 import { CompanyDataContext } from "../../context/CompanyContext";
 import { SearchOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import "./index.css";
 import CustomHeader from "../../components/CustomHeader";
-import CustomPagination from '../../components/CustomPagination';
-
+import CustomPagination from "../../components/CustomPagination";
 
 import { getTopPerformingEmployee } from "../../services/api";
 
@@ -15,7 +14,7 @@ const EmployeeDashboard = () => {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [employees, setEmployees] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const [pagination, setPagination] = useState({
     current: 1,
     pageSize: 10,
@@ -32,15 +31,14 @@ const EmployeeDashboard = () => {
     []
   );
 
-
-  const fetchEmployees = async (page = 1, pageSize = 10, searchTerm = '') => {
+  const fetchEmployees = async (page = 1, pageSize = 10, searchTerm = "") => {
     try {
       setLoading(true);
       const response = await getTopPerformingEmployee({
         companyId: companyData?.companyId,
         page,
         limit: pageSize,
-        search: searchTerm // Fix the search parameter name
+        search: searchTerm, // Fix the search parameter name
       });
 
       if (response.status) {
@@ -48,7 +46,7 @@ const EmployeeDashboard = () => {
         setPagination({
           current: response.pagination.current_page,
           pageSize: response.pagination.per_page,
-          total: response.pagination.total
+          total: response.pagination.total,
         });
       }
     } catch (error) {
@@ -81,11 +79,11 @@ const EmployeeDashboard = () => {
   }, []);
 
   const handleRemoveEmployee = () => {
-    navigate('/removeEmployee');
+    navigate("/removeEmployee");
   };
 
   const handleAddEmployee = () => {
-    navigate('/addNewEmployee');
+    navigate("/addNewEmployee");
   };
 
   const handlePageChange = (page) => {
@@ -96,22 +94,22 @@ const EmployeeDashboard = () => {
     {
       title: "Total Employees",
       value: companyData?.total_employees || 0, // Changed from totalEmployees
-      change: "+5%"
+      change: "+5%",
     },
     {
       title: "Departments",
       value: companyData?.total_departments || 0, // Changed from totalDepartments
-      change: "+30%"
+      change: "+30%",
     },
     {
       title: "Active Employees",
       value: companyData?.active_employees || 0, // Changed from activeEmployees
-      change: "+20%"
+      change: "+20%",
     },
     {
       title: "Inactive Employees",
       value: companyData?.inactive_employees || 0, // Changed from inactiveEmployees
-      change: "+10%"
+      change: "+10%",
     },
   ];
 
@@ -169,7 +167,7 @@ const EmployeeDashboard = () => {
       title: "Date added",
       dataIndex: "joined_date",
       key: "joined_date",
-      render: (date) => new Date(date).toISOString().split('T')[0],
+      render: (date) => new Date(date).toISOString().split("T")[0],
       sorter: (a, b) => new Date(a.dateAdded) - new Date(b.dateAdded),
     },
     {
@@ -204,31 +202,24 @@ const EmployeeDashboard = () => {
 
       <div className="metrics-container">
         {metrics.map((metric, index) => (
-          <Card key={index} className="metric-card">
-            <div className="metric-header">
-              <h3 className="metric-title">{metric.title}</h3>
-              {/* <button>
-                  <span className="dot"></span>
-                  <span className="dot"></span>
-                  <span className="dot"></span>
-                </button> */}
-            </div>
+          <div key={index} className="metric-card">
+            <h3 className="metric-title">{metric.title}</h3>
 
             <div className="employee-metric-data">
               <h1 className="employee-metric-value">{metric.value}</h1>
               <div
-                className={`employee-metric-change ${metric.change.includes("+")
-                  ? "positive"
-                  : metric.change === "0%"
+                className={`employee-metric-change ${
+                  metric.change.includes("+")
+                    ? "positive"
+                    : metric.change === "0%"
                     ? "neutral"
                     : "negative"
-                  }`}
+                }`}
               >
                 {metric.change}
               </div>
             </div>
-
-          </Card>
+          </div>
         ))}
       </div>
 
@@ -244,10 +235,7 @@ const EmployeeDashboard = () => {
           />
         </div>
         <div className="employee-action-buttons">
-          <button
-            className="add-employee-btn"
-            onClick={handleAddEmployee}
-          >
+          <button className="add-employee-btn" onClick={handleAddEmployee}>
             Add Employee
           </button>
           <button
@@ -291,7 +279,7 @@ const EmployeeDashboard = () => {
         }}
       />
 
-      <div style={{ marginTop: '20px' }}>
+      <div style={{ marginTop: "20px" }}>
         <CustomPagination
           currentPage={pagination.current}
           totalPages={Math.ceil(pagination.total / pagination.pageSize)}

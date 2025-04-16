@@ -2,14 +2,14 @@ import { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import "./index.css";
-import PageTransition from "./components/PageTransition";
+import PageTransition from "./components/PageTransition/PageTransition";
 
 import LoginPage from "./pages/Login/Login";
 // import SignUpPage from './pages/Onboarding'
 import OnboardingFlow from "./pages/Onboarding";
 import Dashboard from "./pages/Dashboard";
 import HelpAndSupport from "./pages/HelpAndSupport";
-import AnnouncementsAndNotifications from "./pages/AnnouncementsAndNotifications";
+import AnnouncementsAndNotifications from "./pages/AnnouncementsAndNotifications/AnnouncementsAndNotifications";
 import EmployeeManagement from "./pages/EmployeeManagement";
 import Resources from "./pages/Resources";
 import RewardsDashboard from "./pages/RewardsDashboard";

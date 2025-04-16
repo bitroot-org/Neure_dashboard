@@ -1,5 +1,5 @@
 .dashboard-containers {
-  padding: 80px;
+  padding: 40px 80px;
   min-height: 100vh;
   color: #e5e7eb;
 }
@@ -31,7 +31,7 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  background: linear-gradient(145deg, #2d2f39 0%, #191a20 100%);
+  background: linear-gradient(180deg, #33353F -100%, #191A20 100%);
   border: 1px solid rgba(255, 255, 255, 0.1);
   padding: 20px;
   border-radius: 20px;
@@ -69,6 +69,10 @@
 
 .stat-change.down {
   color: #ef4444;
+}
+
+.chart-section{
+  margin-bottom: 24px;
 }
 
 .table-section {

@@ -6,11 +6,7 @@
   align-items: center;
   justify-content: center;
   padding-top: 48px;  /* Add this line to create top spacing */
-  background: radial-gradient(
-    3000px circle at 50% -60%,
-    #5b5d6b 0%,
-    #0d0d11 40%
-  );
+
   position: relative;
 }
 

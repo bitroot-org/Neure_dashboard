@@ -1,10 +1,5 @@
 .add-employee-dashboard {
-  padding: 80px;
-  background: radial-gradient(
-    3000px circle at 50% -60%,
-    #5b5d6b 0%,
-    #0d0d11 40%
-  );
+  padding: 40px 80px;
   min-height: 100vh;
   color: #ffffff;
 }

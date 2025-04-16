@@ -1,0 +1,43 @@
+.page-transition {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 100vh;
+  --transition-duration: 600ms;
+  will-change: opacity, transform, filter;
+}
+
+/* State-based animations */
+.page-transition.state-exiting {
+  animation: fadeOut calc(var(--transition-duration) * 0.5) cubic-bezier(0.47, 0, 0.745, 0.715) forwards;
+}
+
+.page-transition.state-entering {
+  animation: fadeIn var(--transition-duration) cubic-bezier(0.39, 0.575, 0.565, 1) forwards;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+    filter: blur(5px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-20px);
+    filter: blur(5px);
+  }
+}

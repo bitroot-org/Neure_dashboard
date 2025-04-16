@@ -9,16 +9,13 @@
   box-sizing: border-box;
   border-radius: none;
   font-family: 'Satoshi', sans-serif;
+  user-select: none;
 }
 
 body {
   width: 100%;
   height: 100vh;
-  background: radial-gradient(
-    3000px circle at 50% -70%,
-    #5b5d6b 0%,
-    #0d0d11 40%
-  );
+  background: radial-gradient(58.93% 58.93% at 50% 0%, #33353F 0%, #191A20 100%);
   font-family: 'Satoshi', sans-serif;
 }
 

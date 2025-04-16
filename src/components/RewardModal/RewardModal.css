@@ -75,6 +75,8 @@
   font-size: 20px;
   line-height: 1.4;
   font-weight: 400;
+  height: 500px;
+  overflow-y: auto;
 }
 
 .term-item {
@@ -84,6 +86,7 @@
 /* Table Styles */
 .reward-history-table {
   color: white;
+  height: 500px;
 }
 
 .reward-history-table .ant-table {

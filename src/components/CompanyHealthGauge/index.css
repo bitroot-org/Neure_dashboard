@@ -1,17 +1,15 @@
 .gauge-container {
-  background: linear-gradient(180deg, #2D2F39 0%, #191A20 100%);
-  border-radius: 20px;
-  padding: 32px 0px;
+  background: radial-gradient(58.93% 58.93% at 50% 0%, #33353F 0%, #191A20 100%);
+  border-radius: 1.5rem;
+  padding: 1.25rem 0;
   width: 100%;
-  height: 100%; /* This ensures it takes full height of parent */
+  height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   align-items: center;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 0.0625rem solid rgba(255, 255, 255, 0.1);
   position: relative;
   overflow: hidden;
-  min-height: 350px; /* Add minimum height */
 }
 
 .gauge-container::before {
@@ -20,16 +18,16 @@
   bottom: -40%;
   left: 50%;
   transform: translateX(-50%);
-  width: 700px;
-  height: 400px;
-  background: radial-gradient(
+  width: 43.75rem;
+  height: 25rem;
+  /* background: radial-gradient(
     circle at center,
     rgba(var(--glow-color), 0.3) 0%,
     rgba(var(--glow-color), 0.15) 25%,
     rgba(var(--glow-color), 0.05) 50%,
     transparent 70%
-  );
-  filter: blur(20px);
+  ); */
+  filter: blur(1.25rem);
   pointer-events: none;
   z-index: 0;
 }
@@ -38,29 +36,25 @@
   position: relative;
   z-index: 1;
   color: white;
-  font-size: 24px;
-  font-weight: 500;
-  margin-bottom: 20px;
+  font-size: 1.5rem;
+  font-weight: 400;
   text-align: center;
-  padding: 0px 20px;
 }
 
-.gauge-wrapper {
+/* .gauge-wrapper {
   position: relative;
   z-index: 1;
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  flex: 1; /* Make this grow to fill available space */
-  justify-content: center; /* Center content vertically */
-}
+} */
 
 .gauge-status {
   position: relative;
   z-index: 1;
   color: white;
-  font-size: 20px;
+  font-size: 1.25rem;
   font-weight: 500;
-  margin-top: 10px;
+  padding-bottom: 0.625rem;
 }

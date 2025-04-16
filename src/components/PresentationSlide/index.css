@@ -3,35 +3,34 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  min-height: 250px;
+  min-height: 230px;
   border: 1px solid #585151;
   border-radius: 14px;
   background: #2d2f39;
 }
 
 .content {
-  background: #2d2f39;
   flex: 1;
 }
 
 .content h1 {
-  font-size: 24px;
+  font-size: 16px;
   font-weight: 500;
-  line-height: 32px;
+  line-height: 24px;
   color: #fff;
-  margin-bottom: 8px;
 }
 
 .content p {
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 400;
-  color: #fff;
+  color: #ffffff37;
 }
 
 .background {
   flex: 1;
   position: relative;
-  min-height: 200px; /* Adjust this for your desired image height */
+  min-height: 150px; 
+  
 }
 
 .background-image {
@@ -47,15 +46,15 @@
 
 .slide-content-wrapper {
   display: flex;
-  padding: 16px 10px 24px 10px;
-  gap: 16px;
+  padding: 8px 10px 8px 14px;
+  gap: 8px;
   justify-content: flex-start; 
-  align-items: top; 
+  align-items: center; 
 }
 
 .date-box {
-  width: 45px;
-  height: 60px;
+  width: 40px;
+  height: 50px;
   flex-shrink: 0;
   border: 1px solid #ffffff;
   border-radius: 8px;
@@ -71,7 +70,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 18px;
+  font-size: 14px;
   font-weight: 500;
 }
 
@@ -82,18 +81,19 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 14px;
-  font-weight: 600;
+  font-size: 12px;
+  font-weight: 500;
 }
 
 .title-time {
   display: flex;
   flex-direction: column;
+  gap: 2px;
 }
 
-.title-time h1 {
+/* .title-time h1 {
   margin: 0 0 8px 0;
-}
+} */
 
 .title-time p {
   margin: 0;

@@ -19,11 +19,13 @@ const UserContext = ({ children }) => {
     // Load initial data from localStorage
     useEffect(() => {
         const storedUser = localStorage.getItem('userData')
+        const companyId = localStorage.getItem('companyId')
         if (storedUser) {
             const parsedUser = JSON.parse(storedUser)
             // Transform data to match dashboard structure
             setUser({
                 ...parsedUser,
+                companyId,
                 fullName: {
                     firstName: parsedUser.fullName.firstName,
                     lastName: parsedUser.fullName.lastName

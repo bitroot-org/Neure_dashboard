@@ -1,16 +1,26 @@
 /* SoundscapeContainer.css */
 .soundscape-container {
-  padding: 80px;
+  background: radial-gradient(
+    3000px circle at 50% -60%,
+    #33353f 10%,
+    #0d0d11 50%
+  );  
+  padding: 40px 100px 0 100px; /* Remove bottom padding */
   width: 100%;
-  min-height: 100vh;
-  overflow: hidden;
+  height: calc(100vh - 88px); /* Fixed height minus player height */
+  overflow-y: auto;
+  position: relative;
+  display: flex;
+  flex-direction: column;
 }
 
 .soundscapes-main-content {
   display: flex;
   flex-direction: column;
   padding: 0px 120px;
+  flex: 1;
   overflow-y: auto;
+  margin-bottom: 20px; /* Add some space before the player */
 }
 
 /* Top Picks Section */
@@ -35,6 +45,7 @@
   font-size: 16px;
   color: #fff;
   cursor: pointer;
+  background: none;
 }
 
 /* Remove absolute positioning from the buttons and make the container a flex container */
@@ -80,6 +91,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
 /* Play Overlay on Image */
@@ -136,6 +148,11 @@
   flex-shrink: 0;
 }
 
+.soundscapes-carousel-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 /* Optionally add left/right margins to buttons */
 .soundscapes-carousel-button.soundscapes-left {
   margin-right: 16px;
@@ -159,65 +176,92 @@
 .soundscapes-tunes-list {
   display: flex;
   flex-direction: column;
-  gap: 16px;
 }
 
 .soundscapes-tune-item {
   display: flex;
   align-items: center;
-  padding: 8px;
-  border-radius: 4px;
+  padding-right: 12px;
+  border-radius: 8px;
   transition: background-color 0.2s;
+  height: 74px;
 }
 
-.soundscapes-tune-item:hover {
-  background-color: #282828;
-}
+
 
 .soundscapes-tune-thumbnail {
-  width: 48px;
-  height: 48px;
-  background: linear-gradient(45deg, #444, #333);
-  border-radius: 4px;
+  width: 74px;
+  height: 74px;
+  border-radius: 10px;
+  overflow: hidden;
   margin-right: 16px;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.soundscapes-tune-thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .soundscapes-tune-info {
   flex: 1;
+  min-width: 0;
 }
 
 .soundscapes-tune-info h3 {
   margin: 0;
-  font-size: 18px;
+  font-size: 16px;
   color: #fff;
   font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .soundscapes-tune-info p {
-  font-size: 16px;
-  font-weight: 400;
+  margin: 4px 0 0;
+  font-size: 14px;
   color: rgba(255, 255, 255, 0.5);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .soundscapes-tune-controls {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 12px;
+  margin-left: 16px;
+  flex-shrink: 0;
 }
 
-.soundscapes-duration {
-  color: rgba(255, 255, 255, 0.5);
-  font-size: 14px;
+.soundscapes-tune-controls button {
+  background: none;
+  border: none;
+  /* padding: 8px; */
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  font-size: 20px;
 }
 
-.soundscapes-like-button {
-  font-size: 22px;
-  color: #fff;
-}
+/* .soundscapes-tune-controls button:hover {
+  color: #ffffff;
+  transform: scale(1.1);
+} */
 
-.soundscapes-more-button {
-  font-size: 22px;
-  color: #fff;
+.soundscapes-track-thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
 /* Player Footer */
@@ -226,105 +270,219 @@
   bottom: 0;
   left: 0;
   right: 0;
-  background-color: #2b2c30;
-  padding: 16px;
+  background: #191A2080;
+  backdrop-filter: blur(10px);
+  display: flex;
+  flex-direction: column;
+  z-index: 1000;
+  width: 100%;
+}
+
+.soundscapes-footer-content {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-top: 1px solid #282828;
+  padding: 16px 32px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.soundscapes-player-progress {
+  width: 100%;
+  height: 4px;
+  cursor: pointer;
+}
+
+.progress-bar-container {
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.2);
+  position: relative;
+  cursor: pointer;
+}
+
+.progress-bar {
+  height: 100%;
+  background: #1DB954;
+  transition: width 0.1s linear;
+}
+
+.progress-bar-container:hover {
+  height: 6px;
+}
+
+/* Ensure the player stays on top */
+body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
 }
 
 .soundscapes-now-playing {
   display: flex;
   align-items: center;
   gap: 16px;
-  flex: 1;
+  min-width: 240px;
 }
 
 .soundscapes-track-thumbnail {
   width: 56px;
   height: 56px;
+  border-radius: 8px;
+  overflow: hidden;
+  flex-shrink: 0;
 }
 
 .soundscapes-track-thumbnail img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  display: block;
-  border-radius: 10px;
 }
 
-.soundscapes-tune-thumbnail img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-  border-radius: 10px;
+.soundscapes-track-info {
+  min-width: 0;
 }
 
 .soundscapes-track-info h3 {
   margin: 0;
-  font-size: 18px;
-  color: #fff;
+  font-size: 16px;
   font-weight: 500;
+  color: #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .soundscapes-track-info p {
-  font-size: 16px;
-  color: rgba(255, 255, 255, 0.5);
-  font-weight: 400;
+  margin: 4px 0 0;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.7);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .soundscapes-player-controls {
   display: flex;
   align-items: center;
   gap: 24px;
+  flex: 1;
   justify-content: center;
-}
-
-.soundscapes-player-controls img {
-  height: 30px;
-  width: 30px;
-}
-
-.soundscapes-player-controls .soundscapes-play img {
-  height: 40px;
-  width: 40px;
+  max-width: 400px;
 }
 
 .soundscapes-player-controls button {
   background: none;
   border: none;
-  color: white;
+  padding: 8px;
+  color: rgba(255, 255, 255, 0.7);
   cursor: pointer;
-  font-size: 20px;
-}
-
-.soundscapes-player-controls .soundscapes-play {
-  width: 64px;
-  height: 64px;
-  border-radius: 50%;
-  background-color: #282932;
-  color: black;
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.soundscapes-player-controls button:hover {
+  transform: scale(1.1);
+}
+
+.soundscapes-player-controls .soundscapes-play {
+  width: 40px;
+  height: 40px;
+  background: #ffffff;
+  border-radius: 50%;
+  color: #000000;
+}
+
+.soundscapes-player-controls .soundscapes-play:hover {
+  transform: scale(1.05);
+  background: #f0f0f0;
+}
+
+.soundscapes-player-controls .soundscapes-shuffle.active,
+.soundscapes-player-controls .soundscapes-repeat.active {
+  color: #1db954;
 }
 
 .soundscapes-player-actions {
   display: flex;
   align-items: center;
   gap: 16px;
-  flex: 1;
+  min-width: 240px;
   justify-content: flex-end;
 }
 
 .soundscapes-player-actions button {
   background: none;
   border: none;
-  color: #999;
+  padding: 8px;
+  color: rgba(255, 255, 255, 0.7);
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
   font-size: 20px;
+}
+
+.soundscapes-player-actions button:hover {
+  color: #ffffff;
+  transform: scale(1.1);
+}
+
+.soundscapes-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  color: #ffffff;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  border-top-color: #ffffff;
+  animation: spin 1s ease-in-out infinite;
+  margin-bottom: 16px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.soundscapes-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  color: #ffffff;
+  text-align: center;
+  padding: 20px;
+}
+
+.soundscapes-error button {
+  margin-top: 16px;
+  padding: 8px 24px;
+  border-radius: 8px;
+  background-color: #333333;
+  color: #ffffff;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.soundscapes-error button:hover {
+  background-color: #444444;
+}
+
+/* Player Controls Active States */
+.soundscapes-shuffle.active,
+.soundscapes-repeat.active {
+  color: #1db954;
 }
 
 @media (min-width: 1024px) {
@@ -333,4 +491,37 @@
     grid-template-columns: repeat(2, 1fr);
     gap: 32px;
   }
+}
+
+.soundscapes-duration {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 14px;
+}
+
+
+/* Player control icon sizes */
+.soundscapes-player-controls .anticon {
+  font-size: 24px;
+}
+
+/* Play/Pause button specific size */
+.soundscapes-player-controls .soundscapes-play .anticon {
+  font-size: 32px;
+}
+
+/* Previous/Next button sizes */
+.soundscapes-player-controls .soundscapes-prev .anticon,
+.soundscapes-player-controls .soundscapes-next .anticon {
+  font-size: 20px;
+}
+
+/* Shuffle and Repeat button sizes */
+.soundscapes-player-controls .soundscapes-shuffle .anticon,
+.soundscapes-player-controls .soundscapes-repeat .anticon {
+  font-size: 18px;
+}
+
+/* Action buttons (like, more) sizes */
+.soundscapes-player-actions .anticon {
+  font-size: 20px;
 }

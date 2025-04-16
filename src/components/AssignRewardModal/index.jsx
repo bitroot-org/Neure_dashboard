@@ -70,6 +70,8 @@ const AssignRewardModal = ({
     }
 
     const companyId = localStorage.getItem('companyId');
+    const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+    const userId = userData.id;
 
     if (!companyId) {
       message.error('Company ID not found');
@@ -82,6 +84,7 @@ const AssignRewardModal = ({
       // For each selected user, assign the reward
       const assignmentPromises = selectedRowKeys.map(userId =>
         assignReward({
+          admin_id: userId,
           company_id: companyId,
           user_id: userId,
           reward_id: rewardId

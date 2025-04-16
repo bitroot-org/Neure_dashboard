@@ -232,6 +232,8 @@ const AddNewEmployee = () => {
                   theme={{
                     components: {
                       DatePicker: {
+                        colorBgContainer: "#191A20", 
+                        colorBgElevated: "#191A20",     
                         colorText: "#fff",
                         colorTextPlaceholder: "rgba(255, 255, 255, 0.5)",
                         colorBgContainer: "transparent",

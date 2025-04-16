@@ -8,12 +8,13 @@ import CompanyHealthGauge from "../../components/CompanyHealthGauge";
 import UserStats from "../../components/UserStats";
 import CustomHeader from "../../components/CustomHeader";
 import { CompanyDataContext } from "../../context/CompanyContext";
-import { getTopPerformingEmployee, getCompanyMetrics } from "../../services/api";
+import { getTopPerformingEmployee, getCompanyMetrics, getStressTrends } from "../../services/api";
 
 const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const [employees, setEmployees] = useState([]);
   const [metricsData, setMetricsData] = useState(null);
+  const [stressTrends, setStressTrends] = useState([]);
 
   const [pagination, setPagination] = useState({
     current: 1,
@@ -56,31 +57,70 @@ const Dashboard = () => {
     }
   };
 
-  useEffect(() => {
-    const fetchMetrics = async () => {
-      try {
-        setLoading(true);
-        const companyId = localStorage.getItem("companyId");
-        if (!companyId) {
-          message.error("Company ID not found");
-          return;
-        }
+  const fetchMetrics = async () => {
+    try {
+      setLoading(true);
+      const companyId = localStorage.getItem("companyId");
+      if (!companyId) {
+        message.error("Company ID not found");
+        return;
+      }
 
-        const response = await getCompanyMetrics(companyId);
-        console.log("Metrics response:", response);
-        if (response.status) {
-          setMetricsData(response.data.metrics);
-        }
+      const response = await getCompanyMetrics(companyId);
+      console.log("Metrics response:", response);
+      if (response.status) {
+        setMetricsData(response.data.metrics);
+      }
+    } catch (error) {
+      console.error("Error fetching metrics:", error);
+      message.error("Failed to fetch company metrics");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchStressTrends = async () => {
+    try {
+      const companyId = localStorage.getItem("companyId");
+      if (!companyId) {
+        message.error("Company ID not found");
+        return;
+      }
+
+      const response = await getStressTrends(companyId);
+      if (response.status) {
+        const transformedData = response.data.trends.map(trend => ({
+          date: trend.period.substring(0, 7), // Format: "2024-05"
+          value: trend.stress_level
+        }));
+        setStressTrends(transformedData);
+        console.log("Stress trends:", transformedData);
+      }
+    } catch (error) {
+      console.error("Error fetching stress trends:", error);
+      message.error("Failed to fetch stress trends");
+    }
+  };
+
+  // Fetch all initial data
+  useEffect(() => {
+    const fetchInitialData = async () => {
+      setLoading(true);
+      try {
+        await Promise.all([
+          fetchStressTrends(),
+          fetchEmployees(pagination.current, pagination.pageSize),
+          fetchMetrics()
+        ]);
       } catch (error) {
-        console.error("Error fetching metrics:", error);
-        message.error("Failed to fetch company metrics");
+        console.error("Error fetching initial data:", error);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchMetrics();
-  }, []);
+    fetchInitialData();
+  }, []); // Empty dependency array to run once on mount
 
   useEffect(() => {
     fetchEmployees(pagination.current, pagination.pageSize);
@@ -90,31 +130,23 @@ const Dashboard = () => {
     {
       title: "Stress Levels",
       value: `${Math.round(companyData.stress_level)}%`,
-      change: 4.5,
-      status: "up",
-      description: "Up from past month",
+      trend: companyData.stress_trend
     },
     {
-      title: "Psychological Safety Index (PSI)",
+      title: "Psychological Safety Index",
       value: `${Math.round(companyData.psychological_safety_index)}%`,
-      change: 1.5,
-      status: "up",
-      description: "Up from past month",
+      trend: companyData.psi_trend
     },
     {
       title: "Employee Retention",
       value: `${Math.round(companyData.retention_rate)}%`,
-      change: 3.5,
-      status: "down",
-      description: "Down from past month",
+      trend: companyData.retention_trend
     },
     {
       title: "Employee Engagement",
       value: `${Math.round(companyData.engagement_score)}%`,
-      change: 1.5,
-      status: "up",
-      description: "Up from past month",
-    },
+      trend: companyData.engagement_trend
+    }
   ];
 
   const columns = [
@@ -186,14 +218,11 @@ const Dashboard = () => {
               <div className="dashboard-stat">
                 <div className="stat-value">{stat.value}</div>
                 <div className={`stat-change ${stat.status}`}>
-                  {stat.status === "up" ? (
-                    <img src="CaretUp.png" />
-                  ) : (
-                    <img src="CaretDown.png" />
-                  )}
+                  <img 
+                    src={stat.trend === "no_change" ? "Upward.png" : stat.trend === "up" ? "CaretUp.png" : "CaretDown.png"} 
+                  />
                 </div>
               </div>
-
             </div>
           ))}
         </div>
@@ -201,7 +230,10 @@ const Dashboard = () => {
 
       {/* Metric Chart Section */}
       <div className="chart-section">
-        <MetricLineChart data={sampleData} />
+        <MetricLineChart 
+          data={stressTrends} 
+          loading={loading}
+        />
       </div>
 
       {/* Table Section */}
