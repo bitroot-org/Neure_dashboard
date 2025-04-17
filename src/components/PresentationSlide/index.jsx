@@ -2,6 +2,17 @@ import React from 'react';
 import './index.css';
 
 const PresentationSlide = ({ title, date, backgroundImage, endTime }) => {
+  // If no title is provided, show the empty state
+  if (!title) {
+    return (
+      <div className="slide empty-slide">
+        <div className="empty-slide-content">
+          <h2>No Upcoming Workshop</h2>
+          <p>Book a workshop to unlock your learning journey</p>
+        </div>
+      </div>
+    );
+  }
 
   // Format time from ISO string to 12-hour format
   const formatTime = (timeStr) => {

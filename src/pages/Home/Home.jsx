@@ -33,6 +33,8 @@ import {
 } from "../../services/api";
 import TermsModal from "../../components/TermsModal";
 import { motion } from "framer-motion";
+import PasswordChangeModal from "../../components/PasswordChangeModal";
+import { changePassword } from "../../services/api";
 
 const { Header, Content, Footer } = Layout;
 
@@ -45,6 +47,7 @@ const Home = () => {
   const [metricsData, setMetricsData] = useState(null);
   const [isTermsModalVisible, setIsTermsModalVisible] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [showPasswordChangeModal, setShowPasswordChangeModal] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const { user, setUser } = useContext(UserDataContext);
@@ -116,6 +119,14 @@ const Home = () => {
   useEffect(() => {
     if (location.state?.showTerms) {
       setIsTermsModalVisible(true);
+      // Clean up the state to prevent modal from showing on refresh
+      window.history.replaceState({}, document.title);
+    }
+  }, [location]);
+
+  useEffect(() => {
+    if (location.state?.showPasswordChange) {
+      setShowPasswordChangeModal(true);
       // Clean up the state to prevent modal from showing on refresh
       window.history.replaceState({}, document.title);
     }
@@ -266,6 +277,21 @@ const Home = () => {
         duration: 0.5,
       },
     },
+  };
+
+  const handlePasswordChange = async (passwordData) => {
+    try {
+      const response = await changePassword({
+        email: user.email,
+        old_password: passwordData.currentPassword,
+        new_password: passwordData.newPassword,
+      });
+
+      message.success("Password changed successfully!");
+      setShowPasswordChangeModal(false);
+    } catch (error) {
+      message.error(error.response?.data?.message || "Failed to change password");
+    }
   };
 
   return (
@@ -567,6 +593,12 @@ const Home = () => {
           setIsTermsModalVisible(false);
           message.success("Terms accepted successfully");
         }}
+      />
+
+      <PasswordChangeModal
+        isOpen={showPasswordChangeModal}
+        onClose={() => setShowPasswordChangeModal(false)}
+        onSubmit={handlePasswordChange}
       />
     </Layout>
   );

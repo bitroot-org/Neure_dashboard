@@ -104,7 +104,7 @@ const WorkshopCard = () => {
     };
 
     fetchWorkshopDetails();
-  }, [workshopId]);
+  }, []);
 
   const handleDownload = () => {
     if (workshop?.pdf_url) {

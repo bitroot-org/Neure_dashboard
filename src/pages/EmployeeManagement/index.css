@@ -255,9 +255,8 @@
 }
 
 .employee-action-buttons .remove-employee-btn {
-  background: transparent;
+  background: rgba(40, 40, 39, 0.663);
   color: red;
-  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .employee-action-buttons button:hover {

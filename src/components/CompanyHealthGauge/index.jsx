@@ -30,7 +30,7 @@ const CompanyHealthGauge = ({
       <GaugeComponent
         value={value}
         type="radial"
-        style={{ width: '15.625rem', alignItems: 'center', marginTop: '-0.938rem' }}
+        style={{ width: '15.625rem', alignItems: 'center', marginTop: '-0.938rem', marginBottom: '-0.15rem' }}
 
         arc={{
           width: 0.2,

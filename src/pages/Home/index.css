@@ -19,6 +19,7 @@
   margin: 0;
   height: 100vh;
   background-color: transparent !important;
+  user-select: none;
 }
 
 .main-header {
@@ -62,6 +63,7 @@
   height: 3rem;
   padding: 0.125rem 0.75rem;
   cursor: pointer;
+  user-select: none;
 }
 
 .main-header-button h3 {
@@ -171,7 +173,7 @@
   align-items: center;
   position: relative;
   /* height: 48%; */
-  min-height: 20rem;
+  min-height: 19.5rem;
   background: radial-gradient(108.08% 74.37% at 50% 0%, #33353F 0%, #0D0D11 99.73%);
   overflow: hidden;
   margin-bottom: 0.75rem;
@@ -390,50 +392,6 @@
   margin: 0;
   text-align: center;
 }
-
-/* .main-resource-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  height: 100%;
-  width: 100%;
-  border-radius: 14px;
-  background-color: #2a2a2a;
-  border-radius: 24px;
-  flex: 1;
-  cursor: pointer;
-  min-height: 350px;
-} */
-
-/* .main-resource-card img{
-  width: 350;
-  height: 350px;
-  object-fit: cover;
-} */
-
-
-/* 
-.main-company-health-gauge {
-  flex: 1;
-  text-align: center;
-  background: linear-gradient(180deg, #2d2f39 0%, #191a20 100%) !important;
-  max-width: 100%;
-
-} */
-/* 
-.metric-card h3 {
-  font-size: 24px;
-  font-weight: 500;
-  padding-top: 14px;
-} */
-
-/* .metric-status {
-  font-size: 20px;
-  font-weight: 500;
-  margin: 8px 0 4px;
-  font-weight: bold;
-} */
 
 .last-check {
   color: #8c8c8c;

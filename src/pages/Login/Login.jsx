@@ -48,8 +48,16 @@ const LoginPage = () => {
 
       message.success("Login successful!");
 
-      const isCompanyOnboarded = response.data.companyOnboarded;
-      navigate(isCompanyOnboarded ? "/" : "/onboarding");
+      console.log("last login", response.data.user.last_login);
+
+      // Check last_login condition (checking for null instead of 0)
+      if (response.data.user.last_login === null) {
+        // Navigate to home with state to show password change modal
+        navigate("/", { state: { showPasswordChange: true }});
+      } else {
+        const isCompanyOnboarded = response.data.companyOnboarded;
+        navigate(isCompanyOnboarded ? "/" : "/onboarding");
+      }
     } catch (error) {
       message.error(error.response?.data?.message || "Login failed");
       console.error("Login error:", error);
