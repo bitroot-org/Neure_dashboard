@@ -13,22 +13,25 @@
 
 /* Header Styles */
 .header-container {
-  margin-bottom: 32px;
   display: flex;
   justify-content: space-between;
+  align-items: center; /* Changed from flex-end to center */
   width: 1200px;
-  align-items: flex-end; 
 }
 
-.header-container .left-part {
+.left-part {
   display: flex;
+  align-items: center; /* This ensures vertical alignment */
+  gap: 16px;
 }
 
-.header-container .right-part {
+.right-part {
+  /* Remove background-color: tomato; as it's not needed */
   display: flex;
-  align-items: flex-end; /* Align button to baseline */
+  align-items: center; /* This ensures vertical alignment */
 }
-.header-container .right-part .edit-button {
+
+.edit-button {
   background: linear-gradient(to bottom, #ffffff 0%, #797b87 100%);
   padding: 8px 24px;
   border-radius: 18px;
@@ -37,14 +40,17 @@
   font-size: 16px;
   font-weight: 500;
   color: #191a20;
-  margin-bottom: 4px; /* Fine-tune the baseline alignment */
+  height: 40px; /* Add fixed height */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .avatar-container {
   position: relative;
 }
 
-.avatar-edit-button {
+/* .avatar-edit-button {
   background-color: #ffffff;
   height: 32px;
   width: 32px;
@@ -57,7 +63,7 @@
   align-items: center;
   border: none;
   cursor: pointer;
-}
+} */
 
 /* Add this for the image inside the button */
 .avatar-edit-button img {
@@ -75,6 +81,9 @@
   height: 100px;
   width: 100px;
   background-color: #144035;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .header-text {
@@ -88,7 +97,8 @@
   color: #ffffff !important;
   font-size: 32px;
   font-weight: 500;
-  margin-bottom: 2px;
+  margin: 0; /* Reset margin */
+  line-height: 1.2; /* Add line height for better text alignment */
 }
 
 .company-email {
