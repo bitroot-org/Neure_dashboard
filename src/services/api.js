@@ -389,3 +389,26 @@ export const getNotifications = async (params) => {
     throw error.response?.data || error;
   }
 };
+
+export const updateDashboardTourStatus = async (userId) => {
+  try {
+    const response = await api.put("/user/updateDashboardTourStatus", {
+      user_id: userId,
+    });
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error;
+  }
+};
+
+export const acceptTermsAndConditions = async () => {
+  try {
+    const response = await api.put("/user/updateTermsAcceptance", {
+      accepted_terms: 1,
+    });
+    return response.data;
+  }
+  catch (error) {
+    throw error.response?.data || error;
+  }
+}

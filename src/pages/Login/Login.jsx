@@ -3,7 +3,8 @@ import { Form, Button, Typography, message } from "antd";
 import { EyeOutlined, EyeInvisibleOutlined } from "@ant-design/icons";
 import { UserDataContext } from "../../context/UserContext";
 import { useNavigate } from "react-router-dom";
-import { loginUser } from "../../services/api";
+import { loginUser, changePassword } from "../../services/api";
+import PasswordChangeModal from "../../components/PasswordChangeModal";
 import "./Login.css";
 
 const { Title, Text } = Typography;
@@ -14,11 +15,29 @@ const LoginPage = () => {
   const [password, setPassword] = useState("");
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [showPasswordModal, setShowPasswordModal] = useState(false);
 
   const { user, setUser } = useContext(UserDataContext);
   const isFormFilled = email !== "" && password !== "";
-
   const navigate = useNavigate();
+
+  const handlePasswordChange = async (passwordData) => {
+    try {
+      const response = await changePassword({
+        email: email,
+        old_password: passwordData.currentPassword,
+        new_password: passwordData.newPassword,
+      });
+
+      message.success("Password changed successfully!");
+      setShowPasswordModal(false);
+      
+      // Navigate directly to dashboard
+      navigate("/");
+    } catch (error) {
+      message.error(error.response?.data?.message || "Failed to change password");
+    }
+  };
 
   const handleSubmit = async (values) => {
     setIsLoading(true);
@@ -42,21 +61,27 @@ const LoginPage = () => {
           lastName: response.data.user.last_name,
         },
         profileUrl: response.data.user.profile_url,
+        profile: {
+          accepted_terms: response.data.user.accepted_terms,
+          has_seen_dashboard_tour: response.data.user.has_seen_dashboard_tour
+        }
       };
 
       setUser(userData);
+      localStorage.setItem("userData", JSON.stringify(userData));
 
       message.success("Login successful!");
 
-      console.log("last login", response.data.user.last_login);
-
-      // Check last_login condition (checking for null instead of 0)
       if (response.data.user.last_login === null) {
-        // Navigate to home with state to show password change modal
-        navigate("/", { state: { showPasswordChange: true }});
+        setShowPasswordModal(true);
       } else {
-        const isCompanyOnboarded = response.data.companyOnboarded;
-        navigate(isCompanyOnboarded ? "/" : "/onboarding");
+        // Navigate to dashboard with state parameters
+        navigate("/", {
+          state: {
+            showTerms: response.data.user.accepted_terms === 0,
+            showTour: response.data.user.has_seen_dashboard_tour === 0
+          }
+        });
       }
     } catch (error) {
       message.error(error.response?.data?.message || "Login failed");
@@ -71,89 +96,65 @@ const LoginPage = () => {
   };
 
   return (
-    <div
-      className="min-h-screen w-full flex flex-col items-center justify-center bg-black"
-      style={{
-        background: "linear-gradient(to bottom, #33353F 0%, #0D0D11 30%), #0D0D11",
-        minHeight: "100vh",
-      }}
-    >
-      <div className="flex justify-center items-center mb-8">
-        <img src="/neurelogo.png" alt="Neure Logo" className="h-full" />
-        <Title
-          level={1}
-          style={{ color: "white", marginLeft: "8px", marginBottom: 0 }}
-        >
-          neure
-        </Title>
-      </div>
-
-      <div className="w-[471px] rounded-[20px] border border-white/10 bg-[#1E1F23] relative overflow-hidden">
-        {/* Green Gradient Overlay */}
-        <div className="absolute top-0 left-0 right-0 h-20 bg-radial-gradients"></div>
-
-        {/* Content with padding */}
-        <div className="p-6 relative z-10">
-          <div className="mb-8">
-            <Title
-              level={2}
-              style={{
-                color: "white",
-                fontFamily: "Roboto, sans-serif",
-                marginBottom: "8px",
-              }}
-            >
-              Login
-            </Title>
-            <Text style={{ color: "white", fontFamily: "Roboto, sans-serif" }}>
-              Please enter your login credentials to continue
-            </Text>
-          </div>
-
-          <Form
-            form={form}
-            layout="vertical"
-            onFinish={handleSubmit}
-            requiredMark={false}
+    <>
+      <div
+        className="min-h-screen w-full flex flex-col items-center justify-center bg-black"
+        style={{
+          background: "linear-gradient(to bottom, #33353F 0%, #0D0D11 30%), #0D0D11",
+          minHeight: "100vh",
+        }}
+      >
+        <div className="flex justify-center items-center mb-8">
+          <img src="/neurelogo.png" alt="Neure Logo" className="h-full" />
+          <Title
+            level={1}
+            style={{ color: "white", marginLeft: "8px", marginBottom: 0 }}
           >
-            <Form.Item
-              label={<span style={{ color: "#e5e7eb", fontFamily:"Roboto, sans-serif" }}>Email</span>}
-              name="email"
-              rules={[
-                { required: true, message: "Please input your email!" },
-                { type: "email", message: "Please enter a valid email!" },
-              ]}
-            >
-              <input
-                type="email"
-                placeholder="e.g. example@mail.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                style={{
-                  background: "#191A20",
-                  borderRadius: "12px",
-                  border: "none",
-                  padding: "12px 16px",
-                  color: "white",
-                  width: "100%",
-                  boxSizing: "border-box",
-                }}
-              />
-            </Form.Item>
+            neure
+          </Title>
+        </div>
 
-            <Form.Item
-              label={<span style={{ color: "#e5e7eb", fontFamily:"Roboto, sans-serif" }}>Password</span>}
-              name="password"
-              rules={[
-                { required: true, message: "Please input your password!" },
-              ]}
+        <div className="w-[471px] rounded-[20px] border border-white/10 bg-[#1E1F23] relative overflow-hidden">
+          {/* Green Gradient Overlay */}
+          <div className="absolute top-0 left-0 right-0 h-20 bg-radial-gradients"></div>
+
+          {/* Content with padding */}
+          <div className="p-6 relative z-10">
+            <div className="mb-8">
+              <Title
+                level={2}
+                style={{
+                  color: "white",
+                  fontFamily: "Roboto, sans-serif",
+                  marginBottom: "8px",
+                }}
+              >
+                Login
+              </Title>
+              <Text style={{ color: "white", fontFamily: "Roboto, sans-serif" }}>
+                Please enter your login credentials to continue
+              </Text>
+            </div>
+
+            <Form
+              form={form}
+              layout="vertical"
+              onFinish={handleSubmit}
+              requiredMark={false}
             >
-              <div style={{ position: "relative" }}>
+              <Form.Item
+                label={<span style={{ color: "#e5e7eb", fontFamily:"Roboto, sans-serif" }}>Email</span>}
+                name="email"
+                rules={[
+                  { required: true, message: "Please input your email!" },
+                  { type: "email", message: "Please enter a valid email!" },
+                ]}
+              >
                 <input
-                  type={passwordVisible ? "text" : "password"}
-                  placeholder="Enter your password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  type="email"
+                  placeholder="e.g. example@mail.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   style={{
                     background: "#191A20",
                     borderRadius: "12px",
@@ -164,55 +165,91 @@ const LoginPage = () => {
                     boxSizing: "border-box",
                   }}
                 />
-                <div
-                  onClick={togglePasswordVisibility}
-                  style={{
-                    position: "absolute",
-                    right: "16px",
-                    top: "50%",
-                    transform: "translateY(-50%)",
-                    cursor: "pointer",
-                    color: "#6b7280",
-                  }}
-                >
-                  {passwordVisible ? (
-                    <EyeOutlined />
-                  ) : (
-                    <EyeInvisibleOutlined />
-                  )}
-                </div>
-              </div>
-            </Form.Item>
+              </Form.Item>
 
-            <Form.Item>
-              <Button
-                type="primary"
-                htmlType="submit"
-                block
-                style={{
-                  height: "48px",
-                  borderRadius: "9999px",
-                  background: isFormFilled ? "linear-gradient(to bottom, #FFFFFF 0%, #797B87 100%)" : "#6b7280",
-                  color: "black",
-                  marginBottom: "-20px",
-                  border: "none",
-                }}
-                loading={isLoading}
+              <Form.Item
+                label={<span style={{ color: "#e5e7eb", fontFamily:"Roboto, sans-serif" }}>Password</span>}
+                name="password"
+                rules={[
+                  { required: true, message: "Please input your password!" },
+                ]}
               >
-                Login
-              </Button>
-            </Form.Item>
-          </Form>
+                <div style={{ position: "relative" }}>
+                  <input
+                    type={passwordVisible ? "text" : "password"}
+                    placeholder="Enter your password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    style={{
+                      background: "#191A20",
+                      borderRadius: "12px",
+                      border: "none",
+                      padding: "12px 16px",
+                      color: "white",
+                      width: "100%",
+                      boxSizing: "border-box",
+                    }}
+                  />
+                  <div
+                    onClick={togglePasswordVisibility}
+                    style={{
+                      position: "absolute",
+                      right: "16px",
+                      top: "50%",
+                      transform: "translateY(-50%)",
+                      cursor: "pointer",
+                      color: "#6b7280",
+                    }}
+                  >
+                    {passwordVisible ? (
+                      <EyeOutlined />
+                    ) : (
+                      <EyeInvisibleOutlined />
+                    )}
+                  </div>
+                </div>
+              </Form.Item>
+
+              <Form.Item>
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  block
+                  style={{
+                    height: "48px",
+                    borderRadius: "9999px",
+                    background: isFormFilled ? "linear-gradient(to bottom, #FFFFFF 0%, #797B87 100%)" : "#6b7280",
+                    color: "black",
+                    marginBottom: "-20px",
+                    border: "none",
+                  }}
+                  loading={isLoading}
+                >
+                  Login
+                </Button>
+              </Form.Item>
+            </Form>
+          </div>
+        </div>
+
+        <div className="mt-6 text-center text-sm text-gray-400">
+          New to Neure?{" "}
+          <a href="#" className="text-white hover:underline">
+            Join the waitlist here!
+          </a>
         </div>
       </div>
 
-      <div className="mt-6 text-center text-sm text-gray-400">
-        New to Neure?{" "}
-        <a href="#" className="text-white hover:underline">
-          Join the waitlist here!
-        </a>
-      </div>
-    </div>
+      <PasswordChangeModal
+        isOpen={showPasswordModal}
+        onClose={() => {
+          setShowPasswordModal(false);
+          // Navigate directly to dashboard
+          navigate("/");
+        }}
+        onSubmit={handlePasswordChange}
+      />
+    </>
   );
 };
 

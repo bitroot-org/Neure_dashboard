@@ -1,0 +1,40 @@
+.react-joyride__tooltip {
+  animation: fadeIn 0.3s ease-out;
+  transition: transform 0.3s ease-out !important;
+}
+
+.react-joyride__spotlight {
+  transition: all 0.3s ease-in-out !important;
+}
+
+.react-joyride__overlay {
+  background-color: rgba(0, 0, 0, 0.75) !important;
+  transition: opacity 0.3s ease-in-out !important;
+}
+
+.react-joyride__beacon {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
+
+/* Ensure tooltips are visible and above other elements */
+.react-joyride__tooltip {
+  z-index: 9999 !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+/* Ensure spotlight is visible */
+.react-joyride__spotlight {
+  z-index: 9998 !important;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

@@ -29,197 +29,199 @@ import { Pagination } from "antd";
 function App() {
   return (
     <BrowserRouter>
-      <AnimatePresence mode="wait">
-        <Routes>
-          {/* Public Route */}
-          <Route
-            path="/login"
-            element={
-              <PageTransition>
-                <LoginPage />
-              </PageTransition>
-            }
-          />
+      <div className="main-content-wrapper">
+        <AnimatePresence mode="wait">
+          <Routes>
+            {/* Public Route */}
+            <Route
+              path="/login"
+              element={
+                <PageTransition>
+                  <LoginPage />
+                </PageTransition>
+              }
+            />
 
-          {/* Protected Routes - All Parallel */}
-          <Route
-            path="/"
-            element={
-              <UserProtectedWrapper>
-                <PageTransition>
-                  <DashboardLayout />
-                </PageTransition>
-              </UserProtectedWrapper>
-            }
-          />
-          <Route
-            path="/dashboard"
-            element={
-              <UserProtectedWrapper>
-                <PageTransition>
-                <Dashboard />
-                </PageTransition>
-              </UserProtectedWrapper>
-            }
-          />
-          <Route
-            path="/support"
-            element={
-              <UserProtectedWrapper>
-                <PageTransition>
-                <HelpAndSupport />
-                </PageTransition>
-              </UserProtectedWrapper>
-            }
-          />
-          <Route
-            path="/announcements"
-            element={
-              <UserProtectedWrapper>
-                <PageTransition>
-                <AnnouncementsAndNotifications />
-                </PageTransition>
-              </UserProtectedWrapper>
-            }
-          />
-          <Route
-            path="/employeesManagement"
-            element={
-              <UserProtectedWrapper>
-                <PageTransition>
-                <EmployeeManagement />
-                </PageTransition>
-              </UserProtectedWrapper>
-            }
-          />
-          <Route
-            path="/resources"
-            element={
-              <UserProtectedWrapper>
-                <PageTransition>
-                <Resources />
-                </PageTransition>
-              </UserProtectedWrapper>
-            }
-          />
-          <Route
-            path="/rewards"
-            element={
-              <UserProtectedWrapper>
-                <PageTransition>
-                <RewardsDashboard />
-                </PageTransition>
-              </UserProtectedWrapper>
-            }
-          />
-          <Route
-            path="/companyProfile"
-            element={
-              <UserProtectedWrapper>
-                <PageTransition>
-                <CompanyProfile />
-                </PageTransition>
-              </UserProtectedWrapper>
-            }
-          />
-          <Route
-            path="/workshopDetails/:workshopId"
-            element={
-              <UserProtectedWrapper>
-                <PageTransition>
-                <WorkshopCard />
-                </PageTransition>
-              </UserProtectedWrapper>
-            }
-          />
-          <Route
-            path="/onboarding"
-            element={
-              <UserProtectedWrapper>
-                <PageTransition>
-                <OnboardingFlow />
-                </PageTransition>
-              </UserProtectedWrapper>
-            }
-          />
+            {/* Protected Routes - All Parallel */}
+            <Route
+              path="/"
+              element={
+                <UserProtectedWrapper>
+                  <PageTransition>
+                    <DashboardLayout />
+                  </PageTransition>
+                </UserProtectedWrapper>
+              }
+            />
+            <Route
+              path="/dashboard"
+              element={
+                <UserProtectedWrapper>
+                  <PageTransition>
+                  <Dashboard />
+                  </PageTransition>
+                </UserProtectedWrapper>
+              }
+            />
+            <Route
+              path="/support"
+              element={
+                <UserProtectedWrapper>
+                  <PageTransition>
+                  <HelpAndSupport />
+                  </PageTransition>
+                </UserProtectedWrapper>
+              }
+            />
+            <Route
+              path="/announcements"
+              element={
+                <UserProtectedWrapper>
+                  <PageTransition>
+                  <AnnouncementsAndNotifications />
+                  </PageTransition>
+                </UserProtectedWrapper>
+              }
+            />
+            <Route
+              path="/employeesManagement"
+              element={
+                <UserProtectedWrapper>
+                  <PageTransition>
+                  <EmployeeManagement />
+                  </PageTransition>
+                </UserProtectedWrapper>
+              }
+            />
+            <Route
+              path="/resources"
+              element={
+                <UserProtectedWrapper>
+                  <PageTransition>
+                  <Resources />
+                  </PageTransition>
+                </UserProtectedWrapper>
+              }
+            />
+            <Route
+              path="/rewards"
+              element={
+                <UserProtectedWrapper>
+                  <PageTransition>
+                  <RewardsDashboard />
+                  </PageTransition>
+                </UserProtectedWrapper>
+              }
+            />
+            <Route
+              path="/companyProfile"
+              element={
+                <UserProtectedWrapper>
+                  <PageTransition>
+                  <CompanyProfile />
+                  </PageTransition>
+                </UserProtectedWrapper>
+              }
+            />
+            <Route
+              path="/workshopDetails/:workshopId"
+              element={
+                <UserProtectedWrapper>
+                  <PageTransition>
+                  <WorkshopCard />
+                  </PageTransition>
+                </UserProtectedWrapper>
+              }
+            />
+            <Route
+              path="/onboarding"
+              element={
+                <UserProtectedWrapper>
+                  <PageTransition>
+                  <OnboardingFlow />
+                  </PageTransition>
+                </UserProtectedWrapper>
+              }
+            />
 
-          <Route
-            path="/workshops"
-            element={
-              <UserProtectedWrapper>
-                <PageTransition>
-                <EventDashboard />
-                </PageTransition>
-              </UserProtectedWrapper>
-            }
-          />
-          <Route
-            path="/settings"
-            element={
-              <UserProtectedWrapper>
-                <PageTransition>
-                <Settings />
-                </PageTransition>
-              </UserProtectedWrapper>
-            }
-          />
-          <Route
-            path="/articleDetails/:articleId"
-            element={
-              <UserProtectedWrapper>
-                <PageTransition>
-                <Article />
-                </PageTransition>
-              </UserProtectedWrapper>
-            }
-          />
-          <Route
-            path="/removeEmployee"
-            element={
-              <UserProtectedWrapper>
-                <PageTransition>
-                <RemoveEmployee />
-                </PageTransition>
-              </UserProtectedWrapper>
-            }
-          />
+            <Route
+              path="/workshops"
+              element={
+                <UserProtectedWrapper>
+                  <PageTransition>
+                  <EventDashboard />
+                  </PageTransition>
+                </UserProtectedWrapper>
+              }
+            />
+            <Route
+              path="/settings"
+              element={
+                <UserProtectedWrapper>
+                  <PageTransition>
+                  <Settings />
+                  </PageTransition>
+                </UserProtectedWrapper>
+              }
+            />
+            <Route
+              path="/articleDetails/:articleId"
+              element={
+                <UserProtectedWrapper>
+                  <PageTransition>
+                  <Article />
+                  </PageTransition>
+                </UserProtectedWrapper>
+              }
+            />
+            <Route
+              path="/removeEmployee"
+              element={
+                <UserProtectedWrapper>
+                  <PageTransition>
+                  <RemoveEmployee />
+                  </PageTransition>
+                </UserProtectedWrapper>
+              }
+            />
 
-          <Route
-            path="/addNewEmployee"
-            element={
-              <UserProtectedWrapper>
-                <PageTransition>
-                <AddNewEmployee />
-                </PageTransition>
-              </UserProtectedWrapper>
-            }
-          />
+            <Route
+              path="/addNewEmployee"
+              element={
+                <UserProtectedWrapper>
+                  <PageTransition>
+                  <AddNewEmployee />
+                  </PageTransition>
+                </UserProtectedWrapper>
+              }
+            />
 
-          <Route
-            path="/soundscapes"
-            element={
-              <UserProtectedWrapper>
-                <PageTransition>
-                <Soundscapes />
-                </PageTransition>
-              </UserProtectedWrapper>
-            }
-          />
-          <Route
-            path="/rewardsAndRecognition"
-            element={
-              <UserProtectedWrapper>
-                <PageTransition>
-                <RewardsAndRecognition />
-                </PageTransition>
-              </UserProtectedWrapper>
-            }
-          />
+            <Route
+              path="/soundscapes"
+              element={
+                <UserProtectedWrapper>
+                  <PageTransition>
+                  <Soundscapes />
+                  </PageTransition>
+                </UserProtectedWrapper>
+              }
+            />
+            <Route
+              path="/rewardsAndRecognition"
+              element={
+                <UserProtectedWrapper>
+                  <PageTransition>
+                  <RewardsAndRecognition />
+                  </PageTransition>
+                </UserProtectedWrapper>
+              }
+            />
 
-          {/* Catch all redirect */}
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-      </AnimatePresence>
+            {/* Catch all redirect */}
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </AnimatePresence>
+      </div>
     </BrowserRouter>
   );
 }

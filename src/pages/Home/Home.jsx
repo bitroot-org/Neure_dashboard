@@ -30,11 +30,14 @@ import {
   logoutUser,
   getWorkshops,
   getCompanyMetrics,
+  acceptTermsAndConditions,
+  updateDashboardTourStatus,
 } from "../../services/api";
 import TermsModal from "../../components/TermsModal";
 import { motion } from "framer-motion";
 import PasswordChangeModal from "../../components/PasswordChangeModal";
 import { changePassword } from "../../services/api";
+import DashboardTour from "../../components/DashboardTour/DashboardTour";
 
 const { Header, Content, Footer } = Layout;
 
@@ -51,6 +54,8 @@ const Home = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { user, setUser } = useContext(UserDataContext);
+  const [showTour, setShowTour] = useState(false);
+
 
   const pageSize = 1;
   const currentPage = 1;
@@ -125,9 +130,9 @@ const Home = () => {
   }, [location]);
 
   useEffect(() => {
-    if (location.state?.showPasswordChange) {
-      setShowPasswordChangeModal(true);
-      // Clean up the state to prevent modal from showing on refresh
+    if (location.state?.showTour) {
+      setShowTour(true);
+      // Clean up the state to prevent tour from showing on refresh
       window.history.replaceState({}, document.title);
     }
   }, [location]);
@@ -221,8 +226,29 @@ const Home = () => {
       message.error("Workshop details not available");
     }
   };
-  const handleTermsAccept = () => {
-    setIsTermsModalVisible(false);
+  const handleTermsAccept = async () => {
+    try {
+      await acceptTermsAndConditions();
+      
+      // Update user context
+      const updatedUser = {
+        ...user,
+        profile: {
+          ...user.profile,
+          accepted_terms: 1
+        }
+      };
+      setUser(updatedUser);
+      
+      // Update localStorage
+      localStorage.setItem("userData", JSON.stringify(updatedUser));
+      
+      setIsTermsModalVisible(false);
+      message.success("Terms accepted successfully");
+    } catch (error) {
+      console.error("Error accepting terms:", error);
+      message.error("Failed to accept terms");
+    }
   };
 
   const handleTermsCancel = () => {
@@ -279,23 +305,42 @@ const Home = () => {
     },
   };
 
-  const handlePasswordChange = async (passwordData) => {
+  const handleTourComplete = async () => {
     try {
-      const response = await changePassword({
-        email: user.email,
-        old_password: passwordData.currentPassword,
-        new_password: passwordData.newPassword,
-      });
+      const userData = JSON.parse(localStorage.getItem("userData"));
+      const response = await updateDashboardTourStatus(userData.id);
 
-      message.success("Password changed successfully!");
-      setShowPasswordChangeModal(false);
+      if (response) {
+        setShowTour(false);
+        // Update user context
+        const updatedUser = {
+          ...user,
+          profile: {
+            ...user.profile,
+            has_seen_dashboard_tour: 1,
+          },
+        };
+        updateUser(updatedUser);
+
+        // Update localStorage
+        const updatedUserData = {
+          ...userData,
+          profile: {
+            ...userData.profile,
+            has_seen_dashboard_tour: 1,
+          },
+        };
+        localStorage.setItem("userData", JSON.stringify(updatedUserData));
+      }
     } catch (error) {
-      message.error(error.response?.data?.message || "Failed to change password");
+      console.error("Error updating tour status:", error);
+      message.error("Failed to update tour status");
     }
   };
 
   return (
     <Layout className="main-dashboard-layout">
+      <DashboardTour run={showTour} onClose={handleTourComplete} />
       <div className="main-header">
         <div className="main-company-title">{metricsData?.companyName}</div>
         <div className="main-header-right">
@@ -482,7 +527,6 @@ const Home = () => {
             </div>
           </div>
         </div>
-        
         <div className="main-dashboard-right">
           <div className="main-metrics-cards">
             <motion.div variants={itemVariants}>
@@ -589,16 +633,7 @@ const Home = () => {
       <TermsModal
         isOpen={isTermsModalVisible}
         onClose={() => setIsTermsModalVisible(false)}
-        onAccept={() => {
-          setIsTermsModalVisible(false);
-          message.success("Terms accepted successfully");
-        }}
-      />
-
-      <PasswordChangeModal
-        isOpen={showPasswordChangeModal}
-        onClose={() => setShowPasswordChangeModal(false)}
-        onSubmit={handlePasswordChange}
+        onAccept={handleTermsAccept}
       />
     </Layout>
   );
