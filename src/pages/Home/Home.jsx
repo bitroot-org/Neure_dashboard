@@ -56,11 +56,11 @@ const Home = () => {
   const { user, setUser } = useContext(UserDataContext);
   const [showTour, setShowTour] = useState(false);
 
-
   const pageSize = 1;
   const currentPage = 1;
 
   const { companyData } = useContext(CompanyDataContext);
+  console.log("Company data:", companyData);
 
   useEffect(() => {
     const companyId = localStorage.getItem("companyId");
@@ -229,20 +229,20 @@ const Home = () => {
   const handleTermsAccept = async () => {
     try {
       await acceptTermsAndConditions();
-      
+
       // Update user context
       const updatedUser = {
         ...user,
         profile: {
           ...user.profile,
-          accepted_terms: 1
-        }
+          accepted_terms: 1,
+        },
       };
       setUser(updatedUser);
-      
+
       // Update localStorage
       localStorage.setItem("userData", JSON.stringify(updatedUser));
-      
+
       setIsTermsModalVisible(false);
       message.success("Terms accepted successfully");
     } catch (error) {
@@ -368,10 +368,19 @@ const Home = () => {
           </div>
 
           <div className="main-user-info">
-            <img
+            {user?.profile?.profileUrl ? (
+              <img
+                src={user?.profile?.profileUrl}
+                alt="profile"
+                className="main-avatar"
+              />
+            ) : (
+              <div className="main-avatar">{getInitial()}</div>
+            )}
+            {/* <img
               className="main-avatar"
               src={metricsData?.company_profile_url}
-            />
+            /> */}
             <h3 className="main-user-name">
               {truncateName(`${user.fullName.firstName}`, 15)}
               <Dropdown
@@ -487,7 +496,7 @@ const Home = () => {
                   onClick={() => navigate("/announcements")}
                   style={{ cursor: "pointer" }}
                 >
-                  <h3>Anouncements</h3>
+                  <h3>Announcements</h3>
                   <img src="announcement.svg" alt="marketing icon" />
                 </motion.div>
 
@@ -513,9 +522,9 @@ const Home = () => {
                   <h3
                     style={{
                       color: "#EEE420",
-                      fontSize: "18px",
+                      fontSize: "16px",
                       fontWeight: "500",
-                      paddingTop: "10px",
+                      paddingTop: "2px",
                     }}
                   >
                     COMING SOON !
