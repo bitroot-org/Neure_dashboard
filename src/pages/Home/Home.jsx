@@ -543,7 +543,7 @@ const Home = () => {
                 className="main-company-health-gauge"
                 value={companyData.stress_level}
                 maxValue={100}
-                title="Company Well-being Index"
+                title="Well-being Index"
                 status={getStressStatus(companyData.stress_level)}
                 onClick={handleCompanyGaugeClick}
                 style={{ cursor: "pointer" }}
