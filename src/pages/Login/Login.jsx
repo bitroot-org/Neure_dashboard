@@ -17,7 +17,7 @@ const LoginPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [showPasswordModal, setShowPasswordModal] = useState(false);
 
-  const { user, setUser } = useContext(UserDataContext);
+  const { user, setUser, login } = useContext(UserDataContext);
   const isFormFilled = email !== "" && password !== "";
   const navigate = useNavigate();
 
@@ -43,45 +43,23 @@ const LoginPage = () => {
     setIsLoading(true);
     try {
       const response = await loginUser(values.email, values.password);
+      
+      if (response.status) {
+        // Use the login function from UserContext which handles all storage
+        login(response);
+        
+        message.success("Login successful!");
 
-      // Store tokens
-      localStorage.setItem("accessToken", response.data.accessToken);
-      localStorage.setItem("refreshToken", response.data.refreshToken);
-      localStorage.setItem("expiresAt", response.data.expiresAt);
-      localStorage.setItem("companyId", response.data.companyId);
-
-      // Update user context with login data
-      const userData = {
-        id: response.data.user.user_id,
-        email: response.data.user.email,
-        roleId: response.data.user.role_id,
-        userType: response.data.user.user_type,
-        fullName: {
-          firstName: response.data.user.first_name,
-          lastName: response.data.user.last_name,
-        },
-        profileUrl: response.data.user.profile_url,
-        profile: {
-          accepted_terms: response.data.user.accepted_terms,
-          has_seen_dashboard_tour: response.data.user.has_seen_dashboard_tour
+        if (response.data.user.last_login === null) {
+          setShowPasswordModal(true);
+        } else {
+          navigate("/", {
+            state: {
+              showTerms: response.data.user.accepted_terms === 0,
+              showTour: response.data.user.has_seen_dashboard_tour === 0
+            }
+          });
         }
-      };
-
-      setUser(userData);
-      localStorage.setItem("userData", JSON.stringify(userData));
-
-      message.success("Login successful!");
-
-      if (response.data.user.last_login === null) {
-        setShowPasswordModal(true);
-      } else {
-        // Navigate to dashboard with state parameters
-        navigate("/", {
-          state: {
-            showTerms: response.data.user.accepted_terms === 0,
-            showTour: response.data.user.has_seen_dashboard_tour === 0
-          }
-        });
       }
     } catch (error) {
       message.error(error.response?.data?.message || "Login failed");

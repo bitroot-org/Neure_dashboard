@@ -11,18 +11,21 @@ const AnnouncementsAndNotifications = () => {
 
   const companyId = localStorage.getItem("companyId");
   const userData = JSON.parse(localStorage.getItem("userData"));
-  const userId = userData.id;
-  
+  const isEmployee = userData.roleId === 3;
 
   const fetchData = async (tab) => {
     try {
       setLoading(true);
       const params = {
-        companyId: companyId, // Replace with actual company_id
-        // userId: userId,    // Replace with actual user_id
+        companyId: companyId,
         currentPage: 1,
         limit: 10,
       };
+
+      // Only add userId to params if user is an employee
+      if (isEmployee) {
+        params.userId = userData.id;
+      }
 
       if (tab === "announcements") {
         const response = await getAnnouncements(params);

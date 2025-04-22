@@ -1,0 +1,50 @@
+.custom-button {
+  height: 48px;
+  padding: 0 24px;
+  border-radius: 9999px;
+  border: none;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 16px;
+}
+
+.custom-button.primary {
+  background: linear-gradient(to bottom, #FFFFFF 0%, #797B87 100%);
+  color: black;
+}
+
+.custom-button.primary:not(:disabled):hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.custom-button.full-width {
+  width: 100%;
+}
+
+.custom-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.button-loader {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #ffffff;
+  border-radius: 50%;
+  border-top-color: transparent;
+  animation: spin 1s linear infinite;
+  margin: 0 auto;
+  font-size: 16px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.custom-button.gradient:not(:disabled) {
+  background: linear-gradient(to bottom, #FFFFFF 0%, #797B87 100%);
+}

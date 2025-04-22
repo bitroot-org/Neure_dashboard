@@ -35,10 +35,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.back-button:hover {
-  background: transparent;
+  background-color: transparent !important; /* Added !important to override any Ant Design styles */
+  border: none;
 }
 
 .back-icon {

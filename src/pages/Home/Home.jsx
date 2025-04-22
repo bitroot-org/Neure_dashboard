@@ -53,32 +53,75 @@ const Home = () => {
   const [showPasswordChangeModal, setShowPasswordChangeModal] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-  const { user, setUser } = useContext(UserDataContext);
+  const { user } = useContext(UserDataContext);
+  const { companyData, setCompanyData } = useContext(CompanyDataContext);
   const [showTour, setShowTour] = useState(false);
+  const isEmployee = user.roleId === 3;
 
   const pageSize = 1;
   const currentPage = 1;
 
-  const { companyData } = useContext(CompanyDataContext);
-  console.log("Company data:", companyData);
+  // Updated getCompanyId function
+  const getCompanyId = () => {
+    // First try to get from localStorage
+    const localStorageCompanyId = localStorage.getItem('companyId');
+    console.log('Company ID from localStorage:', localStorageCompanyId);
+
+    // If not in localStorage, try to get from user data
+    const userData = localStorage.getItem('userData');
+    const parsedUserData = userData ? JSON.parse(userData) : null;
+    const userDataCompanyId = parsedUserData?.company?.id;
+    console.log('Company ID from userData:', userDataCompanyId);
+
+    const finalCompanyId = localStorageCompanyId || userDataCompanyId;
+    console.log('Final Company ID being used:', finalCompanyId);
+    
+    return finalCompanyId;
+  };
+
+  // Add this useEffect to ensure company ID is set in localStorage after login
+  useEffect(() => {
+    const setInitialCompanyId = () => {
+      const userData = localStorage.getItem('userData');
+      if (userData) {
+        const parsedUserData = JSON.parse(userData);
+        if (parsedUserData?.company?.id) {
+          localStorage.setItem('companyId', parsedUserData.company.id);
+          console.log('Set company ID in localStorage:', parsedUserData.company.id);
+        }
+      }
+    };
+
+    setInitialCompanyId();
+  }, []);
 
   useEffect(() => {
-    const companyId = localStorage.getItem("companyId");
     const fetchWorkshop = async () => {
-      console.log("fetchWorkshops called");
+      const companyId = getCompanyId();
+      console.log('Fetching workshops with company ID:', companyId);
+
+      if (!companyId) {
+        console.error("Company ID not found for workshops fetch");
+        message.error("Company ID not found. Please try logging in again.");
+        return;
+      }
+
       try {
         setLoading(true);
         setError(null);
-        const data = await getWorkshops({
+        
+        const payload = {
           companyId,
           currentPage,
           pageSize,
-        });
-        console.log("getWorkshops response:", data);
+        };
+        console.log('Workshop API payload:', payload);
+
+        const data = await getWorkshops(payload);
+        console.log('Workshop API response:', data);
+        
         if (data.status) {
           setWorkshop(data.data[0]);
-          console.log("Workshop data:", data.data);
-          // setTotalPages(data.pagination.totalPages);
           if (data.data.length === 0) {
             setError("No workshops available.");
           }
@@ -92,23 +135,32 @@ const Home = () => {
         setLoading(false);
       }
     };
+
+    console.log('Current user data:', user);
     fetchWorkshop();
-  }, [pageSize]);
+  }, [user, pageSize]);
 
   useEffect(() => {
     const fetchMetrics = async () => {
+      const companyId = getCompanyId();
+      console.log('Fetching metrics with company ID:', companyId);
+
+      if (!companyId) {
+        console.error("Company ID not found for metrics fetch");
+        message.error("Company ID not found. Please try logging in again.");
+        return;
+      }
+
       try {
         setLoading(true);
-        const companyId = localStorage.getItem("companyId");
-        if (!companyId) {
-          message.error("Company ID not found");
-          return;
-        }
-
+        console.log('Calling getCompanyMetrics with companyId:', companyId);
+        
         const response = await getCompanyMetrics(companyId);
-        console.log("Metrics response:", response);
+        console.log('Metrics API response:', response);
+        
         if (response.status) {
           setMetricsData(response.data.metrics);
+          setCompanyData(response.data.metrics);
         }
       } catch (error) {
         console.error("Error fetching metrics:", error);
@@ -118,8 +170,9 @@ const Home = () => {
       }
     };
 
+    console.log('Current user data for metrics:', user);
     fetchMetrics();
-  }, []);
+  }, [user, setCompanyData]);
 
   useEffect(() => {
     if (location.state?.showTerms) {
@@ -269,6 +322,10 @@ const Home = () => {
     return "Critical";
   };
 
+  const getGaugeTitle = () => {
+    return user.roleId === 3 ? "Stress Level" : "Well-being Index";
+  };
+
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
@@ -338,32 +395,48 @@ const Home = () => {
     }
   };
 
+  const handleSoundscapesClick = () => {
+    navigate("/soundscapes");
+  };
+
+  const handleAssessmentsClick = () => {
+    navigate("/assessments");
+  };
+
   return (
     <Layout className="main-dashboard-layout">
       <DashboardTour run={showTour} onClose={handleTourComplete} />
       <div className="main-header">
         <div className="main-company-title">{metricsData?.companyName}</div>
         <div className="main-header-right">
-          <div
-            className="main-header-button"
-            onClick={() => navigate("/soundscapes")}
-          >
-            <img src="/MusicNotes.png" />
-            <h3>Soundscapes</h3>
-          </div>
-          <div
-            className="main-header-button"
-            onClick={() => navigate("/employeesManagement")}
-          >
-            <img src="/UserGear.png" style={{ cursor: "pointer" }} />
-            <h3>Employess</h3>
-          </div>
+          {!isEmployee && (
+            <>
+              <div
+                className="main-header-button"
+                onClick={() => navigate("/soundscapes")}
+              >
+                <img src="/MusicNotes.png" alt="Soundscapes" />
+                <h3>Soundscapes</h3>
+              </div>
+              <div
+                className="main-header-button"
+                onClick={() => navigate("/employeesManagement")}
+              >
+                <img
+                  src="/UserGear.png"
+                  style={{ cursor: "pointer" }}
+                  alt="Employees"
+                />
+                <h3>Employees</h3>
+              </div>
+            </>
+          )}
           <div
             className="main-header-button"
             onClick={handleSettingsClick}
             style={{ cursor: "pointer" }}
           >
-            <img src="/GearSix.png" />
+            <img src="/GearSix.png" alt="Settings" />
             <h3>Settings</h3>
           </div>
 
@@ -543,7 +616,7 @@ const Home = () => {
                 className="main-company-health-gauge"
                 value={companyData.stress_level}
                 maxValue={100}
-                title="Company Well-being Index"
+                title={getGaugeTitle()}
                 status={getStressStatus(companyData.stress_level)}
                 onClick={handleCompanyGaugeClick}
                 style={{ cursor: "pointer" }}
@@ -561,74 +634,99 @@ const Home = () => {
             </motion.div>
           </div>
 
-          <motion.div variants={itemVariants} className="main-roi-card">
-            <div className="main-roi-header">
-              <h3>ROI</h3>
-              <span>Compare to prev. month</span>
-            </div>
-            <div className="main-roi-metrics">
-              <div className="main-roi-item">
-                <span>Stress Levels</span>
-                <div className="main-percentage">
-                  {Math.round(companyData.stress_level)}%{" "}
-                  <img
-                    src={
-                      companyData.stress_trend === "no_change"
-                        ? "Upward.png"
-                        : companyData.stress_trend === "up"
-                        ? "Upward.png"
-                        : "/Downward.png"
-                    }
-                  />
+          {user.roleId === 3 ? (
+            <motion.div
+              variants={itemVariants}
+              className="main-bottom-right-cards"
+            >
+              <motion.div
+                variants={itemVariants}
+                className="main-soundscapes-card"
+                onClick={handleSoundscapesClick}
+              >
+                <h3>Soundscapes</h3>
+                <img src="/Music.svg" alt="Soundscapes" />
+              </motion.div>
+
+              <motion.div
+                variants={itemVariants}
+                className="main-assessment-card"
+                onClick={handleAssessmentsClick}
+              >
+                <h3>Assessments</h3>
+                <img src="/Checklist.svg" alt="Assessments" />
+              </motion.div>
+            </motion.div>
+          ) : (
+            <motion.div variants={itemVariants} className="main-roi-card">
+              <div className="main-roi-header">
+                <h3>ROI</h3>
+                <span>Compare to prev. month</span>
+              </div>
+              <div className="main-roi-metrics">
+                <div className="main-roi-item">
+                  <span>Stress Levels</span>
+                  <div className="main-percentage">
+                    {Math.round(companyData.stress_level)}%{" "}
+                    <img
+                      src={
+                        companyData.stress_trend === "no_change"
+                          ? "Upward.png"
+                          : companyData.stress_trend === "up"
+                          ? "Upward.png"
+                          : "/Downward.png"
+                      }
+                    />
+                  </div>
+                </div>
+                <div className="main-roi-item">
+                  <span>Psychological Safety Index (PSI)</span>
+                  <div className="main-percentage">
+                    {Math.round(companyData.psychological_safety_index)}%{" "}
+                    <img
+                      src={
+                        companyData.psi_trend === "no_change"
+                          ? "Upward.png"
+                          : companyData.psi_trend === "up"
+                          ? "Upward.png"
+                          : "/Downward.png"
+                      }
+                    />
+                  </div>
+                </div>
+                <div className="main-roi-item">
+                  <span>Employee Retention</span>
+                  <div className="main-percentage">
+                    {Math.round(companyData.retention_rate)}%{" "}
+                    <img
+                      src={
+                        companyData.retention_trend === "no_change"
+                          ? "Upward.png"
+                          : companyData.retention_trend === "up"
+                          ? "Upward.png"
+                          : "/Downward.png"
+                      }
+                    />
+                  </div>
+                </div>
+                <div className="main-roi-item">
+                  <span>Employee Engagement</span>
+                  <div className="main-percentage">
+                    {Math.round(companyData.engagement_score)}%{" "}
+                    <img
+                      src={
+                        companyData.engagement_trend === "no_change"
+                          ? "Upward.png"
+                          : companyData.engagement_trend === "up"
+                          ? "Upward.png"
+                          : "/Downward.png"
+                      }
+                    />
+                  </div>
                 </div>
               </div>
-              <div className="main-roi-item">
-                <span>Psychological Safety Index (PSI)</span>
-                <div className="main-percentage">
-                  {Math.round(companyData.psychological_safety_index)}%{" "}
-                  <img
-                    src={
-                      companyData.psi_trend === "no_change"
-                        ? "Upward.png"
-                        : companyData.psi_trend === "up"
-                        ? "Upward.png"
-                        : "/Downward.png"
-                    }
-                  />
-                </div>
-              </div>
-              <div className="main-roi-item">
-                <span>Employee Retention</span>
-                <div className="main-percentage">
-                  {Math.round(companyData.retention_rate)}%{" "}
-                  <img
-                    src={
-                      companyData.retention_trend === "no_change"
-                        ? "Upward.png"
-                        : companyData.retention_trend === "up"
-                        ? "Upward.png"
-                        : "/Downward.png"
-                    }
-                  />
-                </div>
-              </div>
-              <div className="main-roi-item">
-                <span>Employee Engagement</span>
-                <div className="main-percentage">
-                  {Math.round(companyData.engagement_score)}%{" "}
-                  <img
-                    src={
-                      companyData.engagement_trend === "no_change"
-                        ? "Upward.png"
-                        : companyData.engagement_trend === "up"
-                        ? "Upward.png"
-                        : "/Downward.png"
-                    }
-                  />
-                </div>
-              </div>
-            </div>
-          </motion.div>
+            </motion.div>
+          )}
         </div>
       </motion.div>
 

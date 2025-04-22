@@ -1,0 +1,113 @@
+.assessment-questions-page {
+  padding: 40px 100px 40px 100px;
+}
+
+.assessment-questions-content {
+  max-width: 1000px;
+  margin: 40px auto;
+}
+
+.assessment-instruction {
+  color: white;
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 40px;
+}
+
+.questions-form{
+  background-color: #191A20;
+  border-radius: 20px;
+}
+
+.questions-container {
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid #2D2F39;
+  padding-bottom: 24px;
+}
+
+.assessment-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px;
+  margin-top: 0; /* Remove any top margin if exists */
+}
+
+.question-item {
+  border-radius: 16px;
+  padding: 24px;
+}
+
+.question-text {
+  color: white;
+  font-size: 24px;
+  font-weight: 500;
+  margin-bottom: 20px;
+}
+
+.options-group {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.option-btn {
+  padding: 8px 16px;
+  border-radius: 12px;
+  background: transparent;
+  border: 1px solid #2D2F39;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 16px;
+  font-weight: 400;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.option-btn:hover {
+  border-color: #00D885;
+  color: #00D885;
+}
+
+.option-btn.active {
+  background: transparent;
+  border-color: #00D885;
+  color: #00D885;
+}
+
+.assessment-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px;
+}
+
+.privacy-note {
+  display: flex;
+  align-items: center;
+  color: #B1B3C0;
+  font-size: 16px;
+  font-weight: 400;
+  gap: 4px;
+}
+
+
+@media screen and (max-width: 768px) {
+  .assessment-questions-page {
+    padding: 40px 20px;
+  }
+
+  .options-group {
+    flex-direction: column;
+  }
+
+  .assessment-footer {
+    flex-direction: column;
+    gap: 20px;
+    text-align: center;
+  }
+
+  .submit-button {
+    width: 100%;
+  }
+}

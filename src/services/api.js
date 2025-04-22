@@ -77,9 +77,9 @@ export const loginUser = async (email, password) => {
 
     const response = await api.post("/user/login", {
       email,
-      password,
-      role_id: 2,
+      password
     });
+    
     if (response.data.data) {
       localStorage.setItem("accessToken", response.data.data.accessToken);
       localStorage.setItem("refreshToken", response.data.data.refreshToken);
@@ -242,6 +242,20 @@ export const getCompanySubscription = async (companyId) => {
 
 export const updateCompanySubscription = async (data) => {
   const response = await api.put(`/company/updateCompanySubscription`, data);
+  return response.data;
+};
+
+export const getUserSubscription = async (UserId) => {
+  const response = await api.get(`/user/getUserSubscription`, {
+    params: {
+      user_id: UserId,
+    },
+  });
+  return response.data;
+};
+
+export const updateUserSubscription = async (data) => {
+  const response = await api.put(`/user/updateUserSubscription`, data);
   return response.data;
 };
 
@@ -412,3 +426,26 @@ export const acceptTermsAndConditions = async () => {
     throw error.response?.data || error;
   }
 }
+
+export const getAllAssessments = async (params) => {
+  try {
+    const response = await api.get(`/assessments/getAllAssessments`, {
+      params: {
+        page: params.currentPage,
+        limit: params.limit,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error;
+  }
+};
+
+export const submitAssessment = async (data) => {
+  try {
+    const response = await api.post(`/assessments/submit`, data);
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error;
+  }
+};

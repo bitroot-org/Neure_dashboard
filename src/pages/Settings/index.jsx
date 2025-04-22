@@ -1,12 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Card, Switch, Table, Button, Typography, DatePicker, Spin, message } from "antd";
 import "./index.css";
 import CustomHeader from "../../components/CustomHeader";
 import PasswordChangeModal from "../../components/PasswordChangeModal";
 import DeactivateAccountModal from "../../components/DeactivateAccountModal";
-import { getCompanySubscription, updateCompanySubscription, changePassword, requestDeactivation, getCompanyInvoices } from "../../services/api";
+import { getCompanySubscription, updateCompanySubscription, getUserSubscription, updateUserSubscription,changePassword, requestDeactivation, getCompanyInvoices } from "../../services/api";
+import { UserDataContext } from "../../context/UserContext";
 
 const Settings = () => {
+  const { user } = useContext(UserDataContext);
+  const isEmployee = user.roleId === 3;
+  const isCompanyAdmin = user.roleId === 2;
+
   // Add state for invoices
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -36,9 +41,11 @@ const Settings = () => {
 
   // Add function to fetch invoices
   const fetchInvoicesData = async () => {
+    // Early return if not company admin
+    if (!isCompanyAdmin) return;
+
     try {
       setInvoicesLoading(true);
-      // Get company ID from localStorage
       const companyId = localStorage.getItem('companyId');
       if (!companyId) {
         throw new Error('Company ID not found');
@@ -65,7 +72,10 @@ const Settings = () => {
   useEffect(() => {
     const loadData = async () => {
       await fetchSubscriptionData();
-      await fetchInvoicesData();
+      // Only fetch invoices for company admin
+      if (isCompanyAdmin) {
+        fetchInvoicesData();
+      }
     };
 
     loadData();
@@ -132,13 +142,20 @@ const Settings = () => {
   const fetchSubscriptionData = async () => {
     try {
       setLoading(true);
-      // Get company ID from localStorage
-      const companyId = localStorage.getItem('companyId');
-      if (!companyId) {
-        throw new Error('Company ID not found');
+      let response;
+      
+      if (isEmployee) {
+        // For employees, fetch user subscription using user ID
+        response = await getUserSubscription(user.id);
+      } else {
+        // For company admins, fetch company subscription using company ID
+        const companyId = localStorage.getItem('companyId');
+        if (!companyId) {
+          throw new Error('Company ID not found');
+        }
+        response = await getCompanySubscription(companyId);
       }
-
-      const response = await getCompanySubscription(companyId);
+      
       setSubscriptionData(response.data);
       setLoading(false);
     } catch (err) {
@@ -166,22 +183,37 @@ const Settings = () => {
 
     try {
       setSaving(true);
-      const companyId = localStorage.getItem('companyId');
-      if (!companyId) throw new Error('Company ID not found');
+      
+      let response;
+      if (isEmployee) {
+        // For employees, update user subscription
+        const payload = {
+          user_id: user.id,
+          ...notificationSettingsConfig.reduce((acc, setting) => {
+            acc[setting.key] = modifiedSettings[setting.key] !== undefined
+              ? modifiedSettings[setting.key]
+              : subscriptionData[setting.key];
+            return acc;
+          }, {})
+        };
+        response = await updateUserSubscription(payload);
+      } else {
+        // For company admins, update company subscription
+        const companyId = localStorage.getItem('companyId');
+        if (!companyId) throw new Error('Company ID not found');
 
-      // Prepare payload with original data + modifications
-      const payload = {
-        company_id: parseInt(companyId),
-        plan_type: subscriptionData.plan_type,
-        ...notificationSettingsConfig.reduce((acc, setting) => {
-          acc[setting.key] = modifiedSettings[setting.key] !== undefined
-            ? modifiedSettings[setting.key]
-            : subscriptionData[setting.key];
-          return acc;
-        }, {})
-      };
-
-      const response = await updateCompanySubscription(payload);
+        const payload = {
+          company_id: parseInt(companyId),
+          plan_type: subscriptionData.plan_type,
+          ...notificationSettingsConfig.reduce((acc, setting) => {
+            acc[setting.key] = modifiedSettings[setting.key] !== undefined
+              ? modifiedSettings[setting.key]
+              : subscriptionData[setting.key];
+            return acc;
+          }, {})
+        };
+        response = await updateCompanySubscription(payload);
+      }
 
       // Update the subscription data with the server response
       setSubscriptionData(response.data);
@@ -326,72 +358,77 @@ const Settings = () => {
           </div>
         </div>
 
-        {/* Billing History Section */}
-        <div className="section-card">
-          <h3>Billing History & Invoices</h3>
-          <div className="current-plan">
-            <div className="plan-details">
-              <div className="plan-item">
-                <span className="label">Current plan</span>
-                <span className="value">
-                  {subscriptionData?.plan_type
-                    ? subscriptionData.plan_type.charAt(0).toUpperCase() + subscriptionData.plan_type.slice(1)
-                    : "N/A"}
-                </span>
-              </div>
-              <div className="plan-item">
-                <span className="label">Renewal date</span>
-                <span className="value">{formatDate(subscriptionData?.renewal_date)}</span>
-              </div>
-              <div className="plan-item">
-                <span className="label">Status</span>
-                <span className={`status-badge ${getStatusClass(subscriptionData?.renewal_date)}`}>
-                  {isSubscriptionActive(subscriptionData?.renewal_date) ? "Active" : "Inactive"}
-                </span>
+        {/* Only show billing and invoice sections for company admin */}
+        {isCompanyAdmin && (
+          <>
+            {/* Billing History Section */}
+            <div className="section-card">
+              <h3>Billing History & Invoices</h3>
+              <div className="current-plan">
+                <div className="plan-details">
+                  <div className="plan-item">
+                    <span className="label">Current plan</span>
+                    <span className="value">
+                      {subscriptionData?.plan_type
+                        ? subscriptionData.plan_type.charAt(0).toUpperCase() + subscriptionData.plan_type.slice(1)
+                        : "N/A"}
+                    </span>
+                  </div>
+                  <div className="plan-item">
+                    <span className="label">Renewal date</span>
+                    <span className="value">{formatDate(subscriptionData?.renewal_date)}</span>
+                  </div>
+                  <div className="plan-item">
+                    <span className="label">Status</span>
+                    <span className={`status-badge ${getStatusClass(subscriptionData?.renewal_date)}`}>
+                      {isSubscriptionActive(subscriptionData?.renewal_date) ? "Active" : "Inactive"}
+                    </span>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
 
-        {/* Transaction History Section */}
+            {/* Transaction History Section */}
+            <div className="section-card">
+              <h3>Transaction History</h3>
+              <Table
+                columns={columns}
+                dataSource={invoicesData}
+                pagination={false}
+                className="transaction-table"
+                loading={invoicesLoading}
+                rowKey="id"
+                locale={{ emptyText: "No invoice records found" }}
+                showSorterTooltip={false}
+                bordered={false}
+              />
+            </div>
+          </>
+        )}
+
         <div className="section-card">
-          <h3>Transaction History</h3>
-          <Table
-            columns={columns}
-            dataSource={invoicesData}
-            pagination={false}
-            className="transaction-table"
-            loading={invoicesLoading}
-            rowKey="id"
-            locale={{ emptyText: "No invoice records found" }}
-            showSorterTooltip={false}
-            bordered={false}
-          />
-        </div>
-
-        {/* Account Settings Section */}
-        <div className="section-card">
-          <h3 style={{ marginBottom: "16px" }}>Account settings</h3>
-
           <div className="settings-item">
             <div className="settings-section">
               <div className="settings-title">Change password</div>
               <div className="settings-description">
-                Change your current password to a stronger one.
+                Update your password to maintain account security.
               </div>
             </div>
-            <button className="settings-button" onClick={openModal}>Change password</button>
+            <button className="settings-button" onClick={openModal}>Change Password</button>
           </div>
 
-          <div className="settings-item">
-            <div className="settings-section">
-              <div className="settings-title">Deactivate account</div>
-              <div className="settings-description">
-                Send an account deactivation request to the Neure team.
+          {/* Only show deactivation option for non-employees */}
+          {!isEmployee && (
+            <div className="settings-item">
+              <div className="settings-section">
+                <div className="settings-title">Deactivate account</div>
+                <div className="settings-description">
+                  Send an account deactivation request to the Neure team.
+                </div>
               </div>
+              <button className="settings-button" onClick={openDeactivateModal}>Request Deactivation</button>
             </div>
-            <button className="settings-button" onClick={openDeactivateModal}>Request Deactivation</button>
-          </div>
+          )}
         </div>
       </div>
 
@@ -401,11 +438,13 @@ const Settings = () => {
         onSubmit={handlePasswordChange}
       />
 
-      <DeactivateAccountModal
-        isOpen={isDeactivateModalOpen}
-        onClose={closeDeactivateModal}
-        onSubmit={handleDeactivateAccount}
-      />
+      {!isEmployee && (
+        <DeactivateAccountModal
+          isOpen={isDeactivateModalOpen}
+          onClose={closeDeactivateModal}
+          onSubmit={handleDeactivateAccount}
+        />
+      )}
     </div>
   );
 };

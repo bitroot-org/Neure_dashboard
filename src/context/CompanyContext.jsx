@@ -1,9 +1,11 @@
-import React, { createContext, useState, useEffect } from 'react';
+import React, { createContext, useState, useEffect, useContext } from 'react';
 import { getCompanyMetrics } from '../services/api';
+import { UserDataContext } from './UserContext';
 
 export const CompanyDataContext = createContext();
 
 const CompanyContext = ({ children }) => {
+  const { user } = useContext(UserDataContext);
   const [companyData, setCompanyData] = useState({
     companyId: '',
     companyName: '',
@@ -23,27 +25,37 @@ const CompanyContext = ({ children }) => {
   useEffect(() => {
     const fetchCompanyMetrics = async () => {
       try {
-        const companyId = localStorage.getItem('companyId');
+        // Get companyId from user context first, fallback to localStorage
+        const companyId = user?.company?.id || localStorage.getItem('companyId');
+        
         if (!companyId) {
-          throw new Error('Company ID not found');
+          setIsLoading(false);
+          return; // Exit silently without throwing error
         }
+
         const response = await getCompanyMetrics(companyId);
         if (response.status) {
           setCompanyData(response.data.metrics);
         }
       } catch (error) {
         console.error('Error fetching company metrics:', error);
+        // Don't set error state, just log it
       } finally {
         setIsLoading(false);
       }
     };
 
-    fetchCompanyMetrics();
-  }, []);
+    // Only fetch if we have a user
+    if (user?.company?.id || localStorage.getItem('companyId')) {
+      fetchCompanyMetrics();
+    } else {
+      setIsLoading(false);
+    }
+  }, [user]); // Add user as dependency
 
   return (
-    <CompanyDataContext.Provider value={{ companyData, setCompanyData }}>
-      {!isLoading && children}
+    <CompanyDataContext.Provider value={{ companyData, setCompanyData, isLoading }}>
+      {children}
     </CompanyDataContext.Provider>
   );
 };

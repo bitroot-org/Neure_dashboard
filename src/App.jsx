@@ -25,6 +25,10 @@ import AddNewEmployee from "./pages/AddNewEmployee";
 import Soundscapes from "./pages/Soundscapes/Soundscapes";
 import RewardsAndRecognition from "./pages/RewardsAndRecognition";
 import { Pagination } from "antd";
+import AdminProtectedWrapper from "./pages/AdminProtectedWrapper";
+import EmployeeProtectedWrapper from "./pages/EmployeeProtectedWrapper";
+import Assessments from "./pages/Assessments/Assessments";
+import AssessmentQuestions from "./pages/AssessmentQuestions/AssessmentQuestions";
 
 function App() {
   return (
@@ -87,9 +91,11 @@ function App() {
               path="/employeesManagement"
               element={
                 <UserProtectedWrapper>
-                  <PageTransition>
-                  <EmployeeManagement />
-                  </PageTransition>
+                  <AdminProtectedWrapper>
+                    <PageTransition>
+                      <EmployeeManagement />
+                    </PageTransition>
+                  </AdminProtectedWrapper>
                 </UserProtectedWrapper>
               }
             />
@@ -178,9 +184,11 @@ function App() {
               path="/removeEmployee"
               element={
                 <UserProtectedWrapper>
-                  <PageTransition>
-                  <RemoveEmployee />
-                  </PageTransition>
+                  <AdminProtectedWrapper>
+                    <PageTransition>
+                      <RemoveEmployee />
+                    </PageTransition>
+                  </AdminProtectedWrapper>
                 </UserProtectedWrapper>
               }
             />
@@ -189,9 +197,11 @@ function App() {
               path="/addNewEmployee"
               element={
                 <UserProtectedWrapper>
-                  <PageTransition>
-                  <AddNewEmployee />
-                  </PageTransition>
+                  <AdminProtectedWrapper>
+                    <PageTransition>
+                      <AddNewEmployee />
+                    </PageTransition>
+                  </AdminProtectedWrapper>
                 </UserProtectedWrapper>
               }
             />
@@ -213,6 +223,32 @@ function App() {
                   <PageTransition>
                   <RewardsAndRecognition />
                   </PageTransition>
+                </UserProtectedWrapper>
+              }
+            />
+
+            {/* Employee Only Routes */}
+            <Route
+              path="/assessments"
+              element={
+                <UserProtectedWrapper>
+                  <EmployeeProtectedWrapper>
+                    <PageTransition>
+                      <Assessments />
+                    </PageTransition>
+                  </EmployeeProtectedWrapper>
+                </UserProtectedWrapper>
+              }
+            />
+            <Route
+              path="/assessmentQuestions"
+              element={
+                <UserProtectedWrapper>
+                  <EmployeeProtectedWrapper>
+                    <PageTransition>
+                      <AssessmentQuestions />
+                    </PageTransition>
+                  </EmployeeProtectedWrapper>
                 </UserProtectedWrapper>
               }
             />
