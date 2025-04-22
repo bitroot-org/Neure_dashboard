@@ -1,6 +1,6 @@
 // SoundscapeContainer.jsx
 import React, { useState, useEffect, useRef } from "react";
-import "./Soundscapes.css";
+import "./soundscapes.css";
 import CustomHeader from "../../components/CustomHeader";
 import {
   RightOutlined,

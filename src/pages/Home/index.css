@@ -1,5 +1,5 @@
 /* DashboardLayout.css */
-/* Base styles */
+/* Base styles
 :root {
   --main-bg: #191a20;
   --card-bg: #2d2f39;
@@ -10,7 +10,7 @@
   --padding-desktop: 80px;
   --padding-tablet: 40px;
   --padding-mobile: 16px;
-}
+} */
 
 .main-dashboard-layout {
   padding: 1.25rem 8.75rem 0 8.75rem;
@@ -18,7 +18,7 @@
   overflow-x: hidden;
   margin: 0;
   height: 100vh;
-  background-color: transparent !important;
+  background-color: transparent ;
   user-select: none;
 }
 
@@ -37,7 +37,7 @@
 
 .main-company-title {
   color: white;
-  font-size: 2.25rem;
+  font-size: 2rem;
   font-weight: 500;
   white-space: nowrap;
   overflow: hidden;
@@ -89,6 +89,8 @@
   justify-content: center;
   color: white;
   overflow: hidden;
+  background: radial-gradient(100% 100% at 50% 0%, #33353F 0%, #191A20 100%);
+
 }
 
 .main-avatar img {
@@ -162,7 +164,7 @@
 }
 
 .main-workshops-header h2 {
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   font-weight: 500;
   color: #fff;
 }
@@ -172,9 +174,8 @@
   flex-direction: column;
   align-items: center;
   position: relative;
-  /* height: 48%; */
   min-height: 19.5rem;
-  background: radial-gradient(108.08% 74.37% at 50% 0%, #33353F 0%, #0D0D11 99.73%);
+  background: radial-gradient(100% 100% at 50% 0%, #33353F 0%, #191A20 100%);
   overflow: hidden;
   margin-bottom: 0.75rem;
   border: 0.0625rem solid rgba(255, 255, 255, 0.1);
@@ -188,7 +189,7 @@
   height: 100%;
   background: linear-gradient(
     to top,
-    rgba(81, 84, 183, 0.4) 0%,
+    rgba(68, 74, 250, 0.4) 0%,
     rgba(23, 209, 101, 0) 20%
   );
   z-index: 1;
@@ -244,11 +245,11 @@
   object-fit: contain;
 }
 
-.main-rewards-card h3 {
+/* .main-rewards-card h3 {
   font-size: 24px;
   font-weight: 500;
   color: #fff;
-}
+} */
 
 .main-resource-card {
   display: flex;
@@ -266,13 +267,13 @@
 }
 
 .main-rewards-card h3 {
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   font-weight: 400;
   color: #fff;
 }
 
 .main-resource-card h3 {
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   font-weight: 400;
   color: #fff;
 }
@@ -326,7 +327,7 @@
 }
 
 .main-announcement-card h3 {
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   font-weight: 400;
   color: #fff !important;
   padding: 0 0.625rem;
@@ -339,7 +340,7 @@
 }
 
 .main-support-card h3 {
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   font-weight: 400;
   color: #fff !important;
   padding: 0 0.625rem;
@@ -387,7 +388,7 @@
 
 .main-metric-card h3 {
   color: #fff;
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   font-weight: 500;
   margin: 0;
   text-align: center;
@@ -420,7 +421,7 @@
 }
 
 .main-roi-header h3 {
-  font-size: 24px;
+  font-size: 1.4rem;
   font-weight: 500;
   color: #fff;
 }
