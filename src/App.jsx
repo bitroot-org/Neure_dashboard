@@ -24,6 +24,7 @@ import RemoveEmployee from "./pages/RemoveEmployee";
 import AddNewEmployee from "./pages/AddNewEmployee";
 import Soundscapes from "./pages/Soundscapes/Soundscapes";
 import RewardsAndRecognition from "./pages/RewardsAndRecognition";
+import FavouriteSoundscapes from './pages/FavouriteSoundscapes/FavouriteSoundscapes';
 import { Pagination } from "antd";
 
 function App() {
@@ -216,6 +217,7 @@ function App() {
                 </UserProtectedWrapper>
               }
             />
+            <Route path="/favourite-soundscapes" element={<FavouriteSoundscapes />} />
 
             {/* Catch all redirect */}
             <Route path="*" element={<Navigate to="/" replace />} />

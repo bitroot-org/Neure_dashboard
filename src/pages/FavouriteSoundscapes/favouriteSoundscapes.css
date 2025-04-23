@@ -1,0 +1,87 @@
+.fav-soundscapes-container {
+  padding: 40px 100px 0 100px; /* Remove bottom padding */
+  min-height: 100vh;
+}
+
+.fav-soundscapes-content {
+  margin-top: 24px;
+}
+
+.fav-soundscapes-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.fav-tune-item {
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  transition: background-color 0.2s;
+}
+
+.fav-tune-item:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.fav-tune-thumbnail {
+  width: 64px;
+  height: 64px;
+  border-radius: 4px;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.fav-tune-thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.fav-tune-info {
+  flex: 1;
+  margin-left: 16px;
+}
+
+.fav-tune-info h3 {
+  color: #ffffff;
+  margin: 0;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.fav-tune-info p {
+  color: rgba(255, 255, 255, 0.7);
+  margin: 4px 0 0;
+  font-size: 14px;
+}
+
+.fav-tune-controls {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.fav-duration {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 14px;
+}
+
+.fav-like-button,
+.fav-more-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s;
+}
+
+.fav-like-button:hover,
+.fav-more-button:hover {
+  transform: scale(1.1);
+}

@@ -15,6 +15,7 @@ import {
 } from "../../components/AudioPlayer/AudioContext";
 import SoundscapeCarousel from "../../components/Carousel/SoundscapeCarousel";
 import PlayerFooter from "../../components/Player/PlayerFooter";
+import { useNavigate } from 'react-router-dom';
 
 const SoundscapeContent = () => {
   const [picks, setPicks] = useState([]);
@@ -27,6 +28,7 @@ const SoundscapeContent = () => {
   const [progress, setProgress] = useState(0);
   const [duration, setDuration] = useState(0);
   const audioRef = useRef(null);
+  const navigate = useNavigate();
 
   // Move the data fetching to a separate useEffect with empty dependency array
   useEffect(() => {
@@ -123,9 +125,12 @@ const SoundscapeContent = () => {
         <section className="soundscapes-top-picks">
           <div className="soundscapes-section-header">
             <h2>Top picks for you</h2>
-            <p className="soundscapes-see-all">
-              See all <RightOutlined />
-            </p>
+            <button 
+              className="soundscapes-like-button"
+              onClick={() => navigate('/favourite-soundscapes')}
+            >
+              <HeartOutlined style={{ fontSize: '24px', color: '#fff' }} />
+            </button>
           </div>
           <SoundscapeCarousel items={picks} />
         </section>

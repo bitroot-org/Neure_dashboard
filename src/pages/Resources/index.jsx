@@ -63,8 +63,17 @@ const Resources = () => {
   const navigate = useNavigate();
 
   const handleArticleClick = (article) => {
-    setSelectedArticle(article);
-    setIsModalOpen(true);
+    navigate(`/articleDetails/${article.id}`, { 
+      state: { 
+        article: {
+          title: article.title,
+          created_at: article.created_at,
+          reading_time: article.reading_time,
+          image_url: article.image_url,
+          content: article.content
+        } 
+      }
+    });
   };
 
   const handleModalClose = () => {

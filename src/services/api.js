@@ -413,3 +413,12 @@ export const acceptTermsAndConditions = async () => {
     throw error.response?.data || error;
   }
 }
+
+export const getLikedSoundscapes = async () => {
+  try {
+    const response = await api.get("/soundscapes/getLikedSoundscapes");
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error;
+  }
+}
