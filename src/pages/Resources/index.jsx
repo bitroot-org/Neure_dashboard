@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Row, Col, Spin, Alert, Empty } from "antd";
+import { Row, Col, Alert, Empty } from "antd"; // Remove Spin from imports
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import "./index.css";
@@ -88,6 +88,9 @@ const Resources = () => {
         const response = await getArticles({
           currentPage: currentPage,
         });
+
+        // Add minimum loading time of 1.5 seconds
+        await new Promise(resolve => setTimeout(resolve, 800));
 
         if (response.status && response.data.articles.length > 0) {
           setArticles(response.data.articles);
