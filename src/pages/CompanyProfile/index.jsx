@@ -184,6 +184,47 @@ const CompanyForm = ({ companyInfo, contactInfo, disabled, onChange }) => {
   );
 };
 
+const CompanyHeaderShimmer = () => (
+  <div className="header-container">
+    <div className="left-part">
+      <div className="company-avatar shimmer"></div>
+      <div className="shimmer-text">
+        <div className="company-name-shimmer shimmer"></div>
+      </div>
+    </div>
+    <div className="right-part">
+      <div className="edit-button-shimmer shimmer"></div>
+    </div>
+  </div>
+);
+
+const CompanyFormShimmer = () => (
+  <div className="form-container">
+    <div className="form-section">
+      <div className="section-title-shimmer shimmer"></div>
+      <div className="form-group">
+        {[1, 2, 3, 4].map((i) => (
+          <div key={i} className="input-group">
+            <div className="label-shimmer shimmer"></div>
+            <div className="input-shimmer shimmer"></div>
+          </div>
+        ))}
+      </div>
+    </div>
+    <div className="form-section">
+      <div className="section-title-shimmer shimmer"></div>
+      <div className="form-group">
+        {[1, 2, 3, 4].map((i) => (
+          <div key={i} className="input-group">
+            <div className="label-shimmer shimmer"></div>
+            <div className="input-shimmer shimmer"></div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+);
+
 const CompanyProfile = () => {
   const [isEditable, setIsEditable] = useState(false);
   const [formData, setFormData] = useState({
@@ -258,7 +299,12 @@ const CompanyProfile = () => {
     <div className="profile-container">
       <CustomHeader title="Account details" showBackButton={true} />
 
-      {!loading && (
+      {loading ? (
+        <>
+          <CompanyHeaderShimmer />
+          <CompanyFormShimmer />
+        </>
+      ) : (
         <>
           <CompanyHeader
             companyInfo={formData?.company}

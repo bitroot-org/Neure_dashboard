@@ -6,6 +6,59 @@ import PasswordChangeModal from "../../components/PasswordChangeModal";
 import DeactivateAccountModal from "../../components/DeactivateAccountModal";
 import { getCompanySubscription, updateCompanySubscription, changePassword, requestDeactivation, getCompanyInvoices } from "../../services/api";
 
+const NotificationSettingsShimmer = () => (
+  <div className="section-card shimmer-card">
+    <div className="shimmer-title"></div>
+    <div className="notification-settings">
+      {[1, 2, 3, 4].map((i) => (
+        <div key={i} className="notification-item shimmer-item">
+          <div className="shimmer-text"></div>
+          <div className="shimmer-switch"></div>
+        </div>
+      ))}
+    </div>
+  </div>
+);
+
+const SubscriptionDetailsShimmer = () => (
+  <div className="section-card shimmer-card">
+    <div className="shimmer-title"></div>
+    <div className="subscription-details">
+      {[1, 2, 3].map((i) => (
+        <div key={i} className="detail-item shimmer-item">
+          <div className="shimmer-label"></div>
+          <div className="shimmer-value"></div>
+        </div>
+      ))}
+    </div>
+  </div>
+);
+
+const SecuritySettingsShimmer = () => (
+  <div className="section-card shimmer-card">
+    <div className="shimmer-title"></div>
+    <div className="security-settings">
+      {[1, 2].map((i) => (
+        <div key={i} className="security-item shimmer-item">
+          <div className="shimmer-text-block">
+            <div className="shimmer-heading"></div>
+            <div className="shimmer-description"></div>
+          </div>
+          <div className="shimmer-button"></div>
+        </div>
+      ))}
+    </div>
+  </div>
+);
+
+const SettingsShimmer = () => (
+  <div className="settings-content">
+    <NotificationSettingsShimmer />
+    <SubscriptionDetailsShimmer />
+    <SecuritySettingsShimmer />
+  </div>
+);
+
 const Settings = () => {
   // Add state for invoices
   const [loading, setLoading] = useState(true);
@@ -289,9 +342,7 @@ const Settings = () => {
           showEditButton={false}
           showFilterButton={false}
         />
-        <div className="settings-content loading-container">
-          <Spin size="large" tip="Loading settings..." />
-        </div>
+        <SettingsShimmer />
       </div>
     );
   }

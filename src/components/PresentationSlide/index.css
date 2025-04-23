@@ -190,3 +190,99 @@
     font-size: 14px;
   }
 }
+
+/* Shimmer effect styles */
+.shimmer-slide {
+  width: 100%;
+  min-height: 230px;
+  border: 1px solid #585151;
+  border-radius: 14px;
+  background: #2d2f39;
+  position: relative;
+  overflow: hidden;
+}
+
+.shimmer-background-wrapper {
+  flex: 1;
+  position: relative;
+  min-height: 150px;
+  background: linear-gradient(
+    90deg,
+    #363845 0%,
+    #404252 50%,
+    #363845 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmerAnimation 1.5s infinite linear;
+}
+
+.shimmer-content-wrapper {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(180deg, rgba(45, 47, 57, 0) 0%, rgba(45, 47, 57, 0.9) 100%);
+  padding: 8px 10px 8px 14px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.shimmer-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(
+    90deg,
+    #404252 0%,
+    #4a4c5c 50%,
+    #404252 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmerAnimation 1.5s infinite linear;
+}
+
+.shimmer-text-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.shimmer-title {
+  width: 60%;
+  height: 16px;
+  background: linear-gradient(
+    90deg,
+    #404252 0%,
+    #4a4c5c 50%,
+    #404252 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmerAnimation 1.5s infinite linear;
+  border-radius: 4px;
+}
+
+.shimmer-subtitle {
+  width: 40%;
+  height: 12px;
+  background: linear-gradient(
+    90deg,
+    #404252 0%,
+    #4a4c5c 50%,
+    #404252 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmerAnimation 1.5s infinite linear;
+  border-radius: 4px;
+  opacity: 0.6;
+}
+
+@keyframes shimmerAnimation {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}

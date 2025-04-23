@@ -277,3 +277,186 @@
   background-color: rgba(108, 117, 125, 0.15);
   color: #6c757d;
 }
+
+/* Add these shimmer effect styles */
+@keyframes shimmerAnimation {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.shimmer-card {
+  background: #2D2F39;
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+.shimmer-title {
+  width: 150px;
+  height: 24px;
+  background: linear-gradient(
+    90deg,
+    #363845 0%,
+    #404252 50%,
+    #363845 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmerAnimation 1.5s infinite linear;
+  border-radius: 4px;
+  margin-bottom: 24px;
+}
+
+.shimmer-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.shimmer-text {
+  width: 200px;
+  height: 16px;
+  background: linear-gradient(
+    90deg,
+    #363845 0%,
+    #404252 50%,
+    #363845 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmerAnimation 1.5s infinite linear;
+  border-radius: 4px;
+}
+
+.shimmer-switch {
+  width: 40px;
+  height: 20px;
+  background: linear-gradient(
+    90deg,
+    #363845 0%,
+    #404252 50%,
+    #363845 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmerAnimation 1.5s infinite linear;
+  border-radius: 10px;
+}
+
+.shimmer-label {
+  width: 120px;
+  height: 16px;
+  background: linear-gradient(
+    90deg,
+    #363845 0%,
+    #404252 50%,
+    #363845 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmerAnimation 1.5s infinite linear;
+  border-radius: 4px;
+}
+
+.shimmer-value {
+  width: 150px;
+  height: 16px;
+  background: linear-gradient(
+    90deg,
+    #363845 0%,
+    #404252 50%,
+    #363845 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmerAnimation 1.5s infinite linear;
+  border-radius: 4px;
+}
+
+.shimmer-text-block {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.shimmer-heading {
+  width: 180px;
+  height: 20px;
+  background: linear-gradient(
+    90deg,
+    #363845 0%,
+    #404252 50%,
+    #363845 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmerAnimation 1.5s infinite linear;
+  border-radius: 4px;
+}
+
+.shimmer-description {
+  width: 250px;
+  height: 16px;
+  background: linear-gradient(
+    90deg,
+    #363845 0%,
+    #404252 50%,
+    #363845 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmerAnimation 1.5s infinite linear;
+  border-radius: 4px;
+  opacity: 0.7;
+}
+
+.shimmer-button {
+  width: 120px;
+  height: 36px;
+  background: linear-gradient(
+    90deg,
+    #363845 0%,
+    #404252 50%,
+    #363845 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmerAnimation 1.5s infinite linear;
+  border-radius: 8px;
+}
+
+/* Responsive styles */
+@media screen and (max-width: 768px) {
+  .shimmer-text {
+    width: 150px;
+  }
+
+  .shimmer-value {
+    width: 120px;
+  }
+
+  .shimmer-description {
+    width: 200px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .shimmer-card {
+    padding: 16px;
+  }
+
+  .shimmer-text {
+    width: 120px;
+  }
+
+  .shimmer-value {
+    width: 100px;
+  }
+
+  .shimmer-description {
+    width: 160px;
+  }
+
+  .shimmer-button {
+    width: 100px;
+    height: 32px;
+  }
+}

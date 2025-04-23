@@ -1,12 +1,11 @@
 .gauge-container {
   background: radial-gradient(108.08% 74.37% at 50% 0%, #33353F 0%, #0D0D11 99.73%);
   border-radius: 1.5rem;
-  padding: 1.25rem 0;
+  padding: 1.5rem 0;
   width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   align-items: center;
   border: 0.0625rem solid rgba(255, 255, 255, 0.1);
   position: relative;
@@ -40,7 +39,6 @@
   font-size: 1.4rem;
   font-weight: 400;
   text-align: center;
-  line-height: 1.5rem;
 }
 
 /* .gauge-wrapper {
@@ -58,4 +56,5 @@
   color: white;
   font-size: 1.2rem;
   font-weight: 500;
+  padding-bottom: 0.225rem;
 }

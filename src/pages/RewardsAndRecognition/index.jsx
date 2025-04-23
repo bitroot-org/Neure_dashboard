@@ -89,6 +89,22 @@ const RewardCard = ({ icon, title, termsAndConditions, rewardId }) => {
   );
 };
 
+const RewardShimmer = () => (
+  <div className="rewardRecognition-card shimmer-card">
+    <div className="shimmer-wrapper">
+      <div className="shimmer-background" />
+      <div className="shimmer-content">
+        <div className="shimmer-icon" />
+        <div className="shimmer-title" />
+        <div className="shimmer-buttons">
+          <div className="shimmer-button" />
+          <div className="shimmer-button" />
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
 // Main dashboard component
 const RewardsAndRecognition = () => {
   const [rewards, setRewards] = useState([]);
@@ -116,9 +132,13 @@ const RewardsAndRecognition = () => {
 
   if (loading) {
     return (
-      <div className="rewardRecognition-dashboard-container loading-container">
+      <div className="rewardRecognition-dashboard-container">
         <CustomHeader title="Rewards & Recognition" />
-        <Spin size="large" tip="Loading rewards..." />
+        <div className="rewards-grid">
+          {[...Array(6)].map((_, index) => (
+            <RewardShimmer key={`shimmer-${index}`} />
+          ))}
+        </div>
       </div>
     );
   }

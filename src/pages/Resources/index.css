@@ -28,7 +28,7 @@
 
 /* Optional: Styles for the scrollable content */
 .scrollable-content {
-  min-height: 200px;
+  min-height: 400px;
 }
 
 .scrollable-content p {
@@ -131,3 +131,87 @@
   /* Adjust height if needed, so that it aligns with the active tab text spacing */
   height: 2px;
 }
+
+.article-shimmer {
+  background: #2d2f39;
+  border-radius: 14px;
+  overflow: hidden;
+  position: relative;
+  height: 280px;
+  width: 100%;
+}
+
+.shimmer-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.shimmer-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    #2d2f39 0%,
+    #363845 50%,
+    #2d2f39 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmerAnimation 1.5s infinite linear;
+}
+
+.shimmer-content {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  width: calc(100% - 40px);
+}
+
+.shimmer-title {
+  width: 70%;
+  height: 24px;
+  margin-bottom: 12px;
+  background: #363845;
+  border-radius: 4px;
+}
+
+.shimmer-text {
+  width: 40%;
+  height: 16px;
+  background: #363845;
+  border-radius: 4px;
+}
+
+@keyframes shimmerAnimation {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Article animation styles */
+.article-appear {
+  opacity: 0;
+  transform: scale(0.95) translateY(10px);
+  animation: articleAppear 0.3s forwards;
+}
+
+@keyframes articleAppear {
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Stagger delay for articles */
+.article-grid-item {
+  animation-delay: calc(var(--item-index) * 0.1s);
+}
+

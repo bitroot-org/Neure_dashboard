@@ -1,12 +1,54 @@
 import React, { useState, useEffect } from "react";
 import { Row, Col, Spin, Alert, Empty } from "antd";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 import "./index.css";
 import CustomHeader from "../../components/CustomHeader";
 import CustomPagination from "../../components/CustomPagination";
 import ArticleCard from "../../components/ArticleCard";
 import { getArticles } from "../../services/api";
 import { ToolOutlined } from '@ant-design/icons';
+import ArticleModal from "../../components/ArticleModal/ArticleModal";
+
+
+const ArticleShimmer = () => (
+  <div className="article-shimmer">
+    <div className="shimmer-wrapper">
+      <div className="shimmer-background" />
+      <div className="shimmer-content">
+        <div className="shimmer-title" />
+        <div className="shimmer-text" />
+      </div>
+    </div>
+  </div>
+);
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1
+    }
+  }
+};
+
+const itemVariants = {
+  hidden: {
+    opacity: 0,
+    y: 20,
+    scale: 0.95
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      type: "spring",
+      duration: 0.5
+    }
+  }
+};
 
 const Resources = () => {
   const [activeTab, setActiveTab] = useState("articles");
@@ -16,7 +58,19 @@ const Resources = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const token = localStorage.getItem("authToken");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedArticle, setSelectedArticle] = useState(null);
   const navigate = useNavigate();
+
+  const handleArticleClick = (article) => {
+    setSelectedArticle(article);
+    setIsModalOpen(true);
+  };
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+    setSelectedArticle(null);
+  };
 
   useEffect(() => {
     const fetchArticles = async () => {
@@ -71,42 +125,58 @@ const Resources = () => {
         {activeTab === "articles" ? (
           <div className="scrollable-content">
             {loading ? (
-              <Spin tip="Loading articles..." />
-            ) : error ? (
-              <Alert message={error} type="warning" showIcon />
-            ) : (
               <Row gutter={[24, 24]}>
-                {articles.map((article) => (
-                  <Col xs={24} sm={12} lg={8} key={article.id}>
-                    <div
-                      className="clickable-article"
-                      onClick={() =>
-                        navigate(`/articleDetails/${article.id}`, {
-                          state: { article },
-                        })
-                      }
-                      style={{ cursor: "pointer" }}
-                    >
-                      <ArticleCard
-                        title={article.title}
-                        date={new Date(article.created_at).toLocaleDateString("en-GB", {
-                          day: "2-digit",
-                          month: "short",
-                          year: "2-digit",
-                        })}
-                        readingTime={article.reading_time}
-                        backgroundImage={article.image_url}
-                      />
-                    </div>
+                {[...Array(6)].map((_, index) => (
+                  <Col xs={24} sm={12} lg={8} key={`shimmer-${index}`}>
+                    <ArticleShimmer />
                   </Col>
                 ))}
               </Row>
+            )  : error ? (
+              <Alert message={error} type="warning" showIcon />
+            ) : (
+              <motion.div
+                variants={containerVariants}
+                initial="hidden"
+                animate="visible"
+              >
+                <Row gutter={[24, 24]}>
+                  {articles.map((article, index) => (
+                    <Col xs={24} sm={12} lg={8} key={article.id}>
+                      <motion.div
+                        className="article-grid-item"
+                        variants={itemVariants}
+                        style={{ "--item-index": index }}
+                      >
+                        <div
+                          className="clickable-article"
+                          onClick={() => handleArticleClick(article)}
+                          style={{ cursor: "pointer" }}
+                        >
+                          <ArticleCard
+                            title={article.title}
+                            date={new Date(article.created_at).toLocaleDateString("en-GB", {
+                              day: "2-digit",
+                              month: "short",
+                              year: "2-digit",
+                            })}
+                            readingTime={article.reading_time}
+                            backgroundImage={article.image_url}
+                          />
+                        </div>
+                      </motion.div>
+                    </Col>
+                  ))}
+                </Row>
+              </motion.div>
             )}
-            <CustomPagination
-              currentPage={currentPage}
-              totalPages={totalPages}
-              onPageChange={handlePageChange}
-            />
+             {!loading && !error && (
+              <CustomPagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={handlePageChange}
+              />
+            )}
           </div>
         ) : (
           <div className="scrollable-content no-tools">

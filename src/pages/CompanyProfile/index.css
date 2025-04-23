@@ -420,4 +420,117 @@
   cursor: not-allowed !important;
 }
 
+/* Add these shimmer effect styles */
+@keyframes shimmerAnimation {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
 
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    #2D2F39 0%,
+    #363845 50%,
+    #2D2F39 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmerAnimation 1.5s infinite linear;
+}
+
+/* Header shimmer styles */
+.company-avatar.shimmer {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+}
+
+.company-name-shimmer {
+  width: 200px;
+  height: 32px;
+  border-radius: 4px;
+  margin-bottom: 8px;
+}
+
+.edit-button-shimmer {
+  width: 80px;
+  height: 36px;
+  border-radius: 8px;
+}
+
+/* Form shimmer styles */
+.section-title-shimmer {
+  width: 150px;
+  height: 24px;
+  border-radius: 4px;
+  margin-bottom: 24px;
+}
+
+.label-shimmer {
+  width: 120px;
+  height: 16px;
+  border-radius: 4px;
+  margin-bottom: 8px;
+}
+
+.input-shimmer {
+  width: 100%;
+  height: 40px;
+  border-radius: 8px;
+}
+
+.input-group {
+  margin-bottom: 20px;
+}
+
+/* Responsive styles for shimmer */
+@media screen and (max-width: 768px) {
+  .company-avatar.shimmer {
+    width: 80px;
+    height: 80px;
+  }
+
+  .company-name-shimmer {
+    width: 150px;
+    height: 24px;
+  }
+
+  .section-title-shimmer {
+    width: 120px;
+    height: 20px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .company-avatar.shimmer {
+    width: 60px;
+    height: 60px;
+  }
+
+  .company-name-shimmer {
+    width: 120px;
+    height: 20px;
+  }
+
+  .edit-button-shimmer {
+    width: 60px;
+    height: 32px;
+  }
+
+  .section-title-shimmer {
+    width: 100px;
+    height: 18px;
+  }
+
+  .label-shimmer {
+    width: 100px;
+    height: 14px;
+  }
+
+  .input-shimmer {
+    height: 36px;
+  }
+}

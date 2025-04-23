@@ -1,18 +1,58 @@
 import React, { useState, useEffect } from "react";
 import { Tabs, List, Space } from "antd";
+import { useSearchParams } from "react-router-dom";
 import "./index.css";
 import CustomHeader from "../../components/CustomHeader";
 import { getNotificationAndAnnouncements, getAnnouncements, getNotifications } from "../../services/api";
 
+const AnnouncementShimmer = () => (
+  <List.Item className="list-item">
+    <List.Item.Meta
+      avatar={
+        <div className="shimmer-avatar shimmer" />
+      }
+      title={
+        <div className="shimmer-title shimmer" />
+      }
+      description={
+        <div>
+          <div className="shimmer-description shimmer" />
+          <div className="shimmer-meta shimmer" />
+        </div>
+      }
+    />
+  </List.Item>
+);
+
+const ShimmerList = () => (
+  <List>
+    {[1, 2, 3, 4, 5].map((item) => (
+      <AnnouncementShimmer key={item} />
+    ))}
+  </List>
+);
+
 const AnnouncementsAndNotifications = () => {
-  const [activeTab, setActiveTab] = useState("all");
+  const [searchParams, setSearchParams] = useSearchParams();
+  // Get the active tab from URL params or localStorage, fallback to 'all'
+  const [activeTab, setActiveTab] = useState(() => {
+    const tabFromUrl = searchParams.get("tab");
+    const savedTab = localStorage.getItem("announcementsTab");
+    return tabFromUrl || savedTab || "all";
+  });
   const [data, setData] = useState({ announcements: [], notifications: [] });
   const [loading, setLoading] = useState(true);
 
   const companyId = localStorage.getItem("companyId");
   const userData = JSON.parse(localStorage.getItem("userData"));
   const userId = userData.id;
-  
+
+  // Update both URL params and localStorage when tab changes
+  const handleTabChange = (newTab) => {
+    setActiveTab(newTab);
+    setSearchParams({ tab: newTab });
+    localStorage.setItem("announcementsTab", newTab);
+  };
 
   const fetchData = async (tab) => {
     try {
@@ -74,33 +114,39 @@ const AnnouncementsAndNotifications = () => {
     });
   };
 
-  const renderList = (items) => (
-    <List
-      loading={loading}
-      dataSource={items}
-      renderItem={(item) => (
-        <List.Item key={item.id} className="list-item">
-          <List.Item.Meta
-            avatar={getItemIcon(item.type, item)}
-            title={
-              <Space>
-                <span className="item-title">{item.title}</span>
-                {item.isNew && <span className="new-indicator" />}
-              </Space>
-            }
-            description={
-              <div>
-                <p className="item-description">{item.content}</p>
-                <small className="item-meta">
-                  {`${item.type || item.audience_type || 'Notification'} • ${formatDate(item.created_at)}`}
-                </small>
-              </div>
-            }
-          />
-        </List.Item>
-      )}
-    />
-  );
+
+  const renderList = (items) => {
+    if (loading) {
+      return <ShimmerList />;
+    }
+
+    return (
+      <List
+        dataSource={items}
+        renderItem={(item) => (
+          <List.Item key={item.id} className="list-item">
+            <List.Item.Meta
+              avatar={getItemIcon(item.type, item)}
+              title={
+                <Space>
+                  <span className="item-title">{item.title}</span>
+                  {item.isNew && <span className="new-indicator" />}
+                </Space>
+              }
+              description={
+                <div>
+                  <p className="item-description">{item.content}</p>
+                  <small className="item-meta">
+                    {`${item.type || item.audience_type || 'Notification'} • ${formatDate(item.created_at)}`}
+                  </small>
+                </div>
+              }
+            />
+          </List.Item>
+        )}
+      />
+    );
+  };
 
   const getAllItems = () => {
     // Combine both arrays and mark their source
@@ -123,7 +169,7 @@ const AnnouncementsAndNotifications = () => {
         <CustomHeader title="Announcements & notifications" />
         <Tabs
           activeKey={activeTab}
-          onChange={setActiveTab}
+          onChange={handleTabChange}
           className="notifications-tabs"
           items={[
             {

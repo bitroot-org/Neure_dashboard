@@ -4,6 +4,26 @@ import { SearchOutlined } from '@ant-design/icons';
 import './AssignRewardModal.css';
 import { assignReward } from '../../services/api';
 
+const TableRowShimmer = () => (
+  <tr className="shimmer-row">
+    <td className="shimmer-cell">
+      <div className="shimmer-checkbox" />
+    </td>
+    <td className="shimmer-cell">
+      <div className="shimmer-text" />
+    </td>
+    <td className="shimmer-cell">
+      <div className="shimmer-text" />
+    </td>
+    <td className="shimmer-cell">
+      <div className="shimmer-text" />
+    </td>
+    <td className="shimmer-cell">
+      <div className="shimmer-text" />
+    </td>
+  </tr>
+);
+
 const AssignRewardModal = ({
   isOpen,
   onClose,
@@ -145,8 +165,31 @@ const AssignRewardModal = ({
       </div>
 
       {isLoading ? (
-        <div className="loading-spinner">
-          <Spin tip="Loading employees..." />
+        <div className="shimmer-table-container">
+          <div className="shimmer-table">
+            <div className="shimmer-header">
+              <div className="shimmer-header-cell">
+                <div className="shimmer-checkbox" />
+              </div>
+              <div className="shimmer-header-cell">
+                <div className="shimmer-text" />
+              </div>
+              <div className="shimmer-header-cell">
+                <div className="shimmer-text" />
+              </div>
+              <div className="shimmer-header-cell">
+                <div className="shimmer-text" />
+              </div>
+              <div className="shimmer-header-cell">
+                <div className="shimmer-text" />
+              </div>
+            </div>
+            <div className="shimmer-body">
+              {[...Array(5)].map((_, index) => (
+                <TableRowShimmer key={index} />
+              ))}
+            </div>
+          </div>
         </div>
       ) : error ? (
         <Alert message={error} type="error" showIcon />

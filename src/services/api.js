@@ -208,6 +208,7 @@ export const getCompanyMetrics = async (companyId) => {
 
 export const getAllRewards = async () => {
   const response = await api.get(`/rewards/getAllRewards`);
+  console.log('getAllRewards response:', response); // Debug log
   return response.data;
 };
 

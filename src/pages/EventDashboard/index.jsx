@@ -121,7 +121,12 @@ const EventDashboard = () => {
           <Col xs={24} md={16} lg={18}>
             <div className="workshops-grid">
               {loading ? (
-                <Spin tip="Loading workshops..." />
+                // Show shimmer effect while loading
+                Array(6).fill(0).map((_, index) => (
+                  <div key={`shimmer-${index}`} className="workshop-item">
+                    <PresentationSlide isLoading={true} />
+                  </div>
+                ))
               ) : error ? (
                 <Alert message={error} type="warning" showIcon />
               ) : (
@@ -137,6 +142,7 @@ const EventDashboard = () => {
                         location={workshop.location}
                         backgroundImage={workshop.poster_image}
                         endTime={workshop.end_time}
+                        isLoading={false}
                       />
                     </div>
                   </div>

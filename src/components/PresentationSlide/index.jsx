@@ -1,8 +1,26 @@
 import React from 'react';
 import './index.css';
 
-const PresentationSlide = ({ title, date, backgroundImage, endTime }) => {
-  // If no title is provided, show the empty state
+const PresentationSlide = ({ title, date, backgroundImage, endTime, isLoading }) => {
+  // Show shimmer effect while loading
+  if (isLoading) {
+    return (
+      <div className="slide shimmer-slide">
+        <div className="shimmer-background-wrapper">
+          <div className="shimmer-background"></div>
+        </div>
+        <div className="slide-content-wrapper shimmer-content-wrapper">
+          <div className="shimmer-avatar"></div>
+          <div className="shimmer-text-content">
+            <div className="shimmer-title"></div>
+            <div className="shimmer-subtitle"></div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Show empty state only when we explicitly have no title after loading
   if (!title) {
     return (
       <div className="slide empty-slide">

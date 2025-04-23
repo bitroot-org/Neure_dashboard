@@ -1,108 +1,163 @@
 .notifications-container {
-    padding: 80px;
-    min-height: 100vh;
-    background-color: #191a20;
-    overflow-x: hidden;
-  }
-  
-  .notifications-wrapper {
-    width: 100%;
-  }
-  
-  .list-item {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
-    cursor: pointer;
-    padding: 1.5rem 1rem;
-  }
-  
-  .item-title {
-    color: white;
-    font-size: 18px;
-    line-height: 27px;
-    font-weight: 600;
-  }
-  
-  .new-indicator {
-    background-color: #ef4444;
-    width: 0.5rem;
-    height: 0.5rem;
-    border-radius: 9999px;
-    display: inline-block;
-  }
-  
-  .item-description {
-    color: #ffffff8e;
-    margin-bottom: 0.25rem;
-    font-size: 16px;
-    font-weight: 400;
-  }
-  
-  .item-meta {
-    font-size: 14px;
-    font-weight: 400;
-    color: #ffffff8e;
-  }
-  
-  .notifications-tabs .ant-tabs-nav-list {
-    display: flex !important;
-    justify-content: flex-start !important;
-    gap: 24px !important;
-    width: 100% !important;
-  }
-  
-  .notifications-tabs .ant-tabs-nav {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2) !important;
-    margin-bottom: 32px !important;
-  }
-  
-  .notifications-tabs .ant-tabs-nav::before {
-    border: none !important;
-  }
-  
+  padding: 40px 100px 40px 100px;
+  min-height: 100%;
+  overflow-x: hidden;
+}
+
+.notifications-wrapper {
+  width: 100%;
+}
+
+.list-item {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+  cursor: pointer;
+  padding: 1.5rem 1rem;
+}
+
+.item-title {
+  color: white;
+  font-size: 18px;
+  line-height: 27px;
+  font-weight: 600;
+}
+
+.new-indicator {
+  background-color: #ef4444;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 9999px;
+  display: inline-block;
+}
+
+.item-description {
+  color: #ffffff8e;
+  margin-bottom: 0.25rem;
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.item-meta {
+  font-size: 14px;
+  font-weight: 400;
+  color: #ffffff8e;
+}
+
+.notifications-tabs .ant-tabs-nav-list {
+  display: flex !important;
+  justify-content: flex-start !important;
+  gap: 24px !important;
+  width: 100% !important;
+}
+
+.notifications-tabs .ant-tabs-nav {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2) !important;
+  margin-bottom: 32px !important;
+}
+
+.notifications-tabs .ant-tabs-nav::before {
+  border: none !important;
+}
+
+.notifications-tabs .ant-tabs-tab {
+  width: 160px !important;
+  display: flex !important;
+  justify-content: center !important;
+  margin: 0 !important;
+  padding: 12px 0 !important;
+  color: rgba(255, 255, 255, 0.65) !important;
+  font-size: 16px !important;
+}
+
+.notifications-tabs .ant-tabs-tab-active {
+  color: #fff !important;
+}
+
+.notifications-tabs .ant-tabs-tab-active .ant-tabs-tab-btn {
+  color: #00D885 !important;
+}
+
+.notifications-tabs .ant-tabs-ink-bar {
+  background: #00D885 !important;
+}
+
+.notifications-tabs .ant-tabs-tab:hover {
+  color: #fff !important;
+}
+
+.notifications-tabs .ant-tabs-tab:hover .ant-tabs-tab-btn {
+  color: #00D885 !important;
+}
+
+@media (max-width: 768px) {
   .notifications-tabs .ant-tabs-tab {
-    width: 160px !important;
-    display: flex !important;
-    justify-content: center !important;
-    margin: 0 !important;
-    padding: 12px 0 !important;
-    color: rgba(255, 255, 255, 0.65) !important;
-    font-size: 16px !important;
+    margin: 0 12px !important;
+    padding: 8px 0 !important;
+    font-size: 14px !important;
+    width: 100px !important;
   }
-  
-  .notifications-tabs .ant-tabs-tab-active {
-    color: #fff !important;
+}
+
+@media (max-width: 480px) {
+  .notifications-tabs .ant-tabs-tab {
+    margin: 0 8px !important;
+    padding: 6px 0 !important;
+    font-size: 12px !important;
+    width: 80px !important;
   }
-  
-  .notifications-tabs .ant-tabs-tab-active .ant-tabs-tab-btn {
-    color: #00D885 !important;
+}
+
+/* Shimmer effect styles */
+.shimmer {
+  background: #2D2F39;
+  position: relative;
+  overflow: hidden;
+}
+
+.shimmer::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.08) 50%,
+    transparent 100%
+  );
+  animation: shimmer 1.5s infinite linear;
+  transform: translateX(-100%);
+}
+
+.shimmer-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+}
+
+.shimmer-title {
+  width: 200px;
+  height: 20px;
+  border-radius: 4px;
+  margin-bottom: 8px;
+}
+
+.shimmer-description {
+  width: 80%;
+  height: 16px;
+  border-radius: 4px;
+  margin-bottom: 8px;
+}
+
+.shimmer-meta {
+  width: 120px;
+  height: 14px;
+  border-radius: 4px;
+}
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
   }
-  
-  .notifications-tabs .ant-tabs-ink-bar {
-    background: #00D885 !important;
-  }
-  
-  .notifications-tabs .ant-tabs-tab:hover {
-    color: #fff !important;
-  }
-  
-  .notifications-tabs .ant-tabs-tab:hover .ant-tabs-tab-btn {
-    color: #00D885 !important;
-  }
-  
-  @media (max-width: 768px) {
-    .notifications-tabs .ant-tabs-tab {
-      margin: 0 12px !important;
-      padding: 8px 0 !important;
-      font-size: 14px !important;
-      width: 100px !important;
-    }
-  }
-  
-  @media (max-width: 480px) {
-    .notifications-tabs .ant-tabs-tab {
-      margin: 0 8px !important;
-      padding: 6px 0 !important;
-      font-size: 12px !important;
-      width: 80px !important;
-    }
-  }
+}

@@ -464,12 +464,7 @@ const Home = () => {
                 <Button
                   type="link"
                   onClick={handleViewAllWorkshops}
-                  style={{
-                    cursor: "pointer",
-                    color: "#ffffff",
-                    fontSize: "16px",
-                    fontWeight: "500",
-                  }}
+                  className="view-all"
                 >
                   View All <RightOutlined />
                 </Button>
@@ -479,12 +474,19 @@ const Home = () => {
                 onClick={handleViewWorkshopDetails}
                 style={{ cursor: "pointer" }}
               >
-                <PresentationSlide
-                  title={workshop?.title}
-                  date={formatDate(workshop?.start_time)}
-                  backgroundImage={workshop?.poster_image}
-                  endTime={workshop?.end_time}
-                />
+                {loading ? (
+                  <PresentationSlide isLoading={true} />
+                ) : (
+                  <div onClick={handleViewWorkshopDetails} style={{ cursor: "pointer" }}>
+                    <PresentationSlide
+                      title={workshop?.title}
+                      date={formatDate(workshop?.start_time)}
+                      backgroundImage={workshop?.poster_image}
+                      endTime={workshop?.end_time}
+                      isLoading={false}
+                    />
+                  </div>
+                )}
               </div>
             </motion.div>
 
@@ -524,7 +526,6 @@ const Home = () => {
                       color: "#EEE420",
                       fontSize: "16px",
                       fontWeight: "500",
-                      paddingTop: "2px",
                     }}
                   >
                     COMING SOON !

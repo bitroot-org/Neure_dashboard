@@ -1,6 +1,6 @@
 .article-details {
   width: 100%;
-  padding: 40px 80px;
+  padding: 40px 100px 40px 100px;
   display: flex;
   flex-direction: column;
   justify-content: center;
