@@ -10,6 +10,37 @@ import CustomPagination from "../../components/CustomPagination";
 
 import { getTopPerformingEmployee } from "../../services/api";
 
+const MetricCardShimmer = () => (
+  <div className="metric-card-shimmer">
+    <div className="shimmer-title"></div>
+    <div className="shimmer-value"></div>
+    <div className="shimmer-change"></div>
+  </div>
+);
+
+const TableShimmer = () => (
+  <div className="table-shimmer">
+    <div className="table-shimmer-header">
+      {[...Array(6)].map((_, index) => (
+        <div key={`header-${index}`} className="table-shimmer-cell">
+          <div className="shimmer-text"></div>
+        </div>
+      ))}
+    </div>
+    <div className="table-shimmer-body">
+      {[...Array(5)].map((_, rowIndex) => (
+        <div key={`row-${rowIndex}`} className="table-shimmer-row">
+          {[...Array(6)].map((_, cellIndex) => (
+            <div key={`cell-${rowIndex}-${cellIndex}`} className="table-shimmer-cell">
+              <div className="shimmer-text"></div>
+            </div>
+          ))}
+        </div>
+      ))}
+    </div>
+  </div>
+);
+
 const EmployeeDashboard = () => {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [employees, setEmployees] = useState([]);
@@ -195,6 +226,39 @@ const EmployeeDashboard = () => {
       ),
     },
   ];
+
+  if (loading) {
+    return (
+      <div className="employee-dashboard">
+        <CustomHeader title="Employee Management" />
+        <div className="metrics-container">
+          {[...Array(4)].map((_, index) => (
+            <MetricCardShimmer key={`metric-shimmer-${index}`} />
+          ))}
+        </div>
+        <div className="employee-actions">
+          <div className="employee-search-container">
+            <SearchOutlined className="search-icon" />
+            <input
+              type="text"
+              disabled
+              placeholder="Search name, department"
+              className="employee-search"
+            />
+          </div>
+          <div className="employee-action-buttons">
+            <button className="add-employee-btn" disabled>
+              Add Employee
+            </button>
+            <button className="remove-employee-btn" disabled>
+              Remove Employee
+            </button>
+          </div>
+        </div>
+        <TableShimmer />
+      </div>
+    );
+  }
 
   return (
     <div className="employee-dashboard">

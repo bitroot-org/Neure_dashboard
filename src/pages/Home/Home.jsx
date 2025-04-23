@@ -367,32 +367,28 @@ const Home = () => {
             <h3>Settings</h3>
           </div>
 
-          <div className="main-user-info">
-            {user?.profile?.profileUrl ? (
-              <img
-                src={user?.profile?.profileUrl}
-                alt="profile"
-                className="main-avatar"
-              />
-            ) : (
-              <div className="main-avatar">{getInitial()}</div>
-            )}
-            {/* <img
-              className="main-avatar"
-              src={metricsData?.company_profile_url}
-            /> */}
-            <h3 className="main-user-name">
-              {truncateName(`${user.fullName.firstName}`, 15)}
-              <Dropdown
-                menu={{ items: menuItems, onClick: handleMenuClick }}
-                placement="bottomRight"
-                trigger={["click"]}
-                overlayStyle={{ minWidth: "160px" }}
-              >
-                <DownOutlined style={{ marginLeft: 18, cursor: "pointer" }} />
-              </Dropdown>
-            </h3>
-          </div>
+          <Dropdown
+            menu={{ items: menuItems, onClick: handleMenuClick }}
+            placement="bottomRight"
+            trigger={["click"]}
+            overlayStyle={{ minWidth: "160px" }}
+          >
+            <div className="main-user-info">
+              {user?.profile?.profileUrl ? (
+                <img
+                  src={user?.profile?.profileUrl}
+                  alt="profile"
+                  className="main-avatar"
+                />
+              ) : (
+                <div className="main-avatar">{getInitial()}</div>
+              )}
+              <h3 className="main-user-name">
+                {truncateName(`${user.fullName.firstName}`, 15)}
+                <DownOutlined style={{ marginLeft: 18 }} />
+              </h3>
+            </div>
+          </Dropdown>
           <MenuOutlined className="hamburger-menu" onClick={toggleMenu} />
         </div>
       </div>
