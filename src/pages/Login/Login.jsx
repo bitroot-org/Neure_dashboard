@@ -48,14 +48,14 @@ const LoginPage = () => {
       localStorage.setItem("accessToken", response.data.accessToken);
       localStorage.setItem("refreshToken", response.data.refreshToken);
       localStorage.setItem("expiresAt", response.data.expiresAt);
-      localStorage.setItem("companyId", response.data.companyId);
+      localStorage.setItem("companyId", response.data.company.id); // Fixed: correct path to company ID
 
       // Update user context with login data
       const userData = {
         id: response.data.user.user_id,
         email: response.data.user.email,
         roleId: response.data.user.role_id,
-        userType: response.data.user.user_type,
+        userType: response.data.roleType,
         fullName: {
           firstName: response.data.user.first_name,
           lastName: response.data.user.last_name,
@@ -75,7 +75,6 @@ const LoginPage = () => {
       if (response.data.user.last_login === null) {
         setShowPasswordModal(true);
       } else {
-        // Navigate to dashboard with state parameters
         navigate("/", {
           state: {
             showTerms: response.data.user.accepted_terms === 0,
