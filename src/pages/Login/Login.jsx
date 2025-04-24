@@ -48,7 +48,7 @@ const LoginPage = () => {
       localStorage.setItem("accessToken", response.data.accessToken);
       localStorage.setItem("refreshToken", response.data.refreshToken);
       localStorage.setItem("expiresAt", response.data.expiresAt);
-      localStorage.setItem("companyId", response.data.company.id); // Fixed: correct path to company ID
+      localStorage.setItem("companyId", response.data.companyId); // Fixed: correct path to companyId
 
       // Update user context with login data
       const userData = {

@@ -5,6 +5,26 @@ import "./index.css";
 import CustomHeader from "../../components/CustomHeader";
 import { getQna } from "../../services/api";
 
+const FAQShimmer = () => (
+  <>
+    <div className="description-shimmer shimmer-effect" />
+    {[...Array(5)].map((_, index) => (
+      <div
+        key={`faq-shimmer-${index}`}
+        className="faq-shimmer-item shimmer-effect"
+      />
+    ))}
+  </>
+);
+
+const FooterCardShimmer = ({ type }) => (
+  <div className="footer-card-shimmer">
+    <div className="shimmer-title shimmer-effect" />
+    <div className="shimmer-text shimmer-effect" />
+    {type === "feedback" && <div className="shimmer-button shimmer-effect" />}
+  </div>
+);
+
 const HelpAndSupport = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [faqItems, setFaqItems] = useState([]);
@@ -36,20 +56,20 @@ const HelpAndSupport = () => {
     <div className="faq-container">
       <div className="faq-inner">
         <CustomHeader title="Help and Support" />
-        <div className="description">
-          <h2>
-            Welcome to our Mental Health Support Center. Here you'll find
-            answers to commonly asked questions about our mental health
-            services, resources, and support systems. If you can't find what
-            you're looking for, don't hesitate to reach out to our dedicated
-            support team.
-          </h2>
-        </div>
-
+        <h2 className="description">
+          Welcome to our Mental Health Support Center. Here you'll find answers
+          to commonly asked questions about our mental health services,
+          resources, and support systems. If you can't find what you're looking
+          for, don't hesitate to reach out to our dedicated support team.
+        </h2>
         {loading ? (
-          <div style={{ textAlign: "center", padding: "2rem" }}>
-            <Spin size="large" />
-          </div>
+          <>
+            <FAQShimmer />
+            <div className="footer-grid">
+              <FooterCardShimmer type="feedback" />
+              <FooterCardShimmer type="support" />
+            </div>
+          </>
         ) : (
           <Collapse accordion className="faq-collapse" items={faqItems} />
         )}

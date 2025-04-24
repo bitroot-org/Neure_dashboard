@@ -31,13 +31,13 @@
 
 .description {
   color: #ffffff;
-  font-size: clamp(16px, 3vw, 20px);
+  font-size: 24px;
   line-height: 1.5;
   margin: 0;
-  width: 70%;
+  width: 80%;
   padding:  20px 0 30px 0;
+  font-weight: 600;
 }
-
 /* FAQ Collapse styles */
 .faq-collapse {
   border: 1px solid #ffffff2e !important;
@@ -167,5 +167,69 @@
   .ant-collapse-item {
     margin: 0 12px !important;
     width: calc(100% - 24px) !important;
+  }
+}
+
+/* Add these shimmer effect styles at the end of the file */
+.shimmer-effect {
+  background: linear-gradient(
+    90deg,
+    #2D2F39 0%,
+    #363845 50%,
+    #2D2F39 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmerAnimation 1.5s infinite linear;
+}
+
+.faq-shimmer-item {
+  height: 72px;
+  border: 1px solid #ffffff2e;
+  border-radius: 20px;
+  margin-bottom: 16px;
+  overflow: hidden;
+}
+
+.description-shimmer {
+  width: 70%;
+  height: 80px;
+  border-radius: 8px;
+  margin: 20px 0 30px 0;
+}
+
+.footer-card-shimmer {
+  background: #000000;
+  border: 1px solid #2c2a2a;
+  border-radius: 8px;
+  padding: 24px;
+  height: 140px;
+}
+
+.shimmer-title {
+  width: 150px;
+  height: 24px;
+  border-radius: 4px;
+  margin-bottom: 8px;
+}
+
+.shimmer-text {
+  width: 200px;
+  height: 16px;
+  border-radius: 4px;
+}
+
+.shimmer-button {
+  width: 120px;
+  height: 48px;
+  border-radius: 50px;
+  margin-top: 16px;
+}
+
+@keyframes shimmerAnimation {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
   }
 }
