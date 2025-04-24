@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { 
   HeartOutlined, 
+  HeartFilled,
   EllipsisOutlined,
   StepBackwardOutlined,
   StepForwardOutlined,
@@ -11,7 +12,7 @@ import {
 } from '@ant-design/icons';
 import { useAudio } from '../AudioPlayer/AudioContext';
 
-const PlayerFooter = () => {
+const PlayerFooter = ({ onLike }) => {
   const [progress, setProgress] = useState(0);
   const { 
     currentTrack, 
@@ -121,8 +122,18 @@ const PlayerFooter = () => {
         </div>
 
         <div className="soundscapes-player-actions">
-          <button className="soundscapes-like-button">
-            <HeartOutlined />
+          <button 
+            className="soundscapes-like-button"
+            onClick={(e) => {
+              e.stopPropagation();
+              onLike && onLike(currentTrack.id);
+            }}
+          >
+            {currentTrack.is_liked_by_user === 1 ? (
+              <HeartFilled style={{ color: '#ff4757' }} />
+            ) : (
+              <HeartOutlined />
+            )}
           </button>
           <button className="soundscapes-more-button">
             <EllipsisOutlined />

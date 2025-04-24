@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { HeartOutlined, EllipsisOutlined } from '@ant-design/icons';
+import { HeartOutlined, HeartFilled, EllipsisOutlined } from '@ant-design/icons';
 import './PlayerModal.css';
 
-const PlayerModal = ({ isOpen, onClose, track, audio }) => {
+const PlayerModal = ({ isOpen, onClose, track, audio, onLike }) => {
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
 
@@ -102,12 +102,22 @@ const PlayerModal = ({ isOpen, onClose, track, audio }) => {
             <div className="track-details">
               <div className='track-info'>
                 <h2 className="track-title">{track.title}</h2>
-                {track.author && <p className="track-author">{track.author}</p>}
+                {track.artist_name && <p className="track-author">{track.artist_name}</p>}
               </div>
 
               <div className="track-actions">
-                <button className="action-button">
-                  <HeartOutlined />
+                <button 
+                  className="action-button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onLike && onLike(track.id);
+                  }}
+                >
+                  {track.is_liked_by_user === 1 ? (
+                    <HeartFilled style={{ color: '#ff4757' }} />
+                  ) : (
+                    <HeartOutlined />
+                  )}
                 </button>
                 <button className="action-button">
                   <EllipsisOutlined />

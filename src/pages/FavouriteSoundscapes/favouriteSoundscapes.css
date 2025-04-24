@@ -17,8 +17,8 @@
   display: flex;
   align-items: center;
   padding: 12px;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 8px;
+  background: rgba(146, 145, 145, 0.065);
+  border-radius: 12px;
   transition: background-color 0.2s;
 }
 
@@ -79,9 +79,113 @@
   align-items: center;
   justify-content: center;
   transition: transform 0.2s;
+  font-size: 18px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.134);
 }
 
 .fav-like-button:hover,
 .fav-more-button:hover {
   transform: scale(1.1);
+}
+
+.fav-soundscapes-empty {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 200px); /* Adjust based on your header/footer height */
+  padding: 20px;
+}
+
+.empty-state-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 400px;
+  padding: 40px;
+  background: linear-gradient(145deg, #2d2f39, #252731);
+  border-radius: 24px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.empty-state-icon {
+  font-size: 64px;
+  margin-bottom: 24px;
+  width: 100px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #323544, #2a2c39);
+  box-shadow: 
+    8px 8px 16px #242631,
+    -8px -8px 16px #363845;
+  color: #ff4757;
+}
+
+.empty-state-container h2 {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  background: linear-gradient(90deg, #ff4757, #ff6b81);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.empty-state-container p {
+  color: #b1b3c0;
+  font-size: 16px;
+  line-height: 1.5;
+  margin-bottom: 32px;
+}
+
+.explore-button {
+  padding: 12px 32px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #fff;
+  background: linear-gradient(90deg, #ff4757, #ff6b81);
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(255, 71, 87, 0.2);
+}
+
+.explore-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 71, 87, 0.3);
+}
+
+.explore-button:active {
+  transform: translateY(0);
+}
+
+/* Add media queries for responsiveness */
+@media (max-width: 768px) {
+  .empty-state-container {
+    padding: 32px 24px;
+    max-width: 320px;
+  }
+
+  .empty-state-icon {
+    font-size: 48px;
+    width: 80px;
+    height: 80px;
+  }
+
+  .empty-state-container h2 {
+    font-size: 20px;
+  }
+
+  .empty-state-container p {
+    font-size: 14px;
+  }
+
+  .explore-button {
+    padding: 10px 24px;
+    font-size: 14px;
+  }
 }

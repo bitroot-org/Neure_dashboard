@@ -305,9 +305,9 @@ export const getArticles = async (params) => {
   }
 };
 
-export const getSoundscapes = async (params) => {
+export const getSoundscapesByUserId = async (params) => {
   try {
-    const response = await api.get("/soundscapes/getSoundscapes", {
+    const response = await api.get("/soundscapes/getSoundscapeByUserId", {
       params: {
         page: params.currentPage || 1,
         limit: 10,
@@ -422,3 +422,21 @@ export const getLikedSoundscapes = async () => {
     throw error.response?.data || error;
   }
 }
+
+export const likeSoundscape = async (soundscapeId) => {
+  try {
+    const response = await api.post(`/soundscapes/like/${soundscapeId}`);
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error;
+  }
+};
+
+export const unlikeSoundscape = async (soundscapeId) => {
+  try {
+    const response = await api.delete(`/soundscapes/unlike/${soundscapeId}`);
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error;
+  }
+};

@@ -47,13 +47,21 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform 0.2s ease;
+  transition: all 0.2s ease;
   background: rgba(255, 255, 255, 0.252);
   border-radius: 50%;
 }
 
 .soundscapes-like-button:hover {
   transform: scale(1.1);
+}
+
+.soundscapes-like-button.active {
+  background: rgba(255, 71, 87, 0.1);
+}
+
+.soundscapes-like-button.active:hover {
+  background: rgba(255, 71, 87, 0.2);
 }
 
 /* Remove absolute positioning from the buttons and make the container a flex container */

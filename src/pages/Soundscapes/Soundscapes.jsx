@@ -5,10 +5,11 @@ import CustomHeader from "../../components/CustomHeader";
 import {
   RightOutlined,
   HeartOutlined,
+  HeartFilled,
   EllipsisOutlined,
 } from "@ant-design/icons";
 import PlayerModal from "../../components/PlayerModal/PlayerModal";
-import { getSoundscapes } from "../../services/api";
+import { getSoundscapesByUserId, likeSoundscape, unlikeSoundscape } from "../../services/api";
 import {
   AudioProvider,
   useAudio,
@@ -16,6 +17,7 @@ import {
 import SoundscapeCarousel from "../../components/Carousel/SoundscapeCarousel";
 import PlayerFooter from "../../components/Player/PlayerFooter";
 import { useNavigate } from 'react-router-dom';
+import { message } from 'antd';
 
 const SoundscapeContent = () => {
   const [picks, setPicks] = useState([]);
@@ -24,26 +26,80 @@ const SoundscapeContent = () => {
   const [error, setError] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [soundscapes, setSoundscapes] = useState([]);
+  const [likedTracks, setLikedTracks] = useState(new Set());
   const { playTrack, currentTrack, setCurrentTrack, updatePlaylist } = useAudio();
   const [progress, setProgress] = useState(0);
   const [duration, setDuration] = useState(0);
   const audioRef = useRef(null);
   const navigate = useNavigate();
 
+  const handleLike = async (trackId) => {
+    try {
+      const isCurrentlyLiked = likedTracks.has(trackId);
+      
+      if (isCurrentlyLiked) {
+        await unlikeSoundscape(trackId);
+        // Update likedTracks set
+        setLikedTracks(prev => {
+          const newSet = new Set(prev);
+          newSet.delete(trackId);
+          return newSet;
+        });
+      } else {
+        await likeSoundscape(trackId);
+        // Update likedTracks set
+        setLikedTracks(prev => new Set(prev).add(trackId));
+      }
+
+      // Update all soundscapes states
+      const updateSoundscapeState = (prevTracks) => 
+        prevTracks.map(track => 
+          track.id === trackId 
+            ? { ...track, is_liked_by_user: isCurrentlyLiked ? 0 : 1 }
+            : track
+        );
+
+      setSoundscapes(updateSoundscapeState);
+      setPicks(updateSoundscapeState);
+      setTunes(updateSoundscapeState);
+
+      // Update currentTrack if it's the one being liked/unliked
+      if (currentTrack && currentTrack.id === trackId) {
+        setCurrentTrack(prev => ({
+          ...prev,
+          is_liked_by_user: isCurrentlyLiked ? 0 : 1
+        }));
+      }
+
+    } catch (error) {
+      console.error('Error toggling like:', error);
+      message.error('Failed to update like status');
+    }
+  };
+
   // Move the data fetching to a separate useEffect with empty dependency array
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const data = await getSoundscapes({ currentPage: 1 });
+        const data = await getSoundscapesByUserId({ currentPage: 1 });
         if (data.status && data.data.soundscapes) {
           const allSoundscapes = data.data.soundscapes.map(soundscape => ({
             ...soundscape,
             sound_cover_image: soundscape.sound_cover_image,
             title: soundscape.title,
             artist_name: soundscape.artist_name,
-            sound_file_url: soundscape.sound_file_url
+            sound_file_url: soundscape.sound_file_url,
+            is_liked: soundscape.is_liked_by_user === 1 // Convert is_liked_by_user to boolean
           }));
+
+          // Set initially liked tracks based on is_liked_by_user field
+          const initialLikedTracks = new Set(
+            allSoundscapes
+              .filter(track => track.is_liked_by_user === 1)
+              .map(track => track.id)
+          );
+          setLikedTracks(initialLikedTracks);
 
           setPicks(allSoundscapes.slice(0, 6));
           setTunes(allSoundscapes.slice(6));
@@ -160,8 +216,18 @@ const SoundscapeContent = () => {
                   <div className="soundscapes-duration">
                     {formatDuration(tune.duration)}
                   </div>
-                  <button className="soundscapes-like-button">
-                    <img src="like.svg" alt="Like" />
+                  <button 
+                    className={`soundscapes-like-button ${likedTracks.has(tune.id) ? 'active' : ''}`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleLike(tune.id);
+                    }}
+                  >
+                    {tune.is_liked_by_user === 1 ? (
+                      <HeartFilled style={{ color: '#ff4757' }} />
+                    ) : (
+                      <HeartOutlined />
+                    )}
                   </button>
                   <button className="soundscapes-more-button">
                     <img src="/DotsThreeOutline.svg" alt="More options" />
@@ -173,12 +239,13 @@ const SoundscapeContent = () => {
         </section>
       </main>
 
-      {currentTrack && <PlayerFooter />}
+      {currentTrack && <PlayerFooter onLike={handleLike} />}
 
       <PlayerModal
         isOpen={modalOpen}
         onClose={() => setModalOpen(false)}
         track={currentTrack}
+        onLike={handleLike}
       />
     </div>
   );
