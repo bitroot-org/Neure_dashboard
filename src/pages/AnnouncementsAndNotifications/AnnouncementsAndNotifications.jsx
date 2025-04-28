@@ -33,9 +33,55 @@ const ShimmerList = () => (
   </List>
 );
 
+const EmptyState = ({ type }) => {
+  const getEmptyStateContent = () => {
+    switch (type) {
+      case "announcements":
+        return {
+          icon: "/announcements.png",
+          title: "No Announcements Yet",
+          description:
+            "Stay tuned! New company announcements will appear here.",
+          buttonText: "Go to Home",
+        };
+      case "notifications":
+        return {
+          icon: "/notifications.png",
+          title: "No Notifications",
+          description:
+            "You're all caught up! Check back later for new notifications.",
+          buttonText: "Go to Home",
+        };
+      default:
+        return {
+          icon: "/bell.png",
+          title: "Nothing to Show",
+          description:
+            "There are no announcements or notifications at the moment.",
+          buttonText: "Go to Home",
+        };
+    }
+  };
+
+  const content = getEmptyStateContent();
+  const navigate = useNavigate();
+
+  return (
+    <div className="empty-state-container">
+      <div className="empty-state-icon">
+        <img src={content.icon} alt="Empty state" />
+      </div>
+      <h2 className="empty-state-title">{content.title}</h2>
+      <p className="empty-state-description">{content.description}</p>
+      <button className="empty-state-button" onClick={() => navigate("/")}>
+        {content.buttonText}
+      </button>
+    </div>
+  );
+};
+
 const AnnouncementsAndNotifications = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  // Get the active tab from URL params or localStorage, fallback to 'all'
   const [activeTab, setActiveTab] = useState(() => {
     const tabFromUrl = searchParams.get("tab");
     const savedTab = localStorage.getItem("announcementsTab");
@@ -50,18 +96,19 @@ const AnnouncementsAndNotifications = () => {
   const navigate = useNavigate();
 
   // Update both URL params and localStorage when tab changes
-  const handleTabChange = (newTab) => {
+  const handleTabChange = async (newTab) => {
     setActiveTab(newTab);
     setSearchParams({ tab: newTab });
     localStorage.setItem("announcementsTab", newTab);
+    setLoading(true); // Set loading before fetching
+    await fetchData(newTab); // Wait for data to be fetched
   };
 
   const fetchData = async (tab) => {
     try {
       setLoading(true);
       const params = {
-        companyId: companyId, // Replace with actual company_id
-        // userId: userId,    // Replace with actual user_id
+        companyId: companyId,
         currentPage: 1,
         limit: 10,
       };
@@ -117,12 +164,16 @@ const AnnouncementsAndNotifications = () => {
   };
 
   const handleBack = () => {
-    navigate('/'); // This will go directly to home
+    navigate("/"); // This will go directly to home
   };
 
   const renderList = (items) => {
     if (loading) {
       return <ShimmerList />;
+    }
+
+    if (!items || items.length === 0) {
+      return <EmptyState type={activeTab} />;
     }
 
     return (
@@ -191,17 +242,25 @@ const AnnouncementsAndNotifications = () => {
             {
               key: "all",
               label: "All",
-              children: renderList(getAllItems()),
+              children: loading ? <ShimmerList /> : renderList(getAllItems()),
             },
             {
               key: "announcements",
               label: "Announcements",
-              children: renderList(data.announcements),
+              children: loading ? (
+                <ShimmerList />
+              ) : (
+                renderList(data.announcements)
+              ),
             },
             {
               key: "notifications",
               label: "Notifications",
-              children: renderList(data.notifications),
+              children: loading ? (
+                <ShimmerList />
+              ) : (
+                renderList(data.notifications)
+              ),
             },
           ]}
         />

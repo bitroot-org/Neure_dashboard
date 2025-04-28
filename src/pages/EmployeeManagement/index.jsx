@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import "./index.css";
 import CustomHeader from "../../components/CustomHeader";
 import CustomPagination from "../../components/CustomPagination";
+import CountUp from 'react-countup';
 
 import { getTopPerformingEmployee } from "../../services/api";
 
@@ -270,7 +271,17 @@ const EmployeeDashboard = () => {
             <h3 className="metric-title">{metric.title}</h3>
 
             <div className="employee-metric-data">
-              <h1 className="employee-metric-value">{metric.value}</h1>
+              <h1 className="employee-metric-value">
+                <CountUp
+                  start={0}
+                  end={metric.value}
+                  duration={2}
+                  separator=","
+                  useEasing={true}
+                  enableScrollSpy={true}
+                  scrollSpyOnce={true}
+                />
+              </h1>
               <div
                 className={`employee-metric-change ${
                   metric.change.includes("+")

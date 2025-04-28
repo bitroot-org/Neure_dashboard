@@ -114,9 +114,12 @@ const FavouriteSoundscapesContent = () => {
 
   if (loading) {
     return (
-      <div className="fav-soundscapes-loading">
-        <div className="loading-spinner"></div>
-        <p>Loading favourites...</p>
+      <div className="fav-soundscapes-container">
+        <CustomHeader title="Favourite Soundscapes" />
+        <div className="fav-soundscapes-loading">
+          <div className="loading-spinner"></div>
+          <p>Loading favourites...</p>
+        </div>
       </div>
     );
   }

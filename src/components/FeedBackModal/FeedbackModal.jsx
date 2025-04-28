@@ -97,9 +97,9 @@ const FeedbackModal = ({ isOpen, onClose }) => {
           <div className="feedback-section">
             <Form.Item
               name="description"
-              label={<div className="feedback-section-label">Company name*</div>}
+              label={<div className="feedback-section-label">Feedback description*</div>}
               rules={[
-                { required: true, message: 'Please provide company details' }
+                { required: true, message: 'Please provide feedback details' }
               ]}
             >
               <textarea

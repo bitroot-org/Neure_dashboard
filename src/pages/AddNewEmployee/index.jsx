@@ -1,31 +1,72 @@
 import React, { useState, useEffect } from "react";
 import CustomHeader from "../../components/CustomHeader";
 import { UploadOutlined } from "@ant-design/icons";
-import { message, Spin, DatePicker, ConfigProvider } from "antd"; // Added Spin for loading state
+import { message, Spin, DatePicker, ConfigProvider } from "antd";
 import "./addNewEmployee.css";
 import { createEmployee, getDepartments } from "../../services/api";
-import moment from "moment"; // Import moment for date handling
+import moment from "moment";
+
+const FormShimmer = () => (
+  <div className="form-shimmer">
+    <div className="type-section-shimmer">
+      <div className="type-button-shimmer"></div>
+      <div className="type-button-shimmer"></div>
+    </div>
+    
+    <div className="divider-shimmer"></div>
+    
+    <div className="form-row-shimmer">
+      <div className="form-item-shimmer">
+        <div className="label-shimmer"></div>
+        <div className="input-shimmer"></div>
+      </div>
+      <div className="form-item-shimmer">
+        <div className="label-shimmer"></div>
+        <div className="input-shimmer"></div>
+      </div>
+    </div>
+    
+    <div className="form-row-shimmer">
+      <div className="form-item-shimmer">
+        <div className="label-shimmer"></div>
+        <div className="input-shimmer"></div>
+      </div>
+      <div className="form-item-shimmer">
+        <div className="label-shimmer"></div>
+        <div className="input-shimmer"></div>
+      </div>
+    </div>
+    
+    <div className="form-row-shimmer">
+      <div className="form-item-shimmer">
+        <div className="label-shimmer"></div>
+        <div className="input-shimmer"></div>
+      </div>
+      <div className="form-item-shimmer">
+        <div className="label-shimmer"></div>
+        <div className="input-shimmer"></div>
+      </div>
+    </div>
+  </div>
+);
 
 const AddNewEmployee = () => {
-  // Employee type: "single" or "bulk"
   const [employeeType, setEmployeeType] = useState("single");
   const [loading, setLoading] = useState(false);
   const [departments, setDepartments] = useState([]);
   const [fetchingDepartments, setFetchingDepartments] = useState(true);
 
-  // Form state for single employee
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
     email: "",
     contact: "",
     gender: "",
-    dateOfBirth: null, // Changed from age to dateOfBirth
+    dateOfBirth: null,
     department: "",
     city: "",
   });
 
-  // Fetch departments on component mount
   useEffect(() => {
     const fetchDepartments = async () => {
       try {
@@ -46,6 +87,17 @@ const AddNewEmployee = () => {
 
     fetchDepartments();
   }, []);
+
+  if (fetchingDepartments) {
+    return (
+      <div className="add-employee-dashboard">
+        <CustomHeader title="Add New Employee" />
+        <div className="form-container">
+          <FormShimmer />
+        </div>
+      </div>
+    );
+  }
 
   const onTypeChange = (type) => {
     setEmployeeType(type);
@@ -265,28 +317,22 @@ const AddNewEmployee = () => {
             <div className="form-row">
               <div className="form-item">
                 <label htmlFor="department">Department*</label>
-                {fetchingDepartments ? (
-                  <div className="loading-spinner">
-                    <Spin size="small" />
-                  </div>
-                ) : (
-                  <select
-                    id="department"
-                    name="department"
-                    value={formData.department}
-                    onChange={handleChange}
-                    required
-                  >
-                    <option value="" disabled>
-                      Select Department
+                <select
+                  id="department"
+                  name="department"
+                  value={formData.department}
+                  onChange={handleChange}
+                  required
+                >
+                  <option value="" disabled>
+                    Select Department
+                  </option>
+                  {departments.map((dept) => (
+                    <option key={dept.id} value={dept.id}>
+                      {dept.department_name}
                     </option>
-                    {departments.map((dept) => (
-                      <option key={dept.id} value={dept.id}>
-                        {dept.department_name}
-                      </option>
-                    ))}
-                  </select>
-                )}
+                  ))}
+                </select>
               </div>
               <div className="form-item">
                 <label htmlFor="city">City*</label>
