@@ -17,14 +17,19 @@ const CustomHeader = ({
   buttonText = 'Edit',
   buttonDisabled = false,
   buttonLoading = false,
-  buttonTooltip = ''
+  buttonTooltip = '',
+  onBack // Add this prop
 }) => {
   const navigate = useNavigate();
   const [filterValue, setFilterValue] = React.useState(defaultFilterValue);
   const [backIconLoaded, setBackIconLoaded] = React.useState(true);
 
   const handleBack = () => {
-    navigate(-1);
+    if (onBack) {
+      onBack();
+    } else {
+      navigate(-1);
+    }
   };
 
   const filterOptions = [
@@ -53,6 +58,7 @@ const CustomHeader = ({
               }
               onClick={handleBack}
               className="back-button"
+              style={{cursor: "pointer"}}
             />
           )}
           <h1 className="header-title">{title}</h1>

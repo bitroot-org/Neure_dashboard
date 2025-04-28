@@ -1,19 +1,20 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Tabs, List, Space } from "antd";
 import { useSearchParams } from "react-router-dom";
 import "./index.css";
 import CustomHeader from "../../components/CustomHeader";
-import { getNotificationAndAnnouncements, getAnnouncements, getNotifications } from "../../services/api";
+import {
+  getNotificationAndAnnouncements,
+  getAnnouncements,
+  getNotifications,
+} from "../../services/api";
 
 const AnnouncementShimmer = () => (
   <List.Item className="list-item">
     <List.Item.Meta
-      avatar={
-        <div className="shimmer-avatar shimmer" />
-      }
-      title={
-        <div className="shimmer-title shimmer" />
-      }
+      avatar={<div className="shimmer-avatar shimmer" />}
+      title={<div className="shimmer-title shimmer" />}
       description={
         <div>
           <div className="shimmer-description shimmer" />
@@ -46,6 +47,7 @@ const AnnouncementsAndNotifications = () => {
   const companyId = localStorage.getItem("companyId");
   const userData = JSON.parse(localStorage.getItem("userData"));
   const userId = userData.id;
+  const navigate = useNavigate();
 
   // Update both URL params and localStorage when tab changes
   const handleTabChange = (newTab) => {
@@ -66,26 +68,26 @@ const AnnouncementsAndNotifications = () => {
 
       if (tab === "announcements") {
         const response = await getAnnouncements(params);
-        setData(prevData => ({
+        setData((prevData) => ({
           ...prevData,
-          announcements: response.data.announcements
+          announcements: response.data.announcements,
         }));
       } else if (tab === "notifications") {
         const response = await getNotifications(params);
-        setData(prevData => ({
+        setData((prevData) => ({
           ...prevData,
-          notifications: response.data.notifications
+          notifications: response.data.notifications,
         }));
       } else {
         // For "all" tab, fetch both
         const [announcementsRes, notificationsRes] = await Promise.all([
           getAnnouncements(params),
-          getNotifications(params)
+          getNotifications(params),
         ]);
-        
+
         setData({
           announcements: announcementsRes.data.announcements,
-          notifications: notificationsRes.data.notifications || []
+          notifications: notificationsRes.data.notifications || [],
         });
       }
     } catch (error) {
@@ -100,7 +102,7 @@ const AnnouncementsAndNotifications = () => {
   }, [activeTab]);
 
   const getItemIcon = (type, item) => {
-    if (item.source === 'notification' || item.type) {
+    if (item.source === "notification" || item.type) {
       return <img src="/notifications.png" alt="notification icon" />;
     }
     return <img src="/announcements.png" alt="announcement icon" />;
@@ -114,6 +116,9 @@ const AnnouncementsAndNotifications = () => {
     });
   };
 
+  const handleBack = () => {
+    navigate('/'); // This will go directly to home
+  };
 
   const renderList = (items) => {
     if (loading) {
@@ -137,7 +142,9 @@ const AnnouncementsAndNotifications = () => {
                 <div>
                   <p className="item-description">{item.content}</p>
                   <small className="item-meta">
-                    {`${item.type || item.audience_type || 'Notification'} • ${formatDate(item.created_at)}`}
+                    {`${
+                      item.type || item.audience_type || "Notification"
+                    } • ${formatDate(item.created_at)}`}
                   </small>
                 </div>
               }
@@ -151,8 +158,14 @@ const AnnouncementsAndNotifications = () => {
   const getAllItems = () => {
     // Combine both arrays and mark their source
     const combinedItems = [
-      ...data.announcements.map(item => ({ ...item, source: 'announcement' })),
-      ...data.notifications.map(item => ({ ...item, source: 'notification' }))
+      ...data.announcements.map((item) => ({
+        ...item,
+        source: "announcement",
+      })),
+      ...data.notifications.map((item) => ({
+        ...item,
+        source: "notification",
+      })),
     ];
 
     // Sort by date in descending order (newest first)
@@ -166,7 +179,10 @@ const AnnouncementsAndNotifications = () => {
   return (
     <div className="notifications-container">
       <div className="notifications-wrapper">
-        <CustomHeader title="Announcements & notifications" />
+        <CustomHeader
+          title="Announcements & notifications"
+          onBack={handleBack}
+        />
         <Tabs
           activeKey={activeTab}
           onChange={handleTabChange}

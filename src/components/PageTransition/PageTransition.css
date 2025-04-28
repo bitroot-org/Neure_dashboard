@@ -1,10 +1,22 @@
 .page-transition {
   position: relative;
   width: 100%;
-  height: 100%;
   min-height: 100vh;
-  --transition-duration: 600ms;
-  will-change: opacity, transform, filter;
+  will-change: opacity, transform;
+}
+
+/* Ensure the transition container doesn't clip content */
+.main-content-wrapper {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Ensure child content fills the space */
+.page-transition > * {
+  width: 100%;
+  height: 100%;
 }
 
 /* State-based animations */
