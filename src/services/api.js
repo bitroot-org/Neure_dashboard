@@ -275,7 +275,7 @@ export const createEmployee = async (data) => {
 };
 
 export const removeEmployee = async (data) => {
-  const response = await api.put(`/company/removeEmployee`, data);
+  const response = await api.delete(`/company/removeEmployee`, {data});
   return response.data;
 };
 
@@ -376,6 +376,7 @@ export const getAnnouncements = async (params) => {
 };
 
 export const getNotifications = async (params) => {
+  console.log("Params for notifications: ", params);
   try {
     const response = await api.get(`notifications/list`, {
       params: {

@@ -109,6 +109,7 @@ const AnnouncementsAndNotifications = () => {
       setLoading(true);
       const params = {
         companyId: companyId,
+        userId: userId,
         currentPage: 1,
         limit: 10,
       };
