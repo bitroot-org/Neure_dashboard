@@ -115,7 +115,8 @@ const RewardsAndRecognition = () => {
   useEffect(() => {
     const fetchRewards = async () => {
       try {
-        const response = await getAllRewards();
+        const companyId = localStorage.getItem("companyId");
+        const response = await getAllRewards(companyId);
         // Navigate through the nested data structure
         const rewardsData = response.data;
         setRewards(rewardsData);

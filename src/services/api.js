@@ -174,7 +174,7 @@ export const getTopPerformingEmployee = async (params) => {
 };
 
 export const getQna = async () => {
-  const response = await api.get(`/company/getQna`);
+  const response = await api.get(`/qna/list`);
   return response.data;
 };
 
@@ -206,8 +206,12 @@ export const getCompanyMetrics = async (companyId) => {
   return response.data;
 };
 
-export const getAllRewards = async () => {
-  const response = await api.get(`/rewards/getAllRewards`);
+export const getAllRewards = async (companyId) => {
+  const response = await api.get(`/rewards/getAllRewards`, {
+    params: {
+      company_id: companyId,
+    },
+  });
   console.log('getAllRewards response:', response); // Debug log
   return response.data;
 };

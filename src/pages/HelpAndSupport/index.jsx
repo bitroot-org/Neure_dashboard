@@ -34,8 +34,8 @@ const HelpAndSupport = () => {
     const fetchFaqs = async () => {
       try {
         const response = await getQna();
-        if (response.status && response.data?.data) {
-          const formattedFaqs = response.data.data.map((item) => ({
+        if (response.status && response.data) {
+          const formattedFaqs = response.data.map((item) => ({
             key: item.id || Math.random(),
             label: item.question,
             children: item.answer,
