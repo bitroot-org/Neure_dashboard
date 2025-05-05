@@ -284,11 +284,10 @@ const AddNewEmployee = () => {
                   theme={{
                     components: {
                       DatePicker: {
-                        colorBgContainer: "#191A20", 
-                        colorBgElevated: "#191A20",     
+                        colorBgContainer: "transparent",
+                        colorBgElevated: "#191A20",
                         colorText: "#fff",
                         colorTextPlaceholder: "rgba(255, 255, 255, 0.5)",
-                        colorBgContainer: "transparent",
                         colorBorder: "rgba(255, 255, 255, 0.1)",
                         borderRadius: 12,
                       },
@@ -297,17 +296,18 @@ const AddNewEmployee = () => {
                 >
                   <DatePicker
                     id="dateOfBirth"
-                    style={{
-                      width: "100%",
-                      height: "48px",
+                    style={{ width: '100%', height: '48px' }}
+                    value={formData.dateOfBirth ? moment(formData.dateOfBirth) : null}
+                    onChange={(date, dateString) => {
+                      handleChange({
+                        target: {
+                          name: "dateOfBirth",
+                          value: dateString,
+                        },
+                      });
                     }}
-                    className="custom-datepicker"
-                    placeholder="Select Date of Birth"
-                    onChange={handleDateChange}
-                    value={
-                      formData.dateOfBirth ? moment(formData.dateOfBirth) : null
-                    }
                     format="YYYY-MM-DD"
+                    placeholder="Select date of birth"
                     required
                   />
                 </ConfigProvider>
