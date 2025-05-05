@@ -1,20 +1,20 @@
 import React, { useEffect, useState, useContext } from "react";
-import { Table, Space, Card, message } from "antd";
-import { ArrowUpOutlined, ArrowDownOutlined } from "@ant-design/icons";
-import MetricLineChart from "../../components/MetricLineCharts";
-import { sampleData } from "../../constants/faqData";
+import { Table, Space, Card, message, Button } from "antd";
+import { ArrowRightOutlined } from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
 import "./index.css";
 import CompanyHealthGauge from "../../components/CompanyHealthGauge";
 import UserStats from "../../components/UserStats";
 import CustomHeader from "../../components/CustomHeader";
 import { CompanyDataContext } from "../../context/CompanyContext";
-import { getTopPerformingEmployee, getCompanyMetrics, getStressTrends } from "../../services/api";
+import { getTopPerformingEmployee, getCompanyMetrics } from "../../services/api";
 
 const Dashboard = () => {
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [employees, setEmployees] = useState([]);
   const [metricsData, setMetricsData] = useState(null);
-  const [stressTrends, setStressTrends] = useState([]);
+  // Remove stressTrends state since we're not using it anymore
 
   const [pagination, setPagination] = useState({
     current: 1,
@@ -24,7 +24,7 @@ const Dashboard = () => {
 
   const { companyData } = useContext(CompanyDataContext);
 
-  console.log("Company data:", companyData);
+  console.log("Company data from context:", companyData);
 
   const fetchEmployees = async (page = 1, pageSize = 10) => {
     try {
@@ -36,12 +36,14 @@ const Dashboard = () => {
         return;
       }
 
+      console.log("Fetching employees with companyId:", companyId);
       const response = await getTopPerformingEmployee({
         companyId,
         page,
         limit: pageSize,
       });
 
+      console.log("Employees response:", response);
       if (response.status) {
         setEmployees(response.data);
         setPagination((prev) => ({
@@ -60,12 +62,14 @@ const Dashboard = () => {
   const fetchMetrics = async () => {
     try {
       setLoading(true);
+      console.log("fetchMetrics called");
       const companyId = localStorage.getItem("companyId");
       if (!companyId) {
         message.error("Company ID not found");
         return;
       }
 
+      console.log("Fetching metrics with companyId:", companyId);
       const response = await getCompanyMetrics(companyId);
       console.log("Metrics response:", response);
       if (response.status) {
@@ -79,39 +83,19 @@ const Dashboard = () => {
     }
   };
 
-  // const fetchStressTrends = async () => {
-  //   try {
-  //     const companyId = localStorage.getItem("companyId");
-  //     if (!companyId) {
-  //       message.error("Company ID not found");
-  //       return;
-  //     }
-
-  //     const response = await getStressTrends(companyId);
-  //     if (response.status) {
-  //       const transformedData = response.data.trends.map(trend => ({
-  //         date: trend.period.substring(0, 7), // Format: "2024-05"
-  //         value: trend.stress_level
-  //       }));
-  //       setStressTrends(transformedData);
-  //       console.log("Stress trends:", transformedData);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error fetching stress trends:", error);
-  //     message.error("Failed to fetch stress trends");
-  //   }
-  // };
-
+  // Remove the fetchStressTrends function completely
 
   useEffect(() => {
     const fetchInitialData = async () => {
       setLoading(true);
       try {
+        console.log("Fetching initial data...");
+        // Remove fetchStressTrends from Promise.all
         await Promise.all([
-          fetchStressTrends(),
           fetchEmployees(pagination.current, pagination.pageSize),
           fetchMetrics()
         ]);
+        console.log("Initial data fetched successfully");
       } catch (error) {
         console.error("Error fetching initial data:", error);
       } finally {
@@ -120,11 +104,9 @@ const Dashboard = () => {
     };
 
     fetchInitialData();
-  }, []); 
+  }, []);
 
-  useEffect(() => {
-    fetchEmployees(pagination.current, pagination.pageSize);
-  }, []); // Empty dependency array to run once on mount
+  // Remove any other useEffect that might be redundant
 
   const statsData = [
     {
@@ -195,19 +177,16 @@ const Dashboard = () => {
     return "Critical";
   };
 
+  // Function to navigate to well-being index page
+  const navigateToWellbeingIndex = () => {
+    navigate("/wellbeing-index");
+  };
+
   return (
     <div className="dashboard-containers">
-      <CustomHeader title="Dashboard" showFilterButton="true" />
+      <CustomHeader title="Dashboard"/>
       <div className="stats-grid">
         <div className="roi-left-metrics">
-          {/* <CompanyHealthGauge
-            className="metric-card"
-            value={(companyData.stress_level)}
-            title="Project performance"
-            lastCheckDate="31 Jan"
-            status={getStressStatus(companyData.stress_level)}
-            style={{ cursor: "pointer" }}
-          /> */}
           <UserStats data={metricsData} style={{ cursor: "pointer" }} />
         </div>
 
@@ -228,13 +207,6 @@ const Dashboard = () => {
         </div>
       </div>
 
-      {/* Metric Chart Section */}
-      {/* <div className="chart-section">
-        <MetricLineChart 
-          data={stressTrends} 
-          loading={loading}
-        />
-      </div> */}
 
       {/* Table Section */}
       <div className="table-section">

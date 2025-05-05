@@ -60,12 +60,22 @@ const CompanyHeader = ({
 );
 
 const CompanyForm = ({ companyInfo, contactInfo, disabled, onChange }) => {
-  const [value, setValue] = useState(companyInfo.company_size || 500);
+  const [employeeCount, setEmployeeCount] = useState(companyInfo.company_size || 0);
 
-  // Handle slider/input change
-  const handleValueChange = (newValue) => {
+  // Handle employee count change
+  const handleEmployeeCountChange = (e) => {
     if (!disabled) {
-      setValue(newValue);
+      // Get value from input
+      let newValue = parseInt(e.target.value, 10);
+      
+      // Ensure it's a non-negative number
+      if (isNaN(newValue)) {
+        newValue = 0;
+      } else if (newValue < 0) {
+        newValue = 0;
+      }
+      
+      setEmployeeCount(newValue);
       onChange("company", "company_size", newValue);
     }
   };
@@ -82,36 +92,38 @@ const CompanyForm = ({ companyInfo, contactInfo, disabled, onChange }) => {
               className="custom-input"
               value={companyInfo.company_name}
               disabled={disabled}
+              readOnly={disabled}
               onChange={(e) =>
                 !disabled && onChange("company", "company_name", e.target.value)
               }
+              style={{ 
+                cursor: disabled ? 'not-allowed' : 'text',
+                pointerEvents: disabled ? 'none' : 'auto'
+              }}
             />
           </div>
 
           <div className="input-group">
             <label className="input-label">Number of employees*</label>
-            <div className="slider-container">
-              <Slider
-                min={1}
-                max={1000}
-                value={value}
-                onChange={handleValueChange}
-                disabled={false}
-                tooltip={{ formatter: (val) => `${val} employees` }}
-                className="custom-ant-slider"
-              />
-              <InputNumber
-                min={1}
-                max={1000}
-                value={value}
-                onChange={handleValueChange}
-                disabled={disabled}
-                className="custom-ant-input-number"
-                style={{
-                  width: 80,
-                }}
-              />
-            </div>
+            <input
+              type="number"
+              min="0"
+              className="custom-input"
+              value={employeeCount}
+              disabled={disabled}
+              readOnly={disabled}
+              onChange={handleEmployeeCountChange}
+              onKeyDown={(e) => {
+                // Prevent negative sign
+                if (e.key === '-' || e.key === 'e') {
+                  e.preventDefault();
+                }
+              }}
+              style={{ 
+                cursor: disabled ? 'not-allowed' : 'text',
+                pointerEvents: disabled ? 'none' : 'auto'
+              }}
+            />
           </div>
         </div>
       </div>
@@ -128,6 +140,7 @@ const CompanyForm = ({ companyInfo, contactInfo, disabled, onChange }) => {
               className="custom-input"
               value={contactInfo.first_name + " " + contactInfo.last_name}
               disabled={disabled}
+              readOnly={disabled}
               onChange={(e) => {
                 if (!disabled) {
                   const parts = e.target.value.split(" ");
@@ -136,6 +149,10 @@ const CompanyForm = ({ companyInfo, contactInfo, disabled, onChange }) => {
                   onChange("contact_person", "first_name", firstName);
                   onChange("contact_person", "last_name", lastName);
                 }
+              }}
+              style={{ 
+                cursor: disabled ? 'not-allowed' : 'text',
+                pointerEvents: disabled ? 'none' : 'auto'
               }}
             />
           </div>
@@ -146,10 +163,15 @@ const CompanyForm = ({ companyInfo, contactInfo, disabled, onChange }) => {
               className="custom-input"
               value={contactInfo.job_title}
               disabled={disabled}
+              readOnly={disabled}
               onChange={(e) =>
                 !disabled &&
                 onChange("contact_person", "job_title", e.target.value)
               }
+              style={{ 
+                cursor: disabled ? 'not-allowed' : 'text',
+                pointerEvents: disabled ? 'none' : 'auto'
+              }}
             />
           </div>
         </div>
@@ -161,6 +183,8 @@ const CompanyForm = ({ companyInfo, contactInfo, disabled, onChange }) => {
               className="custom-input"
               value={contactInfo.email}
               disabled={true}
+              readOnly={true}
+              style={{ cursor: 'not-allowed', pointerEvents: 'none' }}
               onChange={(e) =>
                 !disabled && onChange("contact_person", "email", e.target.value)
               }
@@ -173,9 +197,14 @@ const CompanyForm = ({ companyInfo, contactInfo, disabled, onChange }) => {
               className="custom-input"
               value={contactInfo.phone}
               disabled={disabled}
+              readOnly={disabled}
               onChange={(e) =>
                 !disabled && onChange("contact_person", "phone", e.target.value)
               }
+              style={{ 
+                cursor: disabled ? 'not-allowed' : 'text',
+                pointerEvents: disabled ? 'none' : 'auto'
+              }}
             />
           </div>
         </div>

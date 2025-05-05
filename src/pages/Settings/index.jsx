@@ -292,45 +292,45 @@ const Settings = () => {
   };
 
   // Update columns for real invoice data
-  const columns = [
-    {
-      title: "Invoice #",
-      dataIndex: "invoice_number",
-      key: "invoice_number",
+  // const columns = [
+  //   {
+  //     title: "Invoice #",
+  //     dataIndex: "invoice_number",
+  //     key: "invoice_number",
       
-    },
-    {
-      title: "Date",
-      dataIndex: "issue_date",
-      key: "issue_date",
-      render: (date) => formatDate(date),
-    },
-    {
-      title: "Amount",
-      dataIndex: "amount",
-      key: "amount",
-      render: (amount) => formatCurrency(amount),
-    },
-    {
-      title: "Status",
-      dataIndex: "status",
-      key: "status",
-      render: (status) => (
-        <span className={`invoice-status ${status.toLowerCase()}`}>
-          {status.charAt(0).toUpperCase() + status.slice(1)}
-        </span>
-      ),
-    },
-    {
-      title: "Action",
-      key: "action",
-      render: (_, record) => (
-        <a href="#" className="download-link">
-          Download receipt
-        </a>
-      ),
-    },
-  ];
+  //   },
+  //   {
+  //     title: "Date",
+  //     dataIndex: "issue_date",
+  //     key: "issue_date",
+  //     render: (date) => formatDate(date),
+  //   },
+  //   {
+  //     title: "Amount",
+  //     dataIndex: "amount",
+  //     key: "amount",
+  //     render: (amount) => formatCurrency(amount),
+  //   },
+  //   {
+  //     title: "Status",
+  //     dataIndex: "status",
+  //     key: "status",
+  //     render: (status) => (
+  //       <span className={`invoice-status ${status.toLowerCase()}`}>
+  //         {status.charAt(0).toUpperCase() + status.slice(1)}
+  //       </span>
+  //     ),
+  //   },
+  //   {
+  //     title: "Action",
+  //     key: "action",
+  //     render: (_, record) => (
+  //       <a href="#" className="download-link">
+  //         Download receipt
+  //       </a>
+  //     ),
+  //   },
+  // ];
 
   // If loading, show loading spinner
   if (loading) {
@@ -378,7 +378,7 @@ const Settings = () => {
         </div>
 
         {/* Billing History Section */}
-        <div className="section-card">
+        {/* <div className="section-card">
           <h3>Billing History & Invoices</h3>
           <div className="current-plan">
             <div className="plan-details">
@@ -402,10 +402,10 @@ const Settings = () => {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
 
         {/* Transaction History Section */}
-        <div className="section-card">
+        {/* <div className="section-card">
           <h3>Transaction History</h3>
           <Table
             columns={columns}
@@ -418,7 +418,7 @@ const Settings = () => {
             showSorterTooltip={false}
             bordered={false}
           />
-        </div>
+        </div> */}
 
         {/* Account Settings Section */}
         <div className="section-card">
