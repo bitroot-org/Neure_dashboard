@@ -9,8 +9,8 @@
   height: 100%;
   min-height: 300px;
   border-radius: 20px;
-  background: linear-gradient(180deg, #33353F -100%, #191A20 100%);
-  border: 1px solid #2c2c2c;
+  background: linear-gradient(180deg, #2D2F39 0%, #191A20 100%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   position: relative;
   overflow: hidden;
 }

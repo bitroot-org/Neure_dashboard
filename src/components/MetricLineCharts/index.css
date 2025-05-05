@@ -1,6 +1,6 @@
 .chart-container {
-  background-color: #191A20;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: linear-gradient(180deg, #2D2F39 0%, #191A20 100%);
+  border: 2px solid rgba(255, 255, 255, 0.1);
   border-radius: 16px;
   padding: 20px;
   width: 100%;

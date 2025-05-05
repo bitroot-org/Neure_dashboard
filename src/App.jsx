@@ -25,6 +25,7 @@ import Soundscapes from "./pages/Soundscapes/Soundscapes";
 import RewardsAndRecognition from "./pages/RewardsAndRecognition";
 import FavouriteSoundscapes from './pages/FavouriteSoundscapes/FavouriteSoundscapes';
 import { Pagination } from "antd";
+import WellbeingIndex from "./pages/WellbeingIndex";
 
 function App() {
   const location = useLocation();
@@ -218,6 +219,7 @@ function App() {
             }
           />
           <Route path="/favourite-soundscapes" element={<FavouriteSoundscapes />} />
+          <Route path="/wellbeing-index" element={<WellbeingIndex />} />
 
           {/* Catch all redirect */}
           <Route path="*" element={<Navigate to="/" replace />} />

@@ -372,6 +372,7 @@
   gap: 0.75rem;
 }
 
+
 .main-metrics-cards {
   display: flex;
   gap: 0.75rem;
@@ -420,6 +421,7 @@
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 24px;
   height: 100%;
+  cursor: pointer;
 }
 
 .main-roi-header {

@@ -1,0 +1,17 @@
+.wellbeing-container {
+  padding: 40px 80px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+
+/* .chart-container {
+  box-shadow: 0px 12px 8px -8px #00000066;
+} */
+
+@media (max-width: 768px) {
+  .wellbeing-container {
+    padding: 20px;
+  }
+}

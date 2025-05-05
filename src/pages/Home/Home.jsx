@@ -216,7 +216,7 @@ const Home = () => {
   };
 
   const handleCompanyGaugeClick = () => {
-    navigate("/dashboard");
+    navigate("/wellbeing-index");
   };
 
   const handleViewWorkshopDetails = () => {
@@ -535,7 +535,7 @@ const Home = () => {
         </div>
         <div className="main-dashboard-right">
           <div className="main-metrics-cards">
-            <motion.div variants={itemVariants}>
+            <motion.div variants={itemVariants} style={{ cursor: "pointer" }}>
               <CompanyHealthGauge
                 className="main-company-health-gauge"
                 value={companyData.stress_level}
@@ -543,7 +543,6 @@ const Home = () => {
                 title="Well-being Index"
                 status={getStressStatus(companyData.stress_level)}
                 onClick={handleCompanyGaugeClick}
-                style={{ cursor: "pointer" }}
               />
             </motion.div>
 
@@ -558,7 +557,7 @@ const Home = () => {
             </motion.div>
           </div>
 
-          <motion.div variants={itemVariants} className="main-roi-card">
+          <motion.div variants={itemVariants} className="main-roi-card" onClick={() => navigate("/dashboard")}>
             <div className="main-roi-header">
               <h3>ROI</h3>
               <span>Compare to prev. month</span>

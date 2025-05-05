@@ -79,30 +79,30 @@ const Dashboard = () => {
     }
   };
 
-  const fetchStressTrends = async () => {
-    try {
-      const companyId = localStorage.getItem("companyId");
-      if (!companyId) {
-        message.error("Company ID not found");
-        return;
-      }
+  // const fetchStressTrends = async () => {
+  //   try {
+  //     const companyId = localStorage.getItem("companyId");
+  //     if (!companyId) {
+  //       message.error("Company ID not found");
+  //       return;
+  //     }
 
-      const response = await getStressTrends(companyId);
-      if (response.status) {
-        const transformedData = response.data.trends.map(trend => ({
-          date: trend.period.substring(0, 7), // Format: "2024-05"
-          value: trend.stress_level
-        }));
-        setStressTrends(transformedData);
-        console.log("Stress trends:", transformedData);
-      }
-    } catch (error) {
-      console.error("Error fetching stress trends:", error);
-      message.error("Failed to fetch stress trends");
-    }
-  };
+  //     const response = await getStressTrends(companyId);
+  //     if (response.status) {
+  //       const transformedData = response.data.trends.map(trend => ({
+  //         date: trend.period.substring(0, 7), // Format: "2024-05"
+  //         value: trend.stress_level
+  //       }));
+  //       setStressTrends(transformedData);
+  //       console.log("Stress trends:", transformedData);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error fetching stress trends:", error);
+  //     message.error("Failed to fetch stress trends");
+  //   }
+  // };
 
-  // Fetch all initial data
+
   useEffect(() => {
     const fetchInitialData = async () => {
       setLoading(true);
@@ -120,7 +120,7 @@ const Dashboard = () => {
     };
 
     fetchInitialData();
-  }, []); // Empty dependency array to run once on mount
+  }, []); 
 
   useEffect(() => {
     fetchEmployees(pagination.current, pagination.pageSize);
@@ -200,14 +200,14 @@ const Dashboard = () => {
       <CustomHeader title="Dashboard" showFilterButton="true" />
       <div className="stats-grid">
         <div className="roi-left-metrics">
-          <CompanyHealthGauge
+          {/* <CompanyHealthGauge
             className="metric-card"
             value={(companyData.stress_level)}
             title="Project performance"
             lastCheckDate="31 Jan"
             status={getStressStatus(companyData.stress_level)}
             style={{ cursor: "pointer" }}
-          />
+          /> */}
           <UserStats data={metricsData} style={{ cursor: "pointer" }} />
         </div>
 
@@ -229,12 +229,12 @@ const Dashboard = () => {
       </div>
 
       {/* Metric Chart Section */}
-      <div className="chart-section">
+      {/* <div className="chart-section">
         <MetricLineChart 
           data={stressTrends} 
           loading={loading}
         />
-      </div>
+      </div> */}
 
       {/* Table Section */}
       <div className="table-section">

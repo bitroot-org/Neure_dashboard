@@ -6,17 +6,13 @@
 
 .stats-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 2fr;
   gap: 24px;
   margin-bottom: 24px;
   height: 100%;
 }
 
 .roi-left-metrics {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 24px;
-  flex: 1;
   height: 100%;
 }
 
