@@ -125,12 +125,12 @@ export const getWorkshops = async (params) => {
   return response.data;
 };
 
-export const getWorkshopDetails = async (workshopId, companyId) => {
-  console.log("Company id for workshop: ", companyId);
+export const getWorkshopDetails = async (workshopId, companyId, scheduleId) => {
   const response = await api.get(`/workshop/getWorkshopDetails`, {
     params: {
       workshop_id: workshopId,
       company_id: companyId,
+      schedule_id: scheduleId
     },
   });
   return response.data;

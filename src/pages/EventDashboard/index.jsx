@@ -89,8 +89,8 @@ const EventDashboard = () => {
     setCurrentPage(1); // Reset to first page when date changes
   };
 
-  const handleWorkshopClick = (workshopId) => {
-    navigate(`/workshopDetails/${workshopId}`);
+  const handleWorkshopClick = (workshopId, scheduleId) => {
+    navigate(`/workshopDetails/${workshopId}?scheduleId=${scheduleId}`);
   };
 
   const formatDate = (dateString) => {
@@ -134,7 +134,7 @@ const EventDashboard = () => {
                   <div key={workshop.workshop_id} className="workshop-item">
                     <div
                       style={{ cursor: "pointer" }}
-                      onClick={() => handleWorkshopClick(workshop.workshop_id)}
+                      onClick={() => handleWorkshopClick(workshop.workshop_id, workshop.schedule_id)}
                     >
                       <PresentationSlide
                         title={workshop.title}

@@ -4,6 +4,7 @@ import { Tabs, List, Space } from "antd";
 import { useSearchParams } from "react-router-dom";
 import "./index.css";
 import CustomHeader from "../../components/CustomHeader";
+import ScrollToTop from "../../components/ScrollToTop";
 import {
   getNotificationAndAnnouncements,
   getAnnouncements,
@@ -230,6 +231,7 @@ const AnnouncementsAndNotifications = () => {
 
   return (
     <div className="notifications-container">
+      <ScrollToTop />
       <div className="notifications-wrapper">
         <CustomHeader
           title="Announcements & notifications"
