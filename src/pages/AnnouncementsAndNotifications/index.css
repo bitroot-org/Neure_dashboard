@@ -306,6 +306,23 @@
   overflow: hidden; /* Prevent double scrollbars */
 }
 
+.scrollable-list {
+  overflow-y: auto;
+  max-height: calc(100vh - 180px);
+  scrollbar-width: thin;
+  -ms-overflow-style: none;
+  padding-bottom: 20px; /* Add padding to ensure scroll works properly */
+}
+
+.loading-more {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 16px;
+  gap: 8px;
+  color: #ffffff8e;
+}
+
 @media (max-width: 768px) {
   .empty-state-icon {
     width: 100px;
@@ -327,19 +344,5 @@
   }
 }
 
-.scrollable-list {
-  overflow-y: auto;
-  max-height: calc(100vh - 180px);
-  scrollbar-width: thin;
-  -ms-overflow-style: none;
-  padding-bottom: 20px; /* Add padding to ensure scroll works properly */
-}
 
-.loading-more {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 16px;
-  gap: 8px;
-  color: #ffffff8e;
-}
+
