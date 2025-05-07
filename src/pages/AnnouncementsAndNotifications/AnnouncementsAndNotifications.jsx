@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Tabs, List, Space, Spin } from "antd";
+import { Tabs, List, Space } from "antd";
 import { useSearchParams } from "react-router-dom";
 import "./index.css";
 import CustomHeader from "../../components/CustomHeader";
@@ -90,55 +90,24 @@ const AnnouncementsAndNotifications = () => {
   });
   const [data, setData] = useState({ announcements: [], notifications: [] });
   const [loading, setLoading] = useState(true);
-  const [loadingMore, setLoadingMore] = useState(false);
-  const [pagination, setPagination] = useState({
-    announcements: { currentPage: 1, hasMore: true },
-    notifications: { currentPage: 1, hasMore: true },
-  });
 
   const companyId = localStorage.getItem("companyId");
   const userData = JSON.parse(localStorage.getItem("userData"));
   const userId = userData.id;
   const navigate = useNavigate();
 
-  const allTabRef = useRef(null);
-  const announcementsTabRef = useRef(null);
-  const notificationsTabRef = useRef(null);
-
-  // Get the current active ref based on tab
-  const getActiveRef = () => {
-    switch (activeTab) {
-      case "all":
-        return allTabRef;
-      case "announcements":
-        return announcementsTabRef;
-      case "notifications":
-        return notificationsTabRef;
-      default:
-        return allTabRef;
-    }
-  };
-
-  const handleTabChange = (newTab) => {
+  // Update both URL params and localStorage when tab changes
+  const handleTabChange = async (newTab) => {
     setActiveTab(newTab);
     setSearchParams({ tab: newTab });
     localStorage.setItem("announcementsTab", newTab);
-
-    // Reset data and pagination when changing tabs
-    setData({ announcements: [], notifications: [] });
-    setPagination({
-      announcements: { currentPage: 1, hasMore: true },
-      notifications: { currentPage: 1, hasMore: true },
-    });
-    setLoading(true);
-
-    // Initial data fetch for the new tab
-    fetchData(newTab, 1, true);
+    setLoading(true); // Set loading before fetching
+    await fetchData(newTab); // Wait for data to be fetched
   };
 
-  const fetchData = async (tab, page, isInitialFetch = false) => {
+  const fetchData = async (tab) => {
     try {
-      isInitialFetch ? setLoading(true) : setLoadingMore(true);
+      setLoading(true);
       const params = {
         companyId: companyId,
         userId: userId,
@@ -146,127 +115,40 @@ const AnnouncementsAndNotifications = () => {
         limit: 10,
       };
 
-      if (tab === "announcements" || tab === "all") {
+      if (tab === "announcements") {
         const response = await getAnnouncements(params);
-        const newAnnouncements = response.data.announcements || [];
-        const hasMoreAnnouncements = newAnnouncements.length === params.limit;
-
         setData((prevData) => ({
           ...prevData,
-          announcements:
-            tab === "all" && isInitialFetch
-              ? newAnnouncements
-              : [...prevData.announcements, ...newAnnouncements],
+          announcements: response.data.announcements,
         }));
-
-        setPagination((prev) => ({
-          ...prev,
-          announcements: {
-            currentPage: page,
-            hasMore: hasMoreAnnouncements,
-          },
-        }));
-      }
-
-      if (tab === "notifications" || tab === "all") {
+      } else if (tab === "notifications") {
         const response = await getNotifications(params);
-        const newNotifications = response.data.notifications || [];
-        const hasMoreNotifications = newNotifications.length === params.limit;
-
         setData((prevData) => ({
           ...prevData,
-          notifications:
-            tab === "all" && isInitialFetch
-              ? newNotifications
-              : [...prevData.notifications, ...newNotifications],
+          notifications: response.data.notifications,
         }));
+      } else {
+        // For "all" tab, fetch both
+        const [announcementsRes, notificationsRes] = await Promise.all([
+          getAnnouncements(params),
+          getNotifications(params),
+        ]);
 
-        setPagination((prev) => ({
-          ...prev,
-          notifications: {
-            currentPage: page,
-            hasMore: hasMoreNotifications,
-          },
-        }));
+        setData({
+          announcements: announcementsRes.data.announcements,
+          notifications: notificationsRes.data.notifications || [],
+        });
       }
     } catch (error) {
       console.error("Error fetching data:", error);
     } finally {
       setLoading(false);
-      setLoadingMore(false);
     }
   };
 
-  const loadMoreData = useCallback(() => {
-    if (loadingMore) return;
-
-    const currentPagination =
-      activeTab === "announcements"
-        ? pagination.announcements
-        : activeTab === "notifications"
-        ? pagination.notifications
-        : {
-            currentPage: Math.min(
-              pagination.announcements.currentPage,
-              pagination.notifications.currentPage
-            ),
-          };
-
-    if (!currentPagination.hasMore) return;
-
-    const nextPage = currentPagination.currentPage + 1;
-    fetchData(activeTab, nextPage);
-  }, [activeTab, pagination, loadingMore]);
-
-  // Handle scroll event for infinite loading
-  const handleScroll = useCallback(
-    (e) => {
-      const currentRef = getActiveRef().current;
-      if (!currentRef) return;
-
-      const { scrollTop, scrollHeight, clientHeight } = currentRef;
-      console.log(`Scroll in ${activeTab} tab:`, {
-        scrollTop,
-        scrollHeight,
-        clientHeight,
-      });
-
-      // Load more when user scrolls to bottom (with 200px threshold)
-      if (
-        scrollTop + clientHeight >= scrollHeight - 200 &&
-        !loading &&
-        !loadingMore
-      ) {
-        console.log(`Loading more data for ${activeTab} tab...`);
-        loadMoreData();
-      }
-    },
-    [activeTab, loadMoreData, loading, loadingMore]
-  );
-
   useEffect(() => {
-    // Initial data fetch
-    fetchData(activeTab, 1, true);
-  }, []);
-
-  useEffect(() => {
-    // Attach scroll listeners to all tabs
-    const refs = [allTabRef, announcementsTabRef, notificationsTabRef];
-
-    refs.forEach((ref) => {
-      if (ref.current) {
-        ref.current.addEventListener("scroll", handleScroll);
-      }
-    });
-
-    return () => {
-      refs.forEach((ref) => {
-        if (ref.current) {
-          ref.current.removeEventListener("scroll", handleScroll);
-        }
-      });
-    };
-  }, [handleScroll]);
+    fetchData(activeTab);
+  }, [activeTab]);
 
   const getItemIcon = (type, item) => {
     if (item.source === "notification" || item.type) {
@@ -363,46 +245,24 @@ const AnnouncementsAndNotifications = () => {
             {
               key: "all",
               label: "All",
-              children: (
-                <div className="scrollable-list" ref={allTabRef}>
-                  {renderList(getAllItems())}
-                  {loadingMore && (
-                    <div className="loading-more">
-                      <Spin size="small" />
-                      <span>Loading more...</span>
-                    </div>
-                  )}
-                </div>
-              ),
+              children: loading ? <ShimmerList /> : renderList(getAllItems()),
             },
             {
               key: "announcements",
               label: "Announcements",
-              children: (
-                <div className="scrollable-list" ref={announcementsTabRef}>
-                  {renderList(data.announcements)}
-                  {loadingMore && (
-                    <div className="loading-more">
-                      <Spin size="small" />
-                      <span>Loading more...</span>
-                    </div>
-                  )}
-                </div>
+              children: loading ? (
+                <ShimmerList />
+              ) : (
+                renderList(data.announcements)
               ),
             },
             {
               key: "notifications",
               label: "Notifications",
-              children: (
-                <div className="scrollable-list" ref={notificationsTabRef}>
-                  {renderList(data.notifications)}
-                  {loadingMore && (
-                    <div className="loading-more">
-                      <Spin size="small" />
-                      <span>Loading more...</span>
-                    </div>
-                  )}
-                </div>
+              children: loading ? (
+                <ShimmerList />
+              ) : (
+                renderList(data.notifications)
               ),
             },
           ]}
