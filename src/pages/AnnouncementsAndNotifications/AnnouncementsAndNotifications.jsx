@@ -8,6 +8,8 @@ import {
   getNotificationAndAnnouncements,
   getAnnouncements,
   getNotifications,
+  markReadAnnouncement,
+  markReadNotification,
 } from "../../services/api";
 
 const AnnouncementShimmer = () => (
@@ -119,6 +121,20 @@ const AnnouncementsAndNotifications = () => {
   };
 
   const handleTabChange = (newTab) => {
+    // Mark items in the current tab as read before changing
+    if (activeTab === 'announcements' && data.announcements.length > 0) {
+      markItemsAsRead(data.announcements, 'announcements');
+    } else if (activeTab === 'notifications' && data.notifications.length > 0) {
+      markItemsAsRead(data.notifications, 'notifications');
+    } else if (activeTab === 'all') {
+      if (data.announcements.length > 0) {
+        markItemsAsRead(data.announcements, 'announcements');
+      }
+      if (data.notifications.length > 0) {
+        markItemsAsRead(data.notifications, 'notifications');
+      }
+    }
+
     setActiveTab(newTab);
     setSearchParams({ tab: newTab });
     localStorage.setItem("announcementsTab", newTab);
@@ -141,14 +157,17 @@ const AnnouncementsAndNotifications = () => {
       const params = {
         companyId: companyId,
         userId: userId,
-        currentPage: 1,
+        currentPage: page,
         limit: 10,
       };
 
       if (tab === "announcements" || tab === "all") {
         const response = await getAnnouncements(params);
         const newAnnouncements = response.data.announcements || [];
-        const hasMoreAnnouncements = newAnnouncements.length === params.limit;
+        
+        // Use pagination data from API to determine if there are more pages
+        const paginationData = response.data.pagination || {};
+        const hasMoreAnnouncements = paginationData.current_page < Math.ceil(paginationData.total / paginationData.per_page);
 
         setData((prevData) => ({
           ...prevData,
@@ -170,7 +189,10 @@ const AnnouncementsAndNotifications = () => {
       if (tab === "notifications" || tab === "all") {
         const response = await getNotifications(params);
         const newNotifications = response.data.notifications || [];
-        const hasMoreNotifications = newNotifications.length === params.limit;
+        
+        // Use pagination data from API to determine if there are more pages
+        const paginationData = response.data.pagination || {};
+        const hasMoreNotifications = paginationData.current_page < Math.ceil(paginationData.total / paginationData.per_page);
 
         setData((prevData) => ({
           ...prevData,
@@ -188,6 +210,7 @@ const AnnouncementsAndNotifications = () => {
           },
         }));
       }
+      // Removed any code that would mark items as read during data fetching
     } catch (error) {
       console.error("Error fetching data:", error);
     } finally {
@@ -239,6 +262,7 @@ const AnnouncementsAndNotifications = () => {
         console.log(`Loading more data for ${activeTab} tab...`);
         loadMoreData();
       }
+      // Removed any code that would mark items as read during scrolling
     },
     [activeTab, loadMoreData, loading, loadingMore]
   );
@@ -299,18 +323,18 @@ const AnnouncementsAndNotifications = () => {
       <List
         dataSource={items}
         renderItem={(item) => (
-          <List.Item key={item.id} className="list-item">
+          <List.Item key={item.id} className={`list-item ${item.is_read === 1 ? 'read-item' : ''}`}>
             <List.Item.Meta
               avatar={getItemIcon(item.type, item)}
               title={
                 <Space>
-                  <span className="item-title">{item.title}</span>
+                  <span className={`item-title ${item.is_read === 1 ? 'read-title' : ''}`}>{item.title}</span>
                   {item.isNew && <span className="new-indicator" />}
                 </Space>
               }
               description={
                 <div>
-                  <p className="item-description">{item.content}</p>
+                  <p className={`item-description ${item.is_read === 1 ? 'read-description' : ''}`}>{item.content}</p>
                   <small className="item-meta">
                     {`${
                       item.type || item.audience_type || "Notification"
@@ -345,6 +369,79 @@ const AnnouncementsAndNotifications = () => {
       return dateB - dateA;
     });
   };
+
+  // Add this function to mark items as read when they're viewed
+  const markItemsAsRead = useCallback(async (items, type) => {
+    try {
+      // Filter only unread items
+      const unreadItems = items.filter(item => item.is_read === 0);
+      
+      if (unreadItems.length === 0) return;
+      
+      const itemIds = unreadItems.map(item => item.id);
+      
+      if (type === 'announcements') {
+        await markReadAnnouncement(itemIds, companyId);
+        
+        // Update local state to reflect read status
+        setData(prevData => ({
+          ...prevData,
+          announcements: prevData.announcements.map(item => 
+            itemIds.includes(item.id) ? { ...item, is_read: 1 } : item
+          )
+        }));
+      } else if (type === 'notifications') {
+        await markReadNotification(itemIds);
+        
+        // Update local state to reflect read status
+        setData(prevData => ({
+          ...prevData,
+          notifications: prevData.notifications.map(item => 
+            itemIds.includes(item.id) ? { ...item, is_read: 1 } : item
+          )
+        }));
+      }
+    } catch (error) {
+      console.error(`Error marking ${type} as read:`, error);
+    }
+  }, [companyId]);
+
+  // Add this effect to mark items as read when leaving the page
+  useEffect(() => {
+    return () => {
+      // This runs when component unmounts (user leaves the page)
+      if (data.announcements.length > 0) {
+        markItemsAsRead(data.announcements, 'announcements');
+      }
+      if (data.notifications.length > 0) {
+        markItemsAsRead(data.notifications, 'notifications');
+      }
+    };
+  }, [data, markItemsAsRead]);
+
+  // Add an event listener for beforeunload to mark items as read when page refreshes
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      if (activeTab === 'announcements' && data.announcements.length > 0) {
+        markItemsAsRead(data.announcements, 'announcements');
+      } else if (activeTab === 'notifications' && data.notifications.length > 0) {
+        markItemsAsRead(data.notifications, 'notifications');
+      } else if (activeTab === 'all') {
+        if (data.announcements.length > 0) {
+          markItemsAsRead(data.announcements, 'announcements');
+        }
+        if (data.notifications.length > 0) {
+          markItemsAsRead(data.notifications, 'notifications');
+        }
+      }
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+  
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, [activeTab, data, markItemsAsRead]);
 
   return (
     <div className="notifications-container">

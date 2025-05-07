@@ -7,7 +7,6 @@ import './index.css'
 import App from "./App.jsx";
 
 createRoot(document.getElementById("root")).render(
-  <StrictMode>
     <BrowserRouter>
       <UserContext>
         <CompanyContext>
@@ -15,5 +14,4 @@ createRoot(document.getElementById("root")).render(
         </CompanyContext>
       </UserContext>
     </BrowserRouter>
-  </StrictMode>
 );

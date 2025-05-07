@@ -289,5 +289,15 @@
   }
 }
 
+/* Styles for read notifications */
+.read-item {
+  opacity: 0.7;
+}
 
+.read-title {
+  color: rgba(255, 255, 255, 0.7) !important;
+}
 
+.read-description {
+  color: rgba(255, 255, 255, 0.5) !important;
+}

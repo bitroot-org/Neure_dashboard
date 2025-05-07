@@ -445,3 +445,26 @@ export const unlikeSoundscape = async (soundscapeId) => {
     throw error.response?.data || error;
   }
 };
+
+export const markReadAnnouncement = async (announcementIds, companyId) => {
+  try {
+    const response = await api.post("announcements/mark-all-read", {
+      announcement_ids: announcementIds,
+      company_id: companyId
+    });
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error;
+  }
+};
+
+export const markReadNotification = async (notificationIds) => {
+  try {
+    const response = await api.post("notifications/mark-all-read", {
+      notification_ids: notificationIds
+    });
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error;
+  }
+};
