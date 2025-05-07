@@ -10,6 +10,7 @@ const UserProtectedWrapper = ({ children }) => {
   useEffect(() => {
     const checkAuth = () => {
       const token = localStorage.getItem('accessToken');
+      
       setIsAuthenticated(!!token);
       setIsLoading(false);
     };

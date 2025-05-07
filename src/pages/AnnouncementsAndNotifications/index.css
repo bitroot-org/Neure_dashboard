@@ -4,6 +4,7 @@
   overflow-x: hidden;
   display: flex;
   flex-direction: column;
+  height: 100vh; /* Set fixed height */
 }
 
 .notifications-wrapper {
@@ -11,6 +12,60 @@
   flex: 1;
   display: flex;
   flex-direction: column;
+  overflow: hidden; /* Prevent wrapper overflow */
+}
+
+/* Fix header at the top */
+.notifications-wrapper .custom-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: inherit;
+  padding-bottom: 16px;
+}
+
+/* Make tabs sticky below header */
+.notifications-tabs .ant-tabs-nav {
+  position: sticky;
+  top: 60px; /* Adjust based on your header height */
+  z-index: 9;
+  background: inherit;
+  margin-bottom: 16px !important;
+}
+
+/* Make content area scrollable but hide scrollbar */
+.notifications-tabs .ant-tabs-content-holder {
+  overflow-y: auto;
+  max-height: calc(100vh - 180px); /* Adjust based on header + tabs height */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.notifications-tabs .ant-tabs-content-holder::-webkit-scrollbar {
+  display: none;
+}
+
+/* Remove these scrollbar styling sections since we're hiding the scrollbar
+.notifications-tabs .ant-tabs-content-holder::-webkit-scrollbar-track {
+  background: #1e1e1e;
+}
+
+.notifications-tabs .ant-tabs-content-holder::-webkit-scrollbar-thumb {
+  background-color: #666;
+  border-radius: 3px;
+}
+*/
+
+/* Add responsive adjustments */
+@media (max-width: 768px) {
+  .notifications-container {
+    padding: 20px;
+  }
+  
+  .notifications-tabs .ant-tabs-content-holder {
+    max-height: calc(100vh - 150px);
+  }
 }
 
 .list-item {
@@ -243,6 +298,12 @@
 
 .notifications-tabs .ant-tabs-content {
   height: 100%;
+  overflow: hidden; /* Prevent double scrollbars */
+}
+
+.notifications-tabs .ant-tabs-tabpane {
+  height: 100%;
+  overflow: hidden; /* Prevent double scrollbars */
 }
 
 @media (max-width: 768px) {
@@ -264,4 +325,21 @@
     font-size: 14px;
     padding: 0 20px;
   }
+}
+
+.scrollable-list {
+  overflow-y: auto;
+  max-height: calc(100vh - 180px);
+  scrollbar-width: thin;
+  -ms-overflow-style: none;
+  padding-bottom: 20px; /* Add padding to ensure scroll works properly */
+}
+
+.loading-more {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 16px;
+  gap: 8px;
+  color: #ffffff8e;
 }
