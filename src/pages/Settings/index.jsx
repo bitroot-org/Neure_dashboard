@@ -178,7 +178,7 @@ const Settings = () => {
   const notificationSettingsConfig = [
     { key: "email_notification", name: "Email Notifications" },
     { key: "sms_notification", name: "SMS Notifications" },
-    { key: "workshop_event_reminder", name: "Workshop & Event Reminders (48 hrs & 1 hr before event)" },
+    { key: "workshop_event_reminder", name: "Workshop & Event Reminders (48 hours & 1 hour before event)" },
     { key: "system_updates_announcement", name: "System Updates & Announcements" }
   ];
 

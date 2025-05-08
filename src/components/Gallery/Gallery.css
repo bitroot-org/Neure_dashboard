@@ -1,0 +1,386 @@
+.gallery-container {
+  width: 100%;
+}
+
+.gallery-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.gallery-filters {
+  display: flex;
+  gap: 16px;
+}
+
+.filter-btn {
+  display: flex;
+  align-items: center;
+  height: 48px;
+  gap: 8px;
+  padding: 8px 16px;
+  background: #191A20;
+  border: 1px solid #2D2F39;
+  border-radius: 50px;
+  color: #B1B3C0;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.filter-btn:hover {
+  border-color: #4B5563;
+}
+
+.filter-btn.active {
+  background: #2D2F39;
+  color: white;
+  border-color: #4B5563;
+}
+
+.sort-btn {
+  padding: 8px 16px;
+  background: #191A20;
+  border: 1px solid #2D2F39;
+  border-radius: 8px;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.gallery-card {
+  background: transparent;
+  border-radius: 20px;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+
+.gallery-card:hover {
+  transform: translateY(-4px);
+}
+
+.gallery-card-media {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  border-radius: 16px;
+  overflow: hidden;
+  cursor: pointer; /* Add pointer cursor */
+  transition: transform 0.2s ease;
+}
+
+.gallery-card-media:hover {
+  transform: scale(1.02); /* Add subtle hover effect */
+}
+
+.gallery-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border: 1px solid rgba(255, 255, 255, 0.134);
+  border-radius: 16px;
+}
+
+.video-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.video-placeholder .anticon {
+  font-size: 48px;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.play-button-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 16px;
+  transition: all 0.3s ease;
+}
+
+.play-button-overlay .anticon {
+  font-size: 48px;
+  color: white;
+  opacity: 0.8;
+  transition: all 0.3s ease;
+}
+
+.gallery-card:hover .play-button-overlay {
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.gallery-card:hover .play-button-overlay .anticon {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+.gallery-card-info {
+  padding: 16px;
+}
+
+.gallery-card-info h4 {
+  color: white;
+  margin: 0 0 8px 0;
+  font-size: 16px;
+}
+
+.gallery-card-info p {
+  color: #B1B3C0;
+  margin: 0;
+  font-size: 14px;
+}
+
+.documents-container {
+  background: #191A20;
+  border: 1px solid #2D2F39;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.document-header, .document-row {
+  display: grid;
+  grid-template-columns: 80px 100px 1fr 120px 120px 200px;
+  align-items: center;
+  padding: 16px;
+  color: #ffffff;
+  font-size: 16px;
+  font-family: 400;
+}
+
+.document-header {
+  font-weight: 400;
+  font-size: 13px;
+  border-bottom: 1px solid #2D2F39;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.document-row {
+  border-bottom: 1px solid #2D2F39;
+}
+
+.document-row:last-child {
+  border-bottom: none;
+}
+
+.doc-type img {
+  width: 24px;
+  height: 24px;
+}
+
+.file-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.document-viewer-modal .ant-modal-content {
+  background: #191A20;
+  padding: 0;
+}
+
+.document-viewer-modal .ant-modal-close {
+  color: white;
+  top: -8px;
+  right: -8px;
+  background: #514e4e;
+  border-radius: 50%;
+}
+
+.document-viewer-modal .ant-modal-body {
+  padding: 0;
+  height: 600px;
+  background: white;
+}
+
+.action-btn {
+  padding: 6px 12px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.action-btn.view:hover,
+.action-btn.download:hover {
+  opacity: 0.8;
+  text-decoration: underline;
+}
+
+.action-btn.view {
+  background: transparent;
+  color: #00FF85;
+}
+
+.action-btn.download {
+  background: transparent;
+  color: #00FF85;
+}
+
+.action-btn:hover {
+  opacity: 0.8;
+}
+
+@media (max-width: 768px) {
+  .documents-container {
+    overflow-x: auto;
+  }
+  
+  .document-header, .document-row {
+    min-width: 800px;
+  }
+}
+
+@media (max-width: 768px) {
+  .gallery-header {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .gallery-filters {
+    width: 100%;
+    overflow-x: auto;
+    padding-bottom: 8px;
+  }
+
+  .filter-btn {
+    white-space: nowrap;
+  }
+}
+
+/* Shimmer effect styles */
+.gallery-shimmer {
+  background: #2d2f39;
+  border-radius: 20px;
+  overflow: hidden;
+  position: relative;
+  height: 280px;
+  width: 100%;
+}
+
+.gallery-shimmer-media {
+  height: 200px;
+  background: #363845;
+  border-radius: 16px;
+  margin-bottom: 16px;
+  overflow: hidden;
+  position: relative;
+}
+
+.gallery-shimmer-info {
+  padding: 0 12px;
+}
+
+.gallery-shimmer-title {
+  height: 20px;
+  width: 70%;
+  background: #363845;
+  border-radius: 4px;
+  margin-bottom: 8px;
+}
+
+.gallery-shimmer-meta {
+  height: 16px;
+  width: 40%;
+  background: #363845;
+  border-radius: 4px;
+}
+
+.shimmer-animation {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.08) 50%,
+    transparent 100%
+  );
+  animation: shimmer 1.5s infinite linear;
+  background-size: 200% 100%;
+}
+
+/* Document list shimmer */
+.document-row-shimmer {
+  display: flex;
+  align-items: center;
+  padding: 16px;
+  background: #2d2f39;
+  border-radius: 8px;
+  margin-bottom: 8px;
+}
+
+.doc-type-shimmer {
+  width: 40px;
+  height: 40px;
+  background: #363845;
+  border-radius: 4px;
+  margin-right: 16px;
+}
+
+.file-name-shimmer {
+  flex: 2;
+  height: 20px;
+  background: #363845;
+  border-radius: 4px;
+  margin-right: 16px;
+}
+
+.file-meta-shimmer {
+  width: 80px;
+  height: 20px;
+  background: #363845;
+  border-radius: 4px;
+  margin-right: 16px;
+}
+
+.file-actions-shimmer {
+  display: flex;
+  gap: 8px;
+}
+
+.action-shimmer {
+  width: 60px;
+  height: 32px;
+  background: #363845;
+  border-radius: 4px;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Animation for gallery items */
+.gallery-item-appear {
+  opacity: 0;
+  transform: scale(0.95) translateY(10px);
+  animation: galleryItemAppear 0.3s forwards;
+}
+
+@keyframes galleryItemAppear {
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.gallery-grid-item {
+  animation-delay: calc(var(--item-index) * 0.1s);
+}

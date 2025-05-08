@@ -215,3 +215,81 @@
   animation-delay: calc(var(--item-index) * 0.1s);
 }
 
+.tools-coming-soon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 60px 20px;
+  max-width: 600px;
+  margin: 40px auto;
+  background: rgba(0, 216, 133, 0.05);
+  border-radius: 16px;
+  border: 1px solid rgba(0, 216, 133, 0.2);
+}
+
+.coming-soon-icon {
+  margin-bottom: 24px;
+  animation: pulse 2s infinite;
+  background: rgba(0, 216, 133, 0.1);
+  border-radius: 50%;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(0, 216, 133, 0.4);
+  }
+  70% {
+    transform: scale(1.05);
+    box-shadow: 0 0 0 10px rgba(0, 216, 133, 0);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(0, 216, 133, 0);
+  }
+}
+
+.coming-soon-title {
+  font-size: 28px;
+  font-weight: 600;
+  color: white;
+  margin-bottom: 16px;
+}
+
+.coming-soon-description {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #B1B3C0;
+  margin-bottom: 32px;
+  max-width: 450px;
+}
+
+.coming-soon-button {
+  background: linear-gradient(to right, #00d885, #00a76f);
+  color: #191a20;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 216, 133, 0.3);
+}
+
+.coming-soon-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 216, 133, 0.4);
+}
+
+.coming-soon-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(0, 216, 133, 0.3);
+}
+

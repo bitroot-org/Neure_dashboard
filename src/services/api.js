@@ -468,3 +468,53 @@ export const markReadNotification = async (notificationIds) => {
     throw error.response?.data || error;
   }
 };
+
+export const getGalleryItems = async ({
+  type,
+  page = 1,
+  limit = 10,
+}) => {
+  try {
+    const response = await api.get("/getGalleryItems", {
+      params: {
+        type,
+        page,
+        limit,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    return {
+      status: false,
+      error: error.response?.data?.message || "Failed to fetch gallery items",
+    };
+  }
+};
+
+export const getMediaCounts = async (companyId) => {
+  try {
+    const response = await api.get(`/getMediaCounts`, {
+      params: {
+        companyId: null,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error;
+  }
+};
+
+export const trackResourceView = async (resourceId, resourceType) => {
+  try {
+    const response = await api.post(`/tracking/trackResourceView`, {
+      resource_id: resourceId,
+      resource_type: resourceType
+    });
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error;
+  }
+};
+
+
+

@@ -10,9 +10,9 @@ const CompanyHealthGauge = ({
 }) => {
   // Get the glow color based on value
   const getGlowColor = (value) => {
-    if (value <= 35) return "76, 217, 100"; // Green
+    if (value <= 35) return "255, 59, 48"; // Red
     if (value <= 70) return "255, 184, 0"; // Yellow
-    return "255, 59, 48"; // Red
+    return "76, 217, 100"; // Green
   };
 
   const glowColor = getGlowColor(value);
@@ -36,7 +36,7 @@ const CompanyHealthGauge = ({
           width: 0.2,
           padding: 0,
           cornerRadius: 1,
-          colorArray: ["#4CD964", "#FFB800", "#FF3B30"],
+          colorArray: ["#FF3B30", "#FFB800", "#4CD964"],
           gradient: true,
           subArcs: [{ limit: 35 }, { limit: 70 }, { limit: 100 }],
         }}

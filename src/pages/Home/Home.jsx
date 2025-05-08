@@ -45,7 +45,8 @@ const Home = () => {
   const [hasNotifications, setHasNotifications] = useState(false);
   const [workshop, setWorkshop] = useState(null);
   const [totalPages, setTotalPages] = useState(1);
-  const [loading, setLoading] = useState(true);
+  const [workshopLoading, setWorkshopLoading] = useState(true);
+  const [metricsLoading, setMetricsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [metricsData, setMetricsData] = useState(null);
   const [isTermsModalVisible, setIsTermsModalVisible] = useState(false);
@@ -55,6 +56,9 @@ const Home = () => {
   const location = useLocation();
   const { user, setUser } = useContext(UserDataContext);
   const [showTour, setShowTour] = useState(false);
+
+  // Add this computed property to determine overall loading state
+  const loading = workshopLoading || metricsLoading;
 
   const pageSize = 1;
   const currentPage = 1;
@@ -67,7 +71,7 @@ const Home = () => {
     const fetchWorkshop = async () => {
       console.log("fetchWorkshops called");
       try {
-        setLoading(true);
+        setWorkshopLoading(true);
         setError(null);
         const data = await getWorkshops({
           companyId,
@@ -78,7 +82,6 @@ const Home = () => {
         if (data.status) {
           setWorkshop(data.data[0]);
           console.log("Workshop data:", data.data);
-          // setTotalPages(data.pagination.totalPages);
           if (data.data.length === 0) {
             setError("No workshops available.");
           }
@@ -89,7 +92,7 @@ const Home = () => {
         console.error("Error fetching workshops:", error);
         setError("Failed to fetch workshops. Please try again later.");
       } finally {
-        setLoading(false);
+        setWorkshopLoading(false);
       }
     };
     fetchWorkshop();
@@ -98,7 +101,7 @@ const Home = () => {
   useEffect(() => {
     const fetchMetrics = async () => {
       try {
-        setLoading(true);
+        setMetricsLoading(true);
         const companyId = localStorage.getItem("companyId");
         if (!companyId) {
           message.error("Company ID not found");
@@ -114,7 +117,7 @@ const Home = () => {
         console.error("Error fetching metrics:", error);
         message.error("Failed to fetch company metrics");
       } finally {
-        setLoading(false);
+        setMetricsLoading(false);
       }
     };
 
@@ -262,10 +265,10 @@ const Home = () => {
   };
 
   const getStressStatus = (stressLevel) => {
-    if (stressLevel <= 20) return "Excellent";
-    if (stressLevel <= 40) return "Good";
-    if (stressLevel <= 60) return "Moderate";
-    if (stressLevel <= 80) return "High";
+    if (stressLevel <= 20) return "High";
+    if (stressLevel <= 40) return "Moderate";
+    if (stressLevel <= 60) return "Good";
+    if (stressLevel <= 80) return "Excellent";
     return "Critical";
   };
 
@@ -470,8 +473,12 @@ const Home = () => {
                 onClick={handleViewWorkshopDetails}
                 style={{ cursor: "pointer" }}
               >
-                {loading ? (
+                {workshopLoading ? (
                   <PresentationSlide isLoading={true} />
+                ) : error ? (
+                  <div className="workshop-error">
+                    <p>{error}</p>
+                  </div>
                 ) : (
                   <div onClick={handleViewWorkshopDetails} style={{ cursor: "pointer" }}>
                     <PresentationSlide
@@ -494,7 +501,7 @@ const Home = () => {
                   onClick={() => navigate("/announcements")}
                   style={{ cursor: "pointer" }}
                 >
-                  <h3>Announcements</h3>
+                  <h3>Announcements & Notifications</h3>
                   <img src="announcement.svg" alt="marketing icon" />
                 </motion.div>
 
@@ -516,16 +523,8 @@ const Home = () => {
                 style={{ cursor: "pointer" }}
               >
                 <div className="main-rewards-content">
-                  <h3>Rewards & Recognition</h3>
-                  <h3
-                    style={{
-                      color: "#EEE420",
-                      fontSize: "16px",
-                      fontWeight: "500",
-                    }}
-                  >
-                    COMING SOON !
-                  </h3>
+                <h3>Rewards &</h3>
+                <h3>Recognition</h3>
                 </div>
 
                 <img src="Rewards.svg" alt="Rewards and Recognition" />
@@ -540,7 +539,7 @@ const Home = () => {
                 className="main-company-health-gauge"
                 value={companyData.stress_level}
                 maxValue={100}
-                title="Well-being Index"
+                title="Wellbeing Index"
                 status={getStressStatus(companyData.stress_level)}
                 onClick={handleCompanyGaugeClick}
               />
@@ -562,68 +561,75 @@ const Home = () => {
               <h3>ROI</h3>
               <span>Compare to prev. month</span>
             </div>
-            <div className="main-roi-metrics">
-              <div className="main-roi-item">
-                <span>Stress Levels</span>
-                <div className="main-percentage">
-                  {Math.round(companyData.stress_level)}%{" "}
-                  <img
-                    src={
-                      companyData.stress_trend === "no_change"
-                        ? "Upward.png"
-                        : companyData.stress_trend === "up"
-                        ? "Upward.png"
-                        : "/Downward.png"
-                    }
-                  />
+            {metricsLoading ? (
+              <div className="main-roi-loading">
+                <Spin size="small" />
+                <p>Loading metrics...</p>
+              </div>
+            ) : (
+              <div className="main-roi-metrics">
+                <div className="main-roi-item">
+                  <span>Stress Levels</span>
+                  <div className="main-percentage">
+                    {Math.round(companyData.stress_level)}%{" "}
+                    <img
+                      src={
+                        companyData.stress_trend === "no_change"
+                          ? "Upward.png"
+                          : companyData.stress_trend === "up"
+                          ? "Upward.png"
+                          : "/Downward.png"
+                      }
+                    />
+                  </div>
+                </div>
+                <div className="main-roi-item">
+                  <span>Psychological Safety Index (PSI)</span>
+                  <div className="main-percentage">
+                    {Math.round(companyData.psychological_safety_index)}%{" "}
+                    <img
+                      src={
+                        companyData.psi_trend === "no_change"
+                          ? "Upward.png"
+                          : companyData.psi_trend === "up"
+                          ? "Upward.png"
+                          : "/Downward.png"
+                      }
+                    />
+                  </div>
+                </div>
+                <div className="main-roi-item">
+                  <span>Employee Retention</span>
+                  <div className="main-percentage">
+                    {Math.round(companyData.retention_rate)}%{" "}
+                    <img
+                      src={
+                        companyData.retention_trend === "no_change"
+                          ? "Upward.png"
+                          : companyData.retention_trend === "up"
+                          ? "Upward.png"
+                          : "/Downward.png"
+                      }
+                    />
+                  </div>
+                </div>
+                <div className="main-roi-item">
+                  <span>Employee Engagement</span>
+                  <div className="main-percentage">
+                    {Math.round(companyData.engagement_score)}%{" "}
+                    <img
+                      src={
+                        companyData.engagement_trend === "no_change"
+                          ? "Upward.png"
+                          : companyData.engagement_trend === "up"
+                          ? "Upward.png"
+                          : "/Downward.png"
+                      }
+                    />
+                  </div>
                 </div>
               </div>
-              <div className="main-roi-item">
-                <span>Psychological Safety Index (PSI)</span>
-                <div className="main-percentage">
-                  {Math.round(companyData.psychological_safety_index)}%{" "}
-                  <img
-                    src={
-                      companyData.psi_trend === "no_change"
-                        ? "Upward.png"
-                        : companyData.psi_trend === "up"
-                        ? "Upward.png"
-                        : "/Downward.png"
-                    }
-                  />
-                </div>
-              </div>
-              <div className="main-roi-item">
-                <span>Employee Retention</span>
-                <div className="main-percentage">
-                  {Math.round(companyData.retention_rate)}%{" "}
-                  <img
-                    src={
-                      companyData.retention_trend === "no_change"
-                        ? "Upward.png"
-                        : companyData.retention_trend === "up"
-                        ? "Upward.png"
-                        : "/Downward.png"
-                    }
-                  />
-                </div>
-              </div>
-              <div className="main-roi-item">
-                <span>Employee Engagement</span>
-                <div className="main-percentage">
-                  {Math.round(companyData.engagement_score)}%{" "}
-                  <img
-                    src={
-                      companyData.engagement_trend === "no_change"
-                        ? "Upward.png"
-                        : companyData.engagement_trend === "up"
-                        ? "Upward.png"
-                        : "/Downward.png"
-                    }
-                  />
-                </div>
-              </div>
-            </div>
+            )}
           </motion.div>
         </div>
       </motion.div>

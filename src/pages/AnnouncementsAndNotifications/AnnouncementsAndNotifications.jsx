@@ -86,7 +86,6 @@ const AnnouncementsAndNotifications = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [activeTab, setActiveTab] = useState(() => {
     const tabFromUrl = searchParams.get("tab");
-    const savedTab = localStorage.getItem("announcementsTab");
     return tabFromUrl || savedTab || "all";
   });
   const [data, setData] = useState({ announcements: [], notifications: [] });
@@ -137,7 +136,6 @@ const AnnouncementsAndNotifications = () => {
 
     setActiveTab(newTab);
     setSearchParams({ tab: newTab });
-    localStorage.setItem("announcementsTab", newTab);
 
     // Reset data and pagination when changing tabs
     setData({ announcements: [], notifications: [] });
@@ -447,7 +445,7 @@ const AnnouncementsAndNotifications = () => {
     <div className="notifications-container">
       <div className="notifications-wrapper">
         <CustomHeader
-          title="Announcements & notifications"
+          title="Announcements & Notifications"
           onBack={handleBack}
         />
         <Tabs

@@ -7,6 +7,7 @@ import CustomHeader from "../../components/CustomHeader";
 import CustomPagination from "../../components/CustomPagination";
 import ArticleCard from "../../components/ArticleCard";
 import { getArticles } from "../../services/api";
+import Gallery from '../../components/Gallery/Gallery';
 import { ToolOutlined } from '@ant-design/icons';
 import ArticleModal from "../../components/ArticleModal/ArticleModal";
 
@@ -64,15 +65,7 @@ const Resources = () => {
 
   const handleArticleClick = (article) => {
     navigate(`/articleDetails/${article.id}`, { 
-      state: { 
-        article: {
-          title: article.title,
-          created_at: article.created_at,
-          reading_time: article.reading_time,
-          image_url: article.image_url,
-          content: article.content
-        } 
-      }
+      state: { article } // Pass the article data through navigation state
     });
   };
 
@@ -80,6 +73,7 @@ const Resources = () => {
     setIsModalOpen(false);
     setSelectedArticle(null);
   };
+
 
   useEffect(() => {
     const fetchArticles = async () => {
@@ -124,6 +118,12 @@ const Resources = () => {
           onClick={() => setActiveTab("articles")}
         >
           Articles
+        </button>
+        <button
+          className={`custom-tab ${activeTab === "gallery" ? "active" : ""}`}
+          onClick={() => setActiveTab("gallery")}
+        >
+          Gallery
         </button>
         <button
           className={`custom-tab ${activeTab === "tools" ? "active" : ""}`}
@@ -190,19 +190,40 @@ const Resources = () => {
               />
             )}
           </div>
+        ) : activeTab === "tools" ? (
+          <div className="scrollable-content">
+            <div className="tools-coming-soon">
+              <div className="coming-soon-icon">
+                <svg width="100" height="100" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="#00d885" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M12 8V12" stroke="#00d885" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M12 16H12.01" stroke="#00d885" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </div>
+              <h2 className="coming-soon-title">Tools Coming Soon</h2>
+              <p className="coming-soon-description">
+                We're working on building powerful tools to enhance your experience.
+                Check back soon for updates!
+              </p>
+              <button 
+                className="coming-soon-button"
+                onClick={() => setActiveTab("articles")}
+              >
+                Explore Articles Instead
+              </button>
+            </div>
+          </div>
         ) : (
-          <div className="scrollable-content no-tools">
-            <Empty
-              image={<ToolOutlined style={{ fontSize: '64px', color: '#00d885' }} />}
-              description={
-                <span>
-                  No tools available right now. Stay tuned for future updates!
-                </span>
-              }
-            />
+          <div className="scrollable-content">
+            <Gallery />
           </div>
         )}
       </div>
+      <ArticleModal
+        isOpen={isModalOpen}
+        onClose={handleModalClose}
+        article={selectedArticle}
+      />
     </div>
   );
 };
