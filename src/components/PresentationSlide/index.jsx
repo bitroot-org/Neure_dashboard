@@ -32,26 +32,33 @@ const PresentationSlide = ({ title, date, backgroundImage, endTime, isLoading })
     );
   }
 
-  // Format time from ISO string to 12-hour format
+  // Format time from ISO string without timezone conversion
   const formatTime = (timeStr) => {
     if (!timeStr) return '';
 
     const dateObj = new Date(timeStr);
-    return dateObj.toLocaleTimeString('en-US', {
-      hour: 'numeric',
-      minute: '2-digit',
-      hour12: true
-    });
+    
+    // Get hours and minutes in UTC to avoid timezone conversion
+    const hours = dateObj.getUTCHours();
+    const minutes = dateObj.getUTCMinutes();
+    
+    // Format in 12-hour format
+    const period = hours >= 12 ? 'PM' : 'AM';
+    const displayHours = hours % 12 || 12; // Convert 0 to 12 for 12 AM
+    const displayMinutes = minutes < 10 ? `0${minutes}` : minutes;
+    
+    return `${displayHours}:${displayMinutes} ${period}`;
   };
 
-  // Extract day and month from date
+  // Extract day and month from date without timezone conversion
   const getDateInfo = (timeStr) => {
     if (!timeStr) return { day: '', month: '' };
     
     const dateObj = new Date(timeStr);
+    
     return {
-      day: dateObj.getDate(),
-      month: dateObj.toLocaleString('default', { month: 'short' })
+      day: dateObj.getUTCDate(),
+      month: new Intl.DateTimeFormat('en', { month: 'short' }).format(dateObj)
     };
   };
 

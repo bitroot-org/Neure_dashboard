@@ -18,7 +18,7 @@ const { Title, Text, Paragraph } = Typography;
 const formatDateTime = (date, startTime, endTime) => {
   if (!startTime) return "";
 
-  // Use start_time as the base date since conference_date is null
+  // Use start_time as the base date
   const eventDate = new Date(startTime);
   const end = endTime ? new Date(endTime) : new Date(startTime);
 
@@ -27,26 +27,29 @@ const formatDateTime = (date, startTime, endTime) => {
     end.setMinutes(end.getMinutes() + 30);
   }
 
+  // Format date using UTC methods to avoid timezone conversion
   const formattedDate = eventDate.toLocaleString("en-US", {
     weekday: "long",
     day: "numeric",
     month: "short",
     year: "numeric",
-    timeZone: "Asia/Kolkata", // Add IST timezone
+    timeZone: "UTC" // Use UTC timezone to match API response
   });
 
+  // Format start time using UTC methods
   const formattedStartTime = eventDate.toLocaleString("en-US", {
     hour: "numeric",
     minute: "2-digit",
     hour12: true,
-    timeZone: "Asia/Kolkata", // Add IST timezone
+    timeZone: "UTC" // Use UTC timezone to match API response
   });
 
+  // Format end time using UTC methods
   const formattedEndTime = end.toLocaleString("en-US", {
     hour: "numeric",
     minute: "2-digit",
     hour12: true,
-    timeZone: "Asia/Kolkata", // Add IST timezone
+    timeZone: "UTC" // Use UTC timezone to match API response
   });
 
   return `${formattedDate} | ${formattedStartTime} - ${formattedEndTime}`;

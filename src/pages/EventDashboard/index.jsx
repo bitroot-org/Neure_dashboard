@@ -93,15 +93,6 @@ const EventDashboard = () => {
     navigate(`/workshopDetails/${workshopId}?scheduleId=${scheduleId}`);
   };
 
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-GB", {
-      day: "2-digit",
-      month: "short",
-      year: "2-digit",
-    });
-  };
-
   return (
     <div className="workshop-page">
       <CustomHeader title="Workshops" />
@@ -122,11 +113,13 @@ const EventDashboard = () => {
             <div className="workshops-grid">
               {loading ? (
                 // Show shimmer effect while loading
-                Array(6).fill(0).map((_, index) => (
-                  <div key={`shimmer-${index}`} className="workshop-item">
-                    <PresentationSlide isLoading={true} />
-                  </div>
-                ))
+                Array(6)
+                  .fill(0)
+                  .map((_, index) => (
+                    <div key={`shimmer-${index}`} className="workshop-item">
+                      <PresentationSlide isLoading={true} />
+                    </div>
+                  ))
               ) : error ? (
                 <Alert message={error} type="warning" showIcon />
               ) : (
@@ -134,14 +127,19 @@ const EventDashboard = () => {
                   <div key={workshop.workshop_id} className="workshop-item">
                     <div
                       style={{ cursor: "pointer" }}
-                      onClick={() => handleWorkshopClick(workshop.workshop_id, workshop.schedule_id)}
+                      onClick={() =>
+                        handleWorkshopClick(
+                          workshop.workshop_id,
+                          workshop.schedule_id
+                        )
+                      }
                     >
                       <PresentationSlide
                         title={workshop.title}
-                        date={formatDate(workshop.start_time)}
+                        date={workshop.start_time} // Pass raw start_time
                         location={workshop.location}
                         backgroundImage={workshop.poster_image}
-                        endTime={workshop.end_time}
+                        endTime={workshop.end_time} // Pass raw end_time
                         isLoading={false}
                       />
                     </div>
