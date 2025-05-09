@@ -32,6 +32,7 @@ import {
   getCompanyMetrics,
   acceptTermsAndConditions,
   updateDashboardTourStatus,
+  getUnreadNotificationCount,
 } from "../../services/api";
 import TermsModal from "../../components/TermsModal";
 import { motion } from "framer-motion";
@@ -42,8 +43,8 @@ import DashboardTour from "../../components/DashboardTour/DashboardTour";
 const { Header, Content, Footer } = Layout;
 
 const Home = () => {
-  const [hasNotifications, setHasNotifications] = useState(false);
-  const [workshop, setWorkshop] = useState(null);
+  const [unreadNotificationCount, setUnreadNotificationCount] = useState(0);
+  const [notificationLoading, setNotificationLoading] = useState(false);  const [workshop, setWorkshop] = useState(null);
   const [totalPages, setTotalPages] = useState(1);
   const [workshopLoading, setWorkshopLoading] = useState(true);
   const [metricsLoading, setMetricsLoading] = useState(true);
@@ -341,6 +342,40 @@ const Home = () => {
     }
   };
 
+    // Add useEffect to fetch unread notification count
+    useEffect(() => {
+      const fetchUnreadNotificationCount = async () => {
+        if (!user?.id || !user?.companyId) return;
+        
+        try {
+          setNotificationLoading(true);
+          const response = await getUnreadNotificationCount(user.id, user.companyId);
+          
+          if (response.status && response.data) {
+            setUnreadNotificationCount(response.data.count);
+          } else {
+            // Silently fail - don't show error to user
+            console.error("Failed to fetch notification count:", response.message);
+            setUnreadNotificationCount(0);
+          }
+        } catch (error) {
+          // Silently fail - don't show error to user
+          console.error("Error fetching notification count:", error);
+          setUnreadNotificationCount(0);
+        } finally {
+          setNotificationLoading(false);
+        }
+      };
+  
+      fetchUnreadNotificationCount();
+      
+      // Set up interval to refresh count every minute (60000ms)
+      const intervalId = setInterval(fetchUnreadNotificationCount, 60000);
+      
+      // Clean up interval on component unmount
+      return () => clearInterval(intervalId);
+    }, [user?.id, user?.companyId]);
+
   return (
     <Layout className="main-dashboard-layout">
       <DashboardTour run={showTour} onClose={handleTourComplete} />
@@ -502,7 +537,11 @@ const Home = () => {
                   style={{ cursor: "pointer" }}
                 >
                   <h3>Announcements & Notifications</h3>
-                  <img src="announcement.svg" alt="marketing icon" />
+                  {!notificationLoading && unreadNotificationCount > 0 && (
+                    <div className="notification-badge">
+                      <p>{unreadNotificationCount > 99 ? '99+' : unreadNotificationCount}</p>
+                    </div>
+                  )}                  <img src="announcement.svg" alt="marketing icon" />
                 </motion.div>
 
                 <motion.div

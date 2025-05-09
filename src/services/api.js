@@ -516,5 +516,18 @@ export const trackResourceView = async (resourceId, resourceType) => {
   }
 };
 
+export const getUnreadNotificationCount = async (userId, companyId) => {
+  try {
+    const response = await api.get("notifications/unread-count", {
+      params: {
+        company_id: companyId
+      }
+    });
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error;
+  }
+};
+
 
 

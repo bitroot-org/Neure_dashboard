@@ -199,9 +199,11 @@ const WorkshopCard = () => {
         <div className="content-container">
           <div className="title-container">
             <Title className="workshop-title">{workshop.title}</Title>
-            <p>
-              By <span>{workshop.organizer}</span>
-            </p>
+            {workshop.schedules[0]?.host_name && (
+              <p>
+                By <span>{workshop.schedules[0]?.host_name}</span>
+              </p>
+            )}
           </div>
 
           {/* Update the event-details section */}

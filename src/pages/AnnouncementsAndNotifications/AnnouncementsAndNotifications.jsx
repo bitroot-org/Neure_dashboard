@@ -86,7 +86,9 @@ const AnnouncementsAndNotifications = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [activeTab, setActiveTab] = useState(() => {
     const tabFromUrl = searchParams.get("tab");
-    return tabFromUrl || savedTab || "all";
+    // Get saved tab from localStorage or default to "all"
+    const savedTab = localStorage.getItem("savedNotificationTab") || "all";
+    return tabFromUrl || savedTab;
   });
   const [data, setData] = useState({ announcements: [], notifications: [] });
   const [loading, setLoading] = useState(true);
@@ -134,6 +136,9 @@ const AnnouncementsAndNotifications = () => {
       }
     }
 
+    // Save the selected tab to localStorage
+    localStorage.setItem("savedNotificationTab", newTab);
+    
     setActiveTab(newTab);
     setSearchParams({ tab: newTab });
 
