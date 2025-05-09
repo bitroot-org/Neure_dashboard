@@ -616,8 +616,8 @@ const Home = () => {
                         companyData.stress_trend === "no_change"
                           ? "Upward.png"
                           : companyData.stress_trend === "up"
-                          ? "Upward.png"
-                          : "/Downward.png"
+                          ? "Downward.png"
+                          : "/Upward.png"
                       }
                     />
                   </div>
