@@ -43,16 +43,31 @@
 }
 
 .download-csv {
-  width: 150px;
-  height: 48px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: linear-gradient(to bottom, #FFFFFF 0%, #797B87 100%);
+  color: black;
+  border: none;
   border-radius: 70px;
-  border-width: 1px;
-  padding: 0px 8px;
-  color: #ffffff;
-  font-size: 16px;
+  padding: 8px 16px;
+  margin-right: 16px;
+  cursor: pointer;
   font-weight: 500;
-  margin-right: 12px;
+  height: 48px;
+  transition: background-color 0.3s;
+}
+
+.download-csv:hover {
+  background-color: #3CB954;
+}
+
+.download-csv:disabled {
+  background-color: #A8E9B5;
+  cursor: not-allowed;
+}
+
+.download-csv.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background: linear-gradient(to bottom, #FFFFFF 0%, #797B87 100%);
 }
 
 .close-button {
@@ -112,4 +127,16 @@ td {
 th {
   color: rgba(255, 255, 255, 0.6);
   font-weight: normal;
+}
+
+.pagination-container {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.workshop-title {
+  color: rgba(255, 255, 255, 0.7);
+  margin-top: 4px;
+  font-size: 14px;
 }

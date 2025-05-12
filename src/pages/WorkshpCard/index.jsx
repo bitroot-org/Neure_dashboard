@@ -18,39 +18,58 @@ const { Title, Text, Paragraph } = Typography;
 const formatDateTime = (date, startTime, endTime) => {
   if (!startTime) return "";
 
-  // Use start_time as the base date
-  const eventDate = new Date(startTime);
-  const end = endTime ? new Date(endTime) : new Date(startTime);
+  // Parse date parts directly from strings to avoid timezone issues
+  const formatDateFromString = (dateStr) => {
+    if (!dateStr) return "";
+    
+    // Extract date part from "YYYY-MM-DD HH:MM:SS" format
+    const datePart = dateStr.split(' ')[0];
+    if (!datePart) return "";
+    
+    // Extract year, month, day
+    const [year, month, day] = datePart.split('-');
+    
+    // Get month name and day of week
+    const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const monthName = monthNames[parseInt(month, 10) - 1];
+    
+    // Create a Date object just to get the day of week
+    // This is safe because we're only using it for the day name, not time
+    const tempDate = new Date(year, parseInt(month, 10) - 1, parseInt(day, 10));
+    const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const dayName = dayNames[tempDate.getDay()];
+    
+    return `${dayName}, ${monthName} ${parseInt(day, 10)}, ${year}`;
+  };
 
-  // Add 30 minutes to end time if not provided
-  if (!endTime) {
-    end.setMinutes(end.getMinutes() + 30);
+  // Format time directly from string without conversion
+  const formatTimeFromString = (timeStr) => {
+    if (!timeStr) return '';
+    
+    // Extract time part from "YYYY-MM-DD HH:MM:SS" format
+    const timePart = timeStr.split(' ')[1];
+    if (!timePart) return '';
+    
+    // Extract hours and minutes
+    const [hours, minutes] = timePart.split(':');
+    
+    // Convert to 12-hour format
+    const hourNum = parseInt(hours, 10);
+    const period = hourNum >= 12 ? 'PM' : 'AM';
+    const displayHours = hourNum % 12 || 12; // Convert 0 to 12 for 12 AM
+    
+    return `${displayHours}:${minutes} ${period}`;
+  };
+
+  // Format the date and times
+  const formattedDate = formatDateFromString(startTime);
+  const formattedStartTime = formatTimeFromString(startTime);
+  const formattedEndTime = endTime ? formatTimeFromString(endTime) : "";
+
+  // If no end time is provided, don't show the time range
+  if (!formattedEndTime) {
+    return `${formattedDate} | ${formattedStartTime}`;
   }
-
-  // Format date using UTC methods to avoid timezone conversion
-  const formattedDate = eventDate.toLocaleString("en-US", {
-    weekday: "long",
-    day: "numeric",
-    month: "short",
-    year: "numeric",
-    timeZone: "UTC" // Use UTC timezone to match API response
-  });
-
-  // Format start time using UTC methods
-  const formattedStartTime = eventDate.toLocaleString("en-US", {
-    hour: "numeric",
-    minute: "2-digit",
-    hour12: true,
-    timeZone: "UTC" // Use UTC timezone to match API response
-  });
-
-  // Format end time using UTC methods
-  const formattedEndTime = end.toLocaleString("en-US", {
-    hour: "numeric",
-    minute: "2-digit",
-    hour12: true,
-    timeZone: "UTC" // Use UTC timezone to match API response
-  });
 
   return `${formattedDate} | ${formattedStartTime} - ${formattedEndTime}`;
 };
@@ -60,10 +79,11 @@ const WorkshopCard = () => {
   const [workshop, setWorkshop] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isCheckInModalOpen, setIsCheckInModalOpen] = useState(false);
-  const [isAttendeeModalOpen, setIsAttendeeModalOpen] = useState(false);
+  const [showAttendeeModal, setShowAttendeeModal] = useState(false);
+  const [scheduleId, setScheduleId] = useState(null);
 
   const handleViewAttendees = () => {
-    setIsAttendeeModalOpen(true);
+    setShowAttendeeModal(true);
   };
 
   const handleCheckIn = () => {
@@ -113,13 +133,15 @@ const WorkshopCard = () => {
       try {
         setLoading(true);
         // Get schedule_id from URL params or state if available
-        const scheduleId = new URLSearchParams(window.location.search).get(
+        const scheduleIdParam = new URLSearchParams(window.location.search).get(
           "scheduleId"
         );
+        setScheduleId(scheduleIdParam);
+        
         const response = await getWorkshopDetails(
           workshopId,
           companyId,
-          scheduleId
+          scheduleIdParam
         );
         if (response.status) {
           setWorkshop(response.data);
@@ -163,6 +185,7 @@ const WorkshopCard = () => {
         onCheckInClick={handleCheckIn}
         buttonDisabled={getButtonsDisabled()}
         buttonTooltip={getButtonTooltip()}
+        workshopStatus={workshop?.schedules?.[0]?.status}
       />
       <div className="workshop-card">
         <div className="image-container">
@@ -259,11 +282,16 @@ const WorkshopCard = () => {
       <CheckInModal
         isOpen={isCheckInModalOpen}
         onClose={() => setIsCheckInModalOpen(false)}
+        scheduleId={scheduleId}
       />
-      <AttendeeModal
-        isOpen={isAttendeeModalOpen}
-        onClose={() => setIsAttendeeModalOpen(false)}
-      />
+      {showAttendeeModal && (
+        <AttendeeModal
+          isOpen={showAttendeeModal}
+          onClose={() => setShowAttendeeModal(false)}
+          scheduleId={workshop?.schedules?.[0]?.id}
+          workshopStatus={workshop?.schedules?.[0]?.status}
+        />
+      )}
     </div>
   );
 };

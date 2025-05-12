@@ -350,11 +350,16 @@ export const markAttendance = async (data) => {
   }
 }
 
-export const getWorkshopAttendees = async (workshopId, companyId) => {
+export const getWorkshopAttendees = async (workshopId, companyId, scheduleId, params = {}) => {
   try {
     const response = await api.get(`/workshop/attendance/${workshopId}`, {
       params: {
-        comapny_id: companyId,
+        company_id: companyId,
+        schedule_id: scheduleId,
+        page: params.page,
+        limit: params.limit,
+        status: params.status,
+        all: params.all
       },
     });
     return response.data;

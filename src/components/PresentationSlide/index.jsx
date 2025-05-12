@@ -32,39 +32,49 @@ const PresentationSlide = ({ title, date, backgroundImage, endTime, isLoading })
     );
   }
 
-  // Format time from ISO string without timezone conversion
-  const formatTime = (timeStr) => {
+  // Format time directly from the string without conversion
+  const formatTimeFromString = (timeStr) => {
     if (!timeStr) return '';
-
-    const dateObj = new Date(timeStr);
     
-    // Get hours and minutes in UTC to avoid timezone conversion
-    const hours = dateObj.getUTCHours();
-    const minutes = dateObj.getUTCMinutes();
+    // Extract time part from "YYYY-MM-DD HH:MM:SS" format
+    const timePart = timeStr.split(' ')[1];
+    if (!timePart) return '';
     
-    // Format in 12-hour format
-    const period = hours >= 12 ? 'PM' : 'AM';
-    const displayHours = hours % 12 || 12; // Convert 0 to 12 for 12 AM
-    const displayMinutes = minutes < 10 ? `0${minutes}` : minutes;
+    // Extract hours and minutes
+    const [hours, minutes] = timePart.split(':');
     
-    return `${displayHours}:${displayMinutes} ${period}`;
+    // Convert to 12-hour format
+    const hourNum = parseInt(hours, 10);
+    const period = hourNum >= 12 ? 'PM' : 'AM';
+    const displayHours = hourNum % 12 || 12; // Convert 0 to 12 for 12 AM
+    
+    return `${displayHours}:${minutes} ${period}`;
   };
 
-  // Extract day and month from date without timezone conversion
-  const getDateInfo = (timeStr) => {
-    if (!timeStr) return { day: '', month: '' };
+  // Extract day and month directly from the date string
+  const getDateInfoFromString = (dateStr) => {
+    if (!dateStr) return { day: '', month: '' };
     
-    const dateObj = new Date(timeStr);
+    // Extract date part from "YYYY-MM-DD HH:MM:SS" format
+    const datePart = dateStr.split(' ')[0];
+    if (!datePart) return { day: '', month: '' };
+    
+    // Extract year, month, day
+    const [year, month, day] = datePart.split('-');
+    
+    // Get month name
+    const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const monthName = monthNames[parseInt(month, 10) - 1];
     
     return {
-      day: dateObj.getUTCDate(),
-      month: new Intl.DateTimeFormat('en', { month: 'short' }).format(dateObj)
+      day: parseInt(day, 10),
+      month: monthName
     };
   };
 
   // Format start and end times
-  const startTimeFormatted = formatTime(date);
-  const endTimeFormatted = formatTime(endTime);
+  const startTimeFormatted = formatTimeFromString(date);
+  const endTimeFormatted = formatTimeFromString(endTime);
   
   // Create the time display string
   const timeDisplay = (startTimeFormatted && endTimeFormatted)
@@ -72,7 +82,7 @@ const PresentationSlide = ({ title, date, backgroundImage, endTime, isLoading })
     : startTimeFormatted;
     
   // Get date and month
-  const { day, month } = getDateInfo(date);
+  const { day, month } = getDateInfoFromString(date);
 
   return (
     <div className="slide">

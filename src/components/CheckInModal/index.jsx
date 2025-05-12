@@ -4,7 +4,7 @@ import { Scanner } from '@yudiel/react-qr-scanner';
 import { markAttendance } from '../../services/api';
 import './index.css';
 
-const CheckInModal = ({ isOpen, onClose }) => {
+const CheckInModal = ({ isOpen, onClose, scheduleId }) => {
   const [ticketId, setTicketId] = useState('');
   const [isVisible, setIsVisible] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -65,10 +65,17 @@ const CheckInModal = ({ isOpen, onClose }) => {
         throw new Error('Company ID not found');
       }
 
-      const response = await markAttendance({
+      const payload = {
         ticketCode: scannedTicketId,
         company_id: companyId
-      });
+      };
+
+      // Add schedule_id to payload if available
+      if (scheduleId) {
+        payload.schedule_id = scheduleId;
+      }
+
+      const response = await markAttendance(payload);
 
       if (response.status) {
         setShowSuccess(true);

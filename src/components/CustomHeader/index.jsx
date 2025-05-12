@@ -18,11 +18,15 @@ const CustomHeader = ({
   buttonDisabled = false,
   buttonLoading = false,
   buttonTooltip = '',
-  onBack // Add this prop
+  workshopStatus = '',
+  onBack
 }) => {
   const navigate = useNavigate();
   const [filterValue, setFilterValue] = React.useState(defaultFilterValue);
   const [backIconLoaded, setBackIconLoaded] = React.useState(true);
+
+  // Check if workshop is completed
+  const isWorkshopCompleted = workshopStatus === 'completed';
 
   const handleBack = () => {
     if (onBack) {
@@ -86,11 +90,11 @@ const CustomHeader = ({
                   View attendees
                 </Button>
               </Tooltip>
-              <Tooltip title={buttonTooltip}>
+              <Tooltip title={isWorkshopCompleted ? "Check-in is not available for completed workshops" : buttonTooltip}>
                 <Button
                   onClick={onCheckInClick}
                   className="attendee-button check-in"
-                  disabled={buttonDisabled}
+                  disabled={buttonDisabled || isWorkshopCompleted}
                 >
                   Check-in
                 </Button>

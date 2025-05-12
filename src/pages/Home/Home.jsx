@@ -518,7 +518,7 @@ const Home = () => {
                   <div onClick={handleViewWorkshopDetails} style={{ cursor: "pointer" }}>
                     <PresentationSlide
                       title={workshop?.title}
-                      date={formatDate(workshop?.start_time)}
+                      date={workshop?.start_time}
                       backgroundImage={workshop?.poster_image}
                       endTime={workshop?.end_time}
                       isLoading={false}
