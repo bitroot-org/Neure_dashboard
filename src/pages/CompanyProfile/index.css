@@ -17,6 +17,7 @@
   justify-content: space-between;
   align-items: center; /* Changed from flex-end to center */
   width: 1200px;
+  margin-bottom: 20px;
 }
 
 .left-part {
@@ -48,42 +49,66 @@
 
 .avatar-container {
   position: relative;
+  display: inline-block;
 }
 
-/* .avatar-edit-button {
-  background-color: #ffffff;
+.avatar-circle {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  overflow: hidden;
+  background-color: #144035;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.company-logo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.company-initial {
+  color: #eee420;
+  font-size: 70px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.avatar-edit-button {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(255, 255, 255, 0.8);
   height: 32px;
   width: 32px;
   border-radius: 50%;
-  position: absolute;
-  bottom: 0;
-  right: 0;
   display: flex;
   justify-content: center;
   align-items: center;
   border: none;
   cursor: pointer;
-} */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s;
+  z-index: 10;
+}
+
+.avatar-edit-button:hover {
+  background-color: #ffffff;
+  transform: translate(-50%, -50%) scale(1.1);
+}
 
 /* Add this for the image inside the button */
 .avatar-edit-button img {
   width: 16px;
   height: 16px;
   object-fit: contain;
-}
-
-.company-avatar {
-  padding: 42px;
-  color: #eee420;
-  font-size: 70px;
-  font-weight: 500;
-  flex-shrink: 0;
-  height: 100px;
-  width: 100px;
-  background-color: #144035;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .header-text {

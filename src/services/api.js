@@ -16,7 +16,7 @@ const refreshToken = async () => {
   const token = localStorage.getItem("refreshToken");
   try {
     const response = await axios.post(
-      `${import.meta.env.VITE_API_URL}/api/user/refresh-token`,
+      `${import.meta.env.VITE_API_BASE_URL}/api/user/refresh-token`,
       {},
       {
         headers: {
@@ -32,7 +32,7 @@ const refreshToken = async () => {
 
 // Request interceptor
 api.interceptors.request.use((config) => {
-  console.log('API Base URL:', import.meta.env.VITE_API_URL);
+  console.log('API Base URL:', import.meta.env.VITE_API_BASE_URL);
 
   const token = localStorage.getItem("accessToken");
   if (token) {
@@ -73,7 +73,7 @@ api.interceptors.response.use(
 
 export const loginUser = async (email, password) => {
   try {
-    console.log('Attempting login with URL:', import.meta.env.VITE_API_URL + '/user/login');
+    console.log('Attempting login with URL:', import.meta.env.VITE_API_BASE_URL + '/user/login');
 
     const response = await api.post("/user/login", {
       email,
@@ -145,9 +145,17 @@ export const getCompanyById = async (companyId) => {
   return response.data;
 };
 
-export const updateCompanyInfo = async (companyInfo) => {
-  const response = await api.put(`/company/updateCompanyInfo`, companyInfo);
-  return response.data;
+export const updateCompanyInfo = async (formData) => {
+  try {
+    const response = await api.put(`/company/updateCompanyInfo`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error;
+  }
 };
 
 export const getCompanyEmployees = async (companyId, params) => {
@@ -198,12 +206,18 @@ export const getNotificationAndAnnouncements = async ({
 };
 
 export const getCompanyMetrics = async (companyId) => {
-  const response = await api.get(`/company/getCompanyMetrics`, {
-    params: {
-      company_id: companyId,
-    },
-  });
-  return response.data;
+  try {
+    const response = await api.get(`/company/getCompanyMetrics`, {
+      params: {
+        company_id: companyId,
+      },
+    });
+    console.log('Raw getCompanyMetrics response:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Error in getCompanyMetrics:', error);
+    throw error;
+  }
 };
 
 export const getAllRewards = async (companyId) => {

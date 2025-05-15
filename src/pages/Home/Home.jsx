@@ -64,8 +64,14 @@ const Home = () => {
   const pageSize = 1;
   const currentPage = 1;
 
-  const { companyData } = useContext(CompanyDataContext);
+  const { companyData, isLoading } = useContext(CompanyDataContext);
   console.log("Company data:", companyData);
+
+  useEffect(() => {
+    // Debug log to check what data we have from context
+    console.log("CompanyData from context:", companyData);
+    console.log("Is context loading:", isLoading);
+  }, [companyData, isLoading]);
 
   useEffect(() => {
     const companyId = localStorage.getItem("companyId");
@@ -265,7 +271,7 @@ const Home = () => {
     navigate("/settings");
   };
 
-  const getStressStatus = (stressLevel) => {
+  const getStressStatus = (stressLevel = 0) => {
     if (stressLevel <= 20) return "High";
     if (stressLevel <= 40) return "Moderate";
     if (stressLevel <= 60) return "Good";
@@ -412,9 +418,9 @@ const Home = () => {
             overlayStyle={{ minWidth: "160px" }}
           >
             <div className="main-user-info">
-              {user?.profile?.profileUrl ? (
+              {companyData?.company_profile_url ? (
                 <img
-                  src={user?.profile?.profileUrl}
+                  src={companyData?.company_profile_url}
                   alt="profile"
                   className="main-avatar"
                 />
@@ -576,10 +582,10 @@ const Home = () => {
             <motion.div variants={itemVariants} style={{ cursor: "pointer" }}>
               <CompanyHealthGauge
                 className="main-company-health-gauge"
-                value={companyData.stress_level}
+                value={companyData?.stress_level || 0}
                 maxValue={100}
                 title="Wellbeing Index"
-                status={getStressStatus(companyData.stress_level)}
+                status={getStressStatus(companyData?.stress_level || 0)}
                 onClick={handleCompanyGaugeClick}
               />
             </motion.div>
@@ -610,12 +616,12 @@ const Home = () => {
                 <div className="main-roi-item">
                   <span>Stress Levels</span>
                   <div className="main-percentage">
-                    {Math.round(companyData.stress_level)}%{" "}
+                    {Math.round(companyData?.stress_level || 0)}%{" "}
                     <img
                       src={
-                        companyData.stress_trend === "no_change"
+                        companyData?.stress_trend === "no_change"
                           ? "Upward.png"
-                          : companyData.stress_trend === "up"
+                          : companyData?.stress_trend === "up"
                           ? "Downward.png"
                           : "/Upward.png"
                       }
@@ -625,12 +631,12 @@ const Home = () => {
                 <div className="main-roi-item">
                   <span>Psychological Safety Index (PSI)</span>
                   <div className="main-percentage">
-                    {Math.round(companyData.psychological_safety_index)}%{" "}
+                    {Math.round(companyData?.psychological_safety_index || 0)}%{" "}
                     <img
                       src={
-                        companyData.psi_trend === "no_change"
+                        companyData?.psi_trend === "no_change"
                           ? "Upward.png"
-                          : companyData.psi_trend === "up"
+                          : companyData?.psi_trend === "up"
                           ? "Upward.png"
                           : "/Downward.png"
                       }
@@ -640,12 +646,12 @@ const Home = () => {
                 <div className="main-roi-item">
                   <span>Employee Retention</span>
                   <div className="main-percentage">
-                    {Math.round(companyData.retention_rate)}%{" "}
+                    {Math.round(companyData?.retention_rate || 0)}%{" "}
                     <img
                       src={
-                        companyData.retention_trend === "no_change"
+                        companyData?.retention_trend === "no_change"
                           ? "Upward.png"
-                          : companyData.retention_trend === "up"
+                          : companyData?.retention_trend === "up"
                           ? "Upward.png"
                           : "/Downward.png"
                       }
@@ -655,12 +661,12 @@ const Home = () => {
                 <div className="main-roi-item">
                   <span>Employee Engagement</span>
                   <div className="main-percentage">
-                    {Math.round(companyData.engagement_score)}%{" "}
+                    {Math.round(companyData?.engagement_score || 0)}%{" "}
                     <img
                       src={
-                        companyData.engagement_trend === "no_change"
+                        companyData?.engagement_trend === "no_change"
                           ? "Upward.png"
-                          : companyData.engagement_trend === "up"
+                          : companyData?.engagement_trend === "up"
                           ? "Upward.png"
                           : "/Downward.png"
                       }

@@ -25,11 +25,31 @@ const CompanyContext = ({ children }) => {
       try {
         const companyId = localStorage.getItem('companyId');
         if (!companyId) {
-          throw new Error('Company ID not found');
+          console.warn('Company ID not found');
+          setIsLoading(false);
+          return;
         }
+        
         const response = await getCompanyMetrics(companyId);
+        console.log('API Response:', response);
+        
         if (response.status) {
-          setCompanyData(response.data.metrics);
+          // Handle nested data structure
+          let metricsData;
+          
+          if (response.data && response.data.data && response.data.data.metrics) {
+            // Deeply nested structure
+            metricsData = response.data.data.metrics;
+          } else if (response.data && response.data.metrics) {
+            // Single level nesting
+            metricsData = response.data.metrics;
+          } else {
+            // Fallback
+            metricsData = response.data || {};
+          }
+          
+          console.log('Processed metrics data:', metricsData);
+          setCompanyData(metricsData);
         }
       } catch (error) {
         console.error('Error fetching company metrics:', error);
@@ -42,8 +62,8 @@ const CompanyContext = ({ children }) => {
   }, []);
 
   return (
-    <CompanyDataContext.Provider value={{ companyData, setCompanyData }}>
-      {!isLoading && children}
+    <CompanyDataContext.Provider value={{ companyData, setCompanyData, isLoading }}>
+      {children}
     </CompanyDataContext.Provider>
   );
 };
