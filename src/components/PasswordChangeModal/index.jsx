@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './passwordChangeModal.css';
 
-const PasswordChangeModal = ({ isOpen, onClose, onSubmit }) => {
+const PasswordChangeModal = ({ isOpen, onClose, onSubmit, isFirstLogin = false, onSkip }) => {
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -11,6 +11,7 @@ const PasswordChangeModal = ({ isOpen, onClose, onSubmit }) => {
     match: true
   });
   const [isFormValid, setIsFormValid] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Check password requirements whenever newPassword or confirmPassword changes
   useEffect(() => {
@@ -46,24 +47,35 @@ const PasswordChangeModal = ({ isOpen, onClose, onSubmit }) => {
 
   if (!isOpen) return null;
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (isFormValid) {
-      onSubmit({ currentPassword, newPassword });
-
-      // Reset form fields
-      setCurrentPassword('');
-      setNewPassword('');
-      setConfirmPassword('');
+    if (isFormValid && !isSubmitting) {
+      setIsSubmitting(true);
+      
+      try {
+        await onSubmit({ currentPassword, newPassword });
+        
+        // Reset form fields - this will only happen after successful submission
+        setCurrentPassword('');
+        setNewPassword('');
+        setConfirmPassword('');
+      } catch (error) {
+        // If there's an error, we don't reset the form
+        console.error("Password change error:", error);
+      } finally {
+        setIsSubmitting(false);
+      }
     }
   };
 
   return (
-    <div className="modal-overlay">
+    <div className={`modal-overlay ${isFirstLogin ? 'first-login' : ''}`}>
       <div className="modal-container">
         <div className="modal-header">
           <h2 className="modal-title">Change password</h2>
-          <button className="modal-close-button" onClick={onClose}>×</button>
+          {!isFirstLogin && (
+            <button className="modal-close-button" onClick={onClose}>×</button>
+          )}
         </div>
 
         <div className="modal-divider"></div>
@@ -73,6 +85,7 @@ const PasswordChangeModal = ({ isOpen, onClose, onSubmit }) => {
             <label htmlFor="current-password">Current password</label>
             <input
               id="current-password"
+              type="password"
               placeholder="Type here.."
               value={currentPassword}
               onChange={(e) => setCurrentPassword(e.target.value)}
@@ -83,11 +96,12 @@ const PasswordChangeModal = ({ isOpen, onClose, onSubmit }) => {
             <label htmlFor="new-password">New password</label>
             <input
               id="new-password"
+              type="password"
               placeholder="Type here.."
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
             />
-            {newPassword && (
+            {newPassword && (validationErrors.length || validationErrors.mix) && (
               <div className="password-requirements">
                 <div className={`requirement ${(!validationErrors.length && !validationErrors.mix) ? 'met' : 'not-met'}`}>
                   <span className="bullet"></span> Minimum 8 characters, Mix of uppercase, lowercase, numbers, and special characters
@@ -113,12 +127,22 @@ const PasswordChangeModal = ({ isOpen, onClose, onSubmit }) => {
           <div className="modal-divider"></div>
 
           <div className="modal-footer">
+            {isFirstLogin && onSkip && (
+              <button 
+                type="button" 
+                className="skip-button"
+                onClick={onSkip}
+                disabled={isSubmitting}
+              >
+                Skip for now
+              </button>
+            )}
             <button
               type="submit"
-              className={`confirm-button ${!isFormValid ? 'disabled' : ''}`}
-              disabled={!isFormValid}
+              className={`confirm-button ${!isFormValid || isSubmitting ? 'disabled' : ''}`}
+              disabled={!isFormValid || isSubmitting}
             >
-              Change password
+              {isSubmitting ? 'Updating...' : 'Change password'}
             </button>
           </div>
         </form>

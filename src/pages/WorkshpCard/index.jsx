@@ -136,6 +136,8 @@ const WorkshopCard = () => {
         const scheduleIdParam = new URLSearchParams(window.location.search).get(
           "scheduleId"
         );
+        
+        console.log("Schedule ID from URL:", scheduleIdParam);
         setScheduleId(scheduleIdParam);
         
         const response = await getWorkshopDetails(
@@ -145,6 +147,16 @@ const WorkshopCard = () => {
         );
         if (response.status) {
           setWorkshop(response.data);
+          
+          // If scheduleId wasn't in URL but is in the response, update it
+          if (!scheduleIdParam && response.data.schedules && response.data.schedules.length > 0) {
+            const firstScheduleId = response.data.schedules[0].id;
+            setScheduleId(firstScheduleId);
+            
+            // Update URL without reloading the page
+            const newUrl = `${window.location.pathname}?scheduleId=${firstScheduleId}`;
+            window.history.replaceState(null, '', newUrl);
+          }
         } else {
           message.error("Failed to fetch workshop details");
         }

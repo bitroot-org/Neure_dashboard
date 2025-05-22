@@ -94,6 +94,22 @@ const LoginPage = () => {
     setPasswordVisible(!passwordVisible);
   };
 
+  // Add a function to handle skipping password change
+  const handleSkipPasswordChange = () => {
+    setShowPasswordModal(false);
+    
+    // Get user data from localStorage to check tour status
+    const userData = JSON.parse(localStorage.getItem("userData") || "{}");
+    
+    // Navigate directly to dashboard
+    navigate("/", {
+      state: {
+        showTerms: true, // Always show terms when skipping password change
+        showTour: userData.profile?.has_seen_dashboard_tour === 0
+      }
+    });
+  };
+
   return (
     <>
       <div
@@ -247,6 +263,8 @@ const LoginPage = () => {
           navigate("/");
         }}
         onSubmit={handlePasswordChange}
+        isFirstLogin={true}
+        onSkip={handleSkipPasswordChange}
       />
     </>
   );

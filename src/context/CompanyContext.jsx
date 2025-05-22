@@ -17,6 +17,7 @@ const CompanyContext = ({ children }) => {
     retention_rate: 0,
     stress_level: 0,
     engagement_score: 0,
+    wellbeing_score:0,
   });
   const [isLoading, setIsLoading] = useState(true);
 

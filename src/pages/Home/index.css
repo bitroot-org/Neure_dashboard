@@ -1160,3 +1160,56 @@
     display: none;
   }
 }
+
+/* Add these shimmer effect styles for ROI cards */
+.shimmer-effect {
+  background: linear-gradient(
+    90deg,
+    #2D2F39 0%,
+    #363845 50%,
+    #2D2F39 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmerAnimation 1.5s infinite linear;
+  border-radius: 4px;
+}
+
+.shimmer-container {
+  background: radial-gradient(108.08% 74.37% at 50% 0%, #33353F 0%, #0D0D11 99.73%);
+  border: 1px solid #3f3c3c;
+  border-radius: 18px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.shimmer-title {
+  width: 60px;
+  height: 24px;
+  margin-bottom: 4px;
+}
+
+.shimmer-subtitle {
+  width: 150px;
+  height: 16px;
+}
+
+.shimmer-label {
+  width: 80%;
+  height: 16px;
+}
+
+.shimmer-value {
+  width: 50%;
+  height: 24px;
+}
+
+@keyframes shimmerAnimation {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}

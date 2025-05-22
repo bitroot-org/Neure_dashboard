@@ -215,6 +215,7 @@
   animation-delay: calc(var(--item-index) * 0.1s);
 }
 
+/* Add these styles at the end of your Resources.css file */
 .tools-coming-soon {
   display: flex;
   flex-direction: column;
@@ -224,15 +225,15 @@
   padding: 60px 20px;
   max-width: 600px;
   margin: 40px auto;
-  background: rgba(0, 216, 133, 0.05);
+  background: rgba(160, 160, 160, 0.053);
   border-radius: 16px;
-  border: 1px solid rgba(0, 216, 133, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .coming-soon-icon {
   margin-bottom: 24px;
   animation: pulse 2s infinite;
-  background: rgba(0, 216, 133, 0.1);
+  background: rgba(255, 255, 255, 0.1);
   border-radius: 50%;
   padding: 20px;
   display: flex;
@@ -243,15 +244,15 @@
 @keyframes pulse {
   0% {
     transform: scale(1);
-    box-shadow: 0 0 0 0 rgba(0, 216, 133, 0.4);
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4);
   }
   70% {
     transform: scale(1.05);
-    box-shadow: 0 0 0 10px rgba(0, 216, 133, 0);
+    box-shadow: 0 0 0 10px rgba(255, 255, 255, 0);
   }
   100% {
     transform: scale(1);
-    box-shadow: 0 0 0 0 rgba(0, 216, 133, 0);
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
   }
 }
 
@@ -271,7 +272,7 @@
 }
 
 .coming-soon-button {
-  background: linear-gradient(to right, #00d885, #00a76f);
+  background: linear-gradient(to right, #ffffff, #e0e0e0);
   color: #191a20;
   border: none;
   border-radius: 8px;
@@ -280,16 +281,15 @@
   font-weight: 500;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(0, 216, 133, 0.3);
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
 }
 
 .coming-soon-button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(0, 216, 133, 0.4);
+  box-shadow: 0 6px 16px rgba(255, 255, 255, 0.3);
 }
 
 .coming-soon-button:active {
   transform: translateY(0);
   box-shadow: 0 2px 8px rgba(0, 216, 133, 0.3);
 }
-

@@ -125,23 +125,39 @@ const EmployeeDashboard = () => {
   const metrics = [
     {
       title: "Total Employees",
-      value: companyData?.total_employees || 0, // Changed from totalEmployees
-      change: "+5%",
+      value: companyData?.total_employees || 0,
+      change: companyData?.total_employees_change > 0 
+        ? `+${companyData?.total_employees_change}%` 
+        : companyData?.total_employees_change < 0 
+          ? `${companyData?.total_employees_change}%` 
+          : "0%",
     },
     {
       title: "Departments",
-      value: companyData?.total_departments || 0, // Changed from totalDepartments
-      change: "+30%",
+      value: companyData?.total_departments || 0,
+      change: companyData?.total_departments_change > 0 
+        ? `+${companyData?.total_departments_change}%` 
+        : companyData?.total_departments_change < 0 
+          ? `${companyData?.total_departments_change}%` 
+          : "0%",
     },
     {
       title: "Active Employees",
-      value: companyData?.active_employees || 0, // Changed from activeEmployees
-      change: "+20%",
+      value: companyData?.active_employees || 0,
+      change: companyData?.active_employees_change > 0 
+        ? `+${companyData?.active_employees_change}%` 
+        : companyData?.active_employees_change < 0 
+          ? `${companyData?.active_employees_change}%` 
+          : "0%",
     },
     {
       title: "Inactive Employees",
-      value: companyData?.inactive_employees || 0, // Changed from inactiveEmployees
-      change: "+10%",
+      value: companyData?.inactive_employees || 0,
+      change: companyData?.inactive_employees_change > 0 
+        ? `+${companyData?.inactive_employees_change}%` 
+        : companyData?.inactive_employees_change < 0 
+          ? `${companyData?.inactive_employees_change}%` 
+          : "0%",
     },
   ];
 
@@ -284,11 +300,11 @@ const EmployeeDashboard = () => {
               </h1>
               <div
                 className={`employee-metric-change ${
-                  metric.change.includes("+")
+                  metric.change.startsWith("+")
                     ? "positive"
                     : metric.change === "0%"
-                    ? "neutral"
-                    : "negative"
+                      ? "neutral"
+                      : "negative"
                 }`}
               >
                 {metric.change}

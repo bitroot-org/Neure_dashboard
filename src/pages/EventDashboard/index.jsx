@@ -90,7 +90,13 @@ const EventDashboard = () => {
   };
 
   const handleWorkshopClick = (workshopId, scheduleId) => {
-    navigate(`/workshopDetails/${workshopId}?scheduleId=${scheduleId}`);
+    // Ensure scheduleId is always passed as a URL parameter
+    if (scheduleId) {
+      navigate(`/workshopDetails/${workshopId}?scheduleId=${scheduleId}`);
+    } else {
+      // Fallback if scheduleId is not available
+      navigate(`/workshopDetails/${workshopId}`);
+    }
   };
 
   return (

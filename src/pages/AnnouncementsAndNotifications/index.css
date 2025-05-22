@@ -78,11 +78,11 @@
 }
 
 .notifications-tabs .ant-tabs-tab-active .ant-tabs-tab-btn {
-  color: #00D885 !important;
+  color: #00d885 !important;
 }
 
 .notifications-tabs .ant-tabs-ink-bar {
-  background: #00D885 !important;
+  background: #00d885 !important;
 }
 
 .notifications-tabs .ant-tabs-tab:hover {
@@ -90,7 +90,7 @@
 }
 
 .notifications-tabs .ant-tabs-tab:hover .ant-tabs-tab-btn {
-  color: #00D885 !important;
+  color: #00d885 !important;
 }
 
 @media (max-width: 768px) {
@@ -113,13 +113,13 @@
 
 /* Shimmer effect styles */
 .shimmer {
-  background: #2D2F39;
+  background: #2d2f39;
   position: relative;
   overflow: hidden;
 }
 
 .shimmer::after {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   right: 0;
@@ -167,7 +167,7 @@
   }
 }
 
-.empty-state-container {
+.notifications-empty-state-container {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -177,8 +177,9 @@
   text-align: center;
   margin: 0 auto; /* Center horizontally */
   max-width: 400px; /* Control the width */
-  background: #2D2F39; /* Match your design */
+  background: transparent; /* Match your design */
   border-radius: 16px; /* Add rounded corners */
+  border: 1px solid #4c4d52; /* Add border */
 }
 
 .empty-state-icon {
@@ -198,10 +199,10 @@
   opacity: 0.8;
 }
 
-.empty-state-title {
+.notifictions-empty-state-title {
   font-size: 20px; /* Reduced from 24px */
   font-weight: 600;
-  color: #FF3B3B; /* Match your design */
+  color: #da4646; /* Match your design */
   margin-bottom: 12px;
 }
 
@@ -215,7 +216,7 @@
 
 .empty-state-button {
   padding: 10px 24px;
-  background: linear-gradient(90deg, #00D885 0%, #00ffea8d 100%);
+  background: linear-gradient(90deg, #00d885 0%, #00ffea8d 100%);
   border: none;
   border-radius: 8px;
   color: white;

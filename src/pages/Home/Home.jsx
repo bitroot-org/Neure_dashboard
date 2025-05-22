@@ -87,11 +87,15 @@ const Home = () => {
         });
         console.log("getWorkshops response:", data);
         if (data.status) {
-          setWorkshop(data.data[0]);
-          console.log("Workshop data:", data.data);
           if (data.data.length === 0) {
-            setError("No workshops available.");
+            // Set workshop to null to trigger empty state in PresentationSlide
+            setWorkshop(null);
+            // Don't set an error message
+            setError(null);
+          } else {
+            setWorkshop(data.data[0]);
           }
+          console.log("Workshop data:", data.data);
         } else {
           setError("Failed to fetch workshops.");
         }
@@ -231,7 +235,9 @@ const Home = () => {
 
   const handleViewWorkshopDetails = () => {
     if (workshop && workshop.workshop_id) {
-      navigate(`/workshopDetails/${workshop.workshop_id}`);
+      // Make sure to pass the schedule_id as a URL parameter
+      const scheduleId = workshop.schedule_id || workshop.schedules?.[0]?.id;
+      navigate(`/workshopDetails/${workshop.workshop_id}?scheduleId=${scheduleId}`);
     } else {
       message.error("Workshop details not available");
     }
@@ -272,10 +278,10 @@ const Home = () => {
   };
 
   const getStressStatus = (stressLevel = 0) => {
-    if (stressLevel <= 20) return "High";
-    if (stressLevel <= 40) return "Moderate";
-    if (stressLevel <= 60) return "Good";
-    if (stressLevel <= 80) return "Excellent";
+    if (stressLevel >= 80) return "Excellent";
+    if (stressLevel >= 60) return "Good";
+    if (stressLevel >= 40) return "Moderate";
+    if (stressLevel >= 20) return "wellbeing_score";
     return "Critical";
   };
 
@@ -320,7 +326,10 @@ const Home = () => {
       const userData = JSON.parse(localStorage.getItem("userData"));
       const response = await updateDashboardTourStatus(userData.id);
 
-      if (response) {
+      console.log("Tour status update response:", response);
+
+      // Check if the response is successful before proceeding
+      if (response && response.status) {
         setShowTour(false);
         // Update user context
         const updatedUser = {
@@ -330,7 +339,7 @@ const Home = () => {
             has_seen_dashboard_tour: 1,
           },
         };
-        updateUser(updatedUser);
+        setUser(updatedUser); // Changed from updateUser to setUser
 
         // Update localStorage
         const updatedUserData = {
@@ -341,10 +350,16 @@ const Home = () => {
           },
         };
         localStorage.setItem("userData", JSON.stringify(updatedUserData));
+        
+        // Show success message only if API call was successful
+        message.success("Tour preferences updated successfully");
+      } else {
+        // Only show error if the API response indicates failure
+        throw new Error(response?.message || "Failed to update tour status");
       }
     } catch (error) {
       console.error("Error updating tour status:", error);
-      message.error("Failed to update tour status");
+      message.error(error.message || "Failed to update tour status");
     }
   };
 
@@ -381,6 +396,33 @@ const Home = () => {
       // Clean up interval on component unmount
       return () => clearInterval(intervalId);
     }, [user?.id, user?.companyId]);
+
+  const ROIShimmer = () => (
+    <div className="main-roi-card">
+      <div className="main-roi-header">
+        <div className="shimmer-title shimmer-effect"></div>
+        <div className="shimmer-subtitle shimmer-effect"></div>
+      </div>
+      <div className="main-roi-metrics">
+        <div className="main-roi-item shimmer-container">
+          <div className="shimmer-label shimmer-effect"></div>
+          <div className="shimmer-value shimmer-effect"></div>
+        </div>
+        <div className="main-roi-item shimmer-container">
+          <div className="shimmer-label shimmer-effect"></div>
+          <div className="shimmer-value shimmer-effect"></div>
+        </div>
+        <div className="main-roi-item shimmer-container">
+          <div className="shimmer-label shimmer-effect"></div>
+          <div className="shimmer-value shimmer-effect"></div>
+        </div>
+        <div className="main-roi-item shimmer-container">
+          <div className="shimmer-label shimmer-effect"></div>
+          <div className="shimmer-value shimmer-effect"></div>
+        </div>
+      </div>
+    </div>
+  );
 
   return (
     <Layout className="main-dashboard-layout">
@@ -582,10 +624,10 @@ const Home = () => {
             <motion.div variants={itemVariants} style={{ cursor: "pointer" }}>
               <CompanyHealthGauge
                 className="main-company-health-gauge"
-                value={companyData?.stress_level || 0}
+                value={companyData?.wellbeing_score || 0}
                 maxValue={100}
                 title="Wellbeing Index"
-                status={getStressStatus(companyData?.stress_level || 0)}
+                status={getStressStatus(companyData?.wellbeing_score || 0)}
                 onClick={handleCompanyGaugeClick}
               />
             </motion.div>
@@ -602,78 +644,77 @@ const Home = () => {
           </div>
 
           <motion.div variants={itemVariants} className="main-roi-card" onClick={() => navigate("/dashboard")}>
-            <div className="main-roi-header">
-              <h3>ROI</h3>
-              <span>Compare to prev. month</span>
-            </div>
             {metricsLoading ? (
-              <div className="main-roi-loading">
-                <Spin size="small" />
-                <p>Loading metrics...</p>
-              </div>
+              <ROIShimmer />
             ) : (
-              <div className="main-roi-metrics">
-                <div className="main-roi-item">
-                  <span>Stress Levels</span>
-                  <div className="main-percentage">
-                    {Math.round(companyData?.stress_level || 0)}%{" "}
-                    <img
-                      src={
-                        companyData?.stress_trend === "no_change"
-                          ? "Upward.png"
-                          : companyData?.stress_trend === "up"
-                          ? "Downward.png"
-                          : "/Upward.png"
-                      }
-                    />
+              <>
+                <div className="main-roi-header">
+                  <h3>ROI</h3>
+                  <span>Compare to prev. month</span>
+                </div>
+                <div className="main-roi-metrics">
+                  <div className="main-roi-item">
+                    <span>Stress Levels</span>
+                    <div className="main-percentage">
+                      {Math.round(companyData?.stress_level || 0)}%{" "}
+                      <img
+                        src={
+                          companyData?.stress_trend === "no_change"
+                            ? "Upward.png"
+                            : companyData?.stress_trend === "up"
+                            ? "Downward.png"
+                            : "/Upward.png"
+                        }
+                      />
+                    </div>
+                  </div>
+                  <div className="main-roi-item">
+                    <span>Psychological Safety Index (PSI)</span>
+                    <div className="main-percentage">
+                      {Math.round(companyData?.psychological_safety_index || 0)}%{" "}
+                      <img
+                        src={
+                          companyData?.psi_trend === "no_change"
+                            ? "Upward.png"
+                            : companyData?.psi_trend === "up"
+                            ? "Upward.png"
+                            : "/Downward.png"
+                        }
+                      />
+                    </div>
+                  </div>
+                  <div className="main-roi-item">
+                    <span>Employee Retention</span>
+                    <div className="main-percentage">
+                      {Math.round(companyData?.retention_rate || 0)}%{" "}
+                      <img
+                        src={
+                          companyData?.retention_trend === "no_change"
+                            ? "Upward.png"
+                            : companyData?.retention_trend === "up"
+                            ? "Upward.png"
+                            : "/Downward.png"
+                        }
+                      />
+                    </div>
+                  </div>
+                  <div className="main-roi-item">
+                    <span>Employee Engagement</span>
+                    <div className="main-percentage">
+                      {Math.round(companyData?.engagement_score || 0)}%{" "}
+                      <img
+                        src={
+                          companyData?.engagement_trend === "no_change"
+                            ? "Upward.png"
+                            : companyData?.engagement_trend === "up"
+                            ? "Upward.png"
+                            : "/Downward.png"
+                        }
+                      />
+                    </div>
                   </div>
                 </div>
-                <div className="main-roi-item">
-                  <span>Psychological Safety Index (PSI)</span>
-                  <div className="main-percentage">
-                    {Math.round(companyData?.psychological_safety_index || 0)}%{" "}
-                    <img
-                      src={
-                        companyData?.psi_trend === "no_change"
-                          ? "Upward.png"
-                          : companyData?.psi_trend === "up"
-                          ? "Upward.png"
-                          : "/Downward.png"
-                      }
-                    />
-                  </div>
-                </div>
-                <div className="main-roi-item">
-                  <span>Employee Retention</span>
-                  <div className="main-percentage">
-                    {Math.round(companyData?.retention_rate || 0)}%{" "}
-                    <img
-                      src={
-                        companyData?.retention_trend === "no_change"
-                          ? "Upward.png"
-                          : companyData?.retention_trend === "up"
-                          ? "Upward.png"
-                          : "/Downward.png"
-                      }
-                    />
-                  </div>
-                </div>
-                <div className="main-roi-item">
-                  <span>Employee Engagement</span>
-                  <div className="main-percentage">
-                    {Math.round(companyData?.engagement_score || 0)}%{" "}
-                    <img
-                      src={
-                        companyData?.engagement_trend === "no_change"
-                          ? "Upward.png"
-                          : companyData?.engagement_trend === "up"
-                          ? "Upward.png"
-                          : "/Downward.png"
-                      }
-                    />
-                  </div>
-                </div>
-              </div>
+              </>
             )}
           </motion.div>
         </div>

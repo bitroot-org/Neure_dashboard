@@ -69,11 +69,11 @@ const EmptyState = ({ type }) => {
   const navigate = useNavigate();
 
   return (
-    <div className="empty-state-container">
+    <div className="notifications-empty-state-container">
       <div className="empty-state-icon">
         <img src={content.icon} alt="Empty state" />
       </div>
-      <h2 className="empty-state-title">{content.title}</h2>
+      <h2 className="notifictions-empty-state-title">{content.title}</h2>
       <p className="empty-state-description">{content.description}</p>
       <button className="empty-state-button" onClick={() => navigate("/")}>
         {content.buttonText}
