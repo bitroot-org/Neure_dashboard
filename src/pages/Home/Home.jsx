@@ -499,23 +499,7 @@ const Home = () => {
             <img src="/GearSix.png" style={{ width: 20, marginRight: 12 }} />
             Settings
           </div>
-          <div
-            className="mobile-menu-item"
-            onClick={() => navigate("/announcements")}
-          >
-            <img
-              src="/announcement.svg"
-              style={{ width: 20, marginRight: 12 }}
-            />
-            Announcements
-          </div>
-          <div
-            className="mobile-menu-item"
-            onClick={() => navigate("/support")}
-          >
-            <img src="/support.svg" style={{ width: 20, marginRight: 12 }} />
-            Help & Support
-          </div>
+
           <div className="mobile-menu-item" onClick={handleProfileClick}>
             <UserOutlined style={{ fontSize: 16, marginRight: 12 }} />
             Profile Details

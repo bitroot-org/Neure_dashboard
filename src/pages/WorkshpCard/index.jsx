@@ -138,19 +138,25 @@ const WorkshopCard = () => {
         );
         
         console.log("Schedule ID from URL:", scheduleIdParam);
-        setScheduleId(scheduleIdParam);
+        
+        // Ensure scheduleId is set as a string or number, not undefined
+        const validScheduleId = scheduleIdParam || "";
+        setScheduleId(validScheduleId);
         
         const response = await getWorkshopDetails(
           workshopId,
           companyId,
-          scheduleIdParam
+          validScheduleId
         );
+        
         if (response.status) {
           setWorkshop(response.data);
           
           // If scheduleId wasn't in URL but is in the response, update it
-          if (!scheduleIdParam && response.data.schedules && response.data.schedules.length > 0) {
-            const firstScheduleId = response.data.schedules[0].id;
+          if (!validScheduleId && response.data.schedules && response.data.schedules.length > 0) {
+            // Use schedule_id instead of id
+            const firstScheduleId = response.data.schedules[0].schedule_id;
+            console.log("Setting scheduleId from response:", firstScheduleId);
             setScheduleId(firstScheduleId);
             
             // Update URL without reloading the page
@@ -168,7 +174,7 @@ const WorkshopCard = () => {
     };
 
     fetchWorkshopDetails();
-  }, []);
+  }, [workshopId]);
 
   const handleDownload = () => {
     if (!isWorkshopCompleted()) {
@@ -300,7 +306,7 @@ const WorkshopCard = () => {
         <AttendeeModal
           isOpen={showAttendeeModal}
           onClose={() => setShowAttendeeModal(false)}
-          scheduleId={workshop?.schedules?.[0]?.id}
+          scheduleId={scheduleId}
           workshopStatus={workshop?.schedules?.[0]?.status}
         />
       )}

@@ -1,7 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import './passwordChangeModal.css';
 
-const PasswordChangeModal = ({ isOpen, onClose, onSubmit, isFirstLogin = false, onSkip }) => {
+const PasswordChangeModal = ({ 
+  isOpen, 
+  onClose, 
+  onSubmit, 
+  isFirstLogin = false, 
+  onSkip,
+  isFromSettings = false 
+}) => {
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -68,8 +75,15 @@ const PasswordChangeModal = ({ isOpen, onClose, onSubmit, isFirstLogin = false, 
     }
   };
 
+  // Determine the CSS class for the modal overlay
+  const overlayClass = isFirstLogin 
+    ? 'modal-overlay first-login' 
+    : isFromSettings 
+      ? 'modal-overlay settings-page' 
+      : 'modal-overlay';
+
   return (
-    <div className={`modal-overlay ${isFirstLogin ? 'first-login' : ''}`}>
+    <div className={overlayClass}>
       <div className="modal-container">
         <div className="modal-header">
           <h2 className="modal-title">Change password</h2>

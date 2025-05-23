@@ -450,6 +450,7 @@ const Settings = () => {
         isOpen={isModalOpen}
         onClose={closeModal}
         onSubmit={handlePasswordChange}
+        isFromSettings={true}
       />
 
       <DeactivateAccountModal

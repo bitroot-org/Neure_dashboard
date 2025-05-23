@@ -15,7 +15,7 @@
 .main-dashboard-layout {
   padding: 1.25rem 8.75rem 0 8.75rem;
   min-height: 100vh;
-  overflow-x: hidden;
+  overflow-y: auto; /* Enable vertical scrolling */
   margin: 0;
   height: 100vh;
   background-color: transparent ;
@@ -135,8 +135,7 @@
   flex: 1;
   height: 100%;
   min-height: 37.5rem;
-  overflow: hidden;
-  /* margin-bottom: -0.3125rem; */
+  overflow-y: auto; /* Enable vertical scrolling */
 }
 
 .main-dashboard-left,
@@ -201,7 +200,7 @@
   flex: 1;
   position: relative;
   border-radius: 10%;
-  padding: 0 2.5rem 0 2.5rem;
+  padding: 0 2.5rem 0.5rem 2.5rem;
   width: 85%;
   z-index: 2;
 }
@@ -1050,10 +1049,6 @@
     font-size: 16px;
   }
 
-  .view-all {
-    font-size: 140px;
-    color: #ffffff;
-  }
 
   .right-cards {
     display: flex;
@@ -1113,7 +1108,7 @@
 .mobile-menu {
   display: flex;
   flex-direction: column;
-  background: var(--card-bg);
+  background: var(--card-bg, #2d2f39);
   padding: 16px;
   position: absolute;
   top: 80px; /* Align with header height */
@@ -1121,13 +1116,15 @@
   width: 250px; /* More reasonable width */
   z-index: 1000;
   border-radius: 0 0 0 12px;
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--border-color, rgba(255, 255, 255, 0.1));
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+  margin-top: 20px;
 }
 
 .mobile-menu-item {
-  padding: 14px 16px;
-  border-bottom: 1px solid var(--border-color);
-  color: var(--text-primary);
+  padding: 8px 16px;
+  border-bottom: 1px solid var(--border-color, rgba(255, 255, 255, 0.1));
+  color: var(--text-primary, #ffffff);
   cursor: pointer;
   transition: background-color 0.2s;
   font-size: 16px;
@@ -1143,7 +1140,8 @@
 /* Adjust mobile menu position for different screen sizes */
 @media screen and (max-width: 1024px) {
   .mobile-menu {
-    top: 64px; /* Match header height on tablet */
+    top: 80px; /* Match header height on tablet */
+    margin-top: 20px;
   }
 }
 
@@ -1211,5 +1209,198 @@
   }
   100% {
     background-position: -200% 0;
+  }
+}
+
+/* Fix mobile layout issues */
+@media screen and (max-width: 1024px) {
+  .main-dashboard-layout {
+    padding: 1rem 1.5rem;
+  }
+
+  .main-content {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .main-dashboard-left,
+  .main-dashboard-right {
+    width: 100%;
+  }
+
+  .main-bottom-cards {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .main-bottom-right-cards {
+    flex-direction: column;
+  }
+
+  .main-workshop-banner {
+    min-height: 15rem;
+  }
+
+  .main-workshops-image-card {
+    width: 100%;
+    padding: 0 1rem;
+  }
+
+  .main-company-title {
+    font-size: 1.5rem;
+    max-width: 200px;
+  }
+}
+
+/* Small mobile improvements */
+@media screen and (max-width: 480px) {
+  .main-dashboard-layout {
+    padding: 0.75rem;
+  }
+
+  .main-header {
+    height: 3.5rem;
+    padding: 0 0.5rem;
+  }
+
+  .main-company-title {
+    font-size: 1.25rem;
+    max-width: 150px;
+  }
+
+  .main-workshops-header h2 {
+    font-size: 1.2rem;
+  }
+
+  .main-workshops-header {
+    padding: 1rem 1rem 0.75rem 1rem;
+  }
+}
+
+/* Fix overlapping elements on mobile */
+@media screen and (max-width: 767px) {
+  .main-dashboard-layout {
+    padding: 0.75rem;
+    height: auto;
+    overflow-y: auto;
+  }
+  
+  .main-content {
+    flex-direction: column;
+    height: auto;
+    min-height: auto;
+    overflow-y: visible;
+  }
+  
+  .main-dashboard-left,
+  .main-dashboard-right {
+    width: 100%;
+    height: auto;
+    min-height: auto;
+    position: relative;
+  }
+  
+  .main-workshop-banner,
+  .main-announcement-card,
+  .main-support-card,
+  .main-rewards-card,
+  .main-metric-card,
+  .main-roi-card {
+    position: relative;
+    margin-bottom: 1rem;
+    height: auto;
+    min-height: auto;
+    z-index: 1;
+  }
+  
+  .main-bottom-cards {
+    flex-direction: column;
+    height: auto;
+  }
+  
+  .main-left-cards {
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+  
+  .main-metrics-cards {
+    flex-direction: column;
+    height: auto;
+  }
+  
+  .main-metrics-cards > * {
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+  
+  .main-roi-metrics {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Ensure proper stacking on very small screens */
+@media screen and (max-width: 480px) {
+  .main-dashboard-layout {
+    padding: 0.5rem;
+  }
+  
+  .main-content {
+    gap: 0.5rem;
+  }
+  
+  .main-workshop-banner {
+    min-height: 12rem;
+  }
+  
+  .main-workshops-header {
+    padding: 0.75rem;
+  }
+  
+  .main-workshops-header h2 {
+    font-size: 1rem;
+  }
+  
+  .main-announcement-card h3,
+  .main-support-card h3,
+  .main-roi-header h3 {
+    font-size: 1.2rem;
+  }
+}
+
+/* Fix height inconsistency between announcement and help cards */
+@media screen and (max-width: 767px) {
+  .main-announcement-card,
+  .main-support-card {
+    height: 12rem; /* Fixed height */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1rem;
+  }
+  
+  .main-announcement-card h3,
+  .main-support-card h3 {
+    font-size: 1.2rem;
+    margin: 0;
+  }
+  
+  .main-announcement-card img,
+  .main-support-card img {
+    width: 25%;
+    height: 80%;
+    object-fit: contain;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .main-announcement-card,
+  .main-support-card {
+    height: 10rem;
+    padding: 0 0.75rem;
+  }
+  
+  .main-announcement-card h3,
+  .main-support-card h3 {
+    font-size: 1rem;
   }
 }

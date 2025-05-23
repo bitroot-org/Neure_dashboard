@@ -220,3 +220,74 @@
 @keyframes spin {
   to { transform: rotate(360deg); }
 }
+
+/* Tablet Breakpoint */
+@media screen and (max-width: 1024px) {
+  .fav-soundscapes-container {
+    padding: 30px 40px 0 40px;
+  }
+  
+  .fav-soundscapes-content {
+    margin-top: 16px;
+  }
+  
+  .fav-tune-thumbnail {
+    width: 60px;
+    height: 60px;
+  }
+}
+
+/* Mobile Breakpoint */
+@media screen and (max-width: 768px) {
+  .fav-soundscapes-container {
+    padding: 20px 16px 0 16px;
+    min-height: calc(100vh - 70px);
+  }
+  
+  .fav-soundscapes-list {
+    gap: 12px;
+  }
+  
+  .fav-tune-item {
+    padding: 10px;
+  }
+  
+  .fav-tune-info h3 {
+    font-size: 14px;
+  }
+  
+  .fav-tune-info p {
+    font-size: 12px;
+  }
+  
+  .empty-state-container {
+    padding: 30px 20px;
+    max-width: 320px;
+  }
+}
+
+/* Small Mobile Breakpoint */
+@media screen and (max-width: 480px) {
+  .fav-soundscapes-container {
+    padding: 16px 12px 0 12px;
+  }
+  
+  .fav-tune-thumbnail {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .fav-tune-controls {
+    gap: 10px;
+  }
+  
+  .fav-like-button,
+  .fav-more-button {
+    padding: 6px;
+    font-size: 16px;
+  }
+  
+  .fav-soundscapes-empty {
+    min-height: calc(100vh - 150px);
+  }
+}

@@ -80,6 +80,7 @@ const PlayerModal = ({ isOpen, onClose, track, audio, onLike }) => {
           className="soundscape-modal-background"
           style={{ backgroundImage: `url(${track?.imageUrl || 'https://plus.unsplash.com/premium_photo-1683140707316-42df87760f3f?w=500&auto=format&fit=crop&q=60'})` }}
         />
+        
         <div className="modal-header">
           <div className="now-playing-text">Now playing</div>
           <button className="minimize-button" onClick={onClose}>

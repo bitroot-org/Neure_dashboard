@@ -26,6 +26,11 @@ const AttendeeModal = ({ isOpen, onClose, scheduleId, workshopStatus }) => {
   // Check if workshop is completed
   const isWorkshopCompleted = workshopStatus === "completed";
 
+  // Add a useEffect to log the scheduleId when it changes
+  useEffect(() => {
+    console.log("AttendeeModal received scheduleId:", scheduleId);
+  }, [scheduleId]);
+
   useEffect(() => {
     if (isOpen && workshopId) {
       fetchAttendees(1);
@@ -41,6 +46,16 @@ const AttendeeModal = ({ isOpen, onClose, scheduleId, workshopStatus }) => {
         throw new Error("Company ID not found");
       }
 
+      // Check if scheduleId is defined and log it
+      console.log("Using scheduleId for API call:", scheduleId);
+      
+      if (!scheduleId) {
+        console.error("scheduleId is undefined or null");
+        message.error("Schedule ID is missing. Cannot fetch attendees.");
+        setLoading(false);
+        return;
+      }
+
       // Add pagination parameters
       const params = {
         company_id: companyId,
@@ -54,6 +69,9 @@ const AttendeeModal = ({ isOpen, onClose, scheduleId, workshopStatus }) => {
             ? 0
             : undefined,
       };
+
+      // Log the full params object
+      console.log("API call params:", params);
 
       const response = await getWorkshopAttendees(
         workshopId,

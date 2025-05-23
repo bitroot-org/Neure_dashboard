@@ -292,6 +292,23 @@ export const createEmployee = async (data) => {
   return response.data;
 };
 
+export const bulkCreateEmployees = async (file, companyId) => {
+  try {
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("company_id", companyId);
+
+    const response = await api.post("/company/bulkCreateEmployees", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error;
+  }
+};
+
 export const removeEmployee = async (data) => {
   const response = await api.delete(`/company/removeEmployee`, {data});
   return response.data;
@@ -366,6 +383,14 @@ export const markAttendance = async (data) => {
 
 export const getWorkshopAttendees = async (workshopId, companyId, scheduleId, params = {}) => {
   try {
+    // Log the parameters being sent to the API
+    console.log("getWorkshopAttendees params:", {
+      workshopId,
+      companyId,
+      scheduleId,
+      otherParams: params
+    });
+    
     const response = await api.get(`/workshop/attendance/${workshopId}`, {
       params: {
         company_id: companyId,
@@ -378,6 +403,7 @@ export const getWorkshopAttendees = async (workshopId, companyId, scheduleId, pa
     });
     return response.data;
   } catch (error) {
+    console.error("API error in getWorkshopAttendees:", error);
     throw error.response?.data || error;
   }
 }
