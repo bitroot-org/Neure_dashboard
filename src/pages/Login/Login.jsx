@@ -41,8 +41,20 @@ const LoginPage = () => {
 
   const handleSubmit = async (values) => {
     setIsLoading(true);
+    
     try {
       const response = await loginUser(values.email, values.password);
+      
+      // Check if the response indicates an error
+      if (response.error || !response.status) {
+        message.error({
+          content: response.message || "Login failed",
+          key: "loginError",
+          style: {marginTop: "5vh"},
+        });
+        setIsLoading(false);
+        return; // Stop execution here
+      }
 
       // Store tokens
       localStorage.setItem("accessToken", response.data.accessToken);
@@ -83,7 +95,8 @@ const LoginPage = () => {
         });
       }
     } catch (error) {
-      message.error(error.response?.data?.message || "Login failed");
+      // This should not be reached with the updated loginUser function
+      message.error("An unexpected error occurred");
       console.error("Login error:", error);
     } finally {
       setIsLoading(false);

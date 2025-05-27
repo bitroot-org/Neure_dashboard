@@ -47,14 +47,21 @@ api.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
+    // Check if this is a login request that failed
+    if (originalRequest.url.includes('/user/login')) {
+      // For login failures, don't redirect or refresh the page
+      // Just pass the error through to be handled by the login component
+      return Promise.reject(error);
+    }
+
     if (
-      (error.response.status === 401 || error.response.status === 403) &&
+      (error.response?.status === 401 || error.response?.status === 403) &&
       !originalRequest._retry
     ) {
       originalRequest._retry = true;
       try {
         const response = await refreshToken();
-        if (response.data.accessToken) {
+        if (response.data?.accessToken) {
           localStorage.setItem("accessToken", response.data.accessToken);
           api.defaults.headers.common[
             "Authorization"
@@ -62,8 +69,11 @@ api.interceptors.response.use(
           return api(originalRequest);
         }
       } catch (refreshError) {
+        // Don't use window.location.href for login redirects
+        // Instead, let the component handle the redirect
         localStorage.clear();
-        window.location.href = "/login";
+        // Remove this line to prevent page refresh:
+        // window.location.href = "/login";
         return Promise.reject(refreshError);
       }
     }
@@ -87,7 +97,11 @@ export const loginUser = async (email, password) => {
     }
     return response.data;
   } catch (error) {
-    throw error.response?.data || error;
+    return{
+      status: false,
+      message: error.response?.data?.message || "Login failed",
+      error: true
+    }
   }
 };
 
