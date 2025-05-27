@@ -4,9 +4,10 @@
   flex-direction: column;
   overflow: hidden;
   min-height: 230px;
+  height: 100%; /* This is already here but needs additional support */
   border: 1px solid #585151;
   border-radius: 14px;
-  background: #2d2f39;
+  background: #2d2f39; /* Replacing tomato with the proper background */
 }
 
 .content {
@@ -103,6 +104,7 @@
 .empty-slide {
   width: 100%;
   min-height: 230px;
+  height: 100%;
   border: 1px solid #585151;
   border-radius: 14px;
   background: linear-gradient(145deg, #2d2f39, #252731);
@@ -195,6 +197,7 @@
 .shimmer-slide {
   width: 100%;
   min-height: 230px;
+  height: 100%;
   border: 1px solid #585151;
   border-radius: 14px;
   background: #2d2f39;

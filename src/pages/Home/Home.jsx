@@ -44,7 +44,8 @@ const { Header, Content, Footer } = Layout;
 
 const Home = () => {
   const [unreadNotificationCount, setUnreadNotificationCount] = useState(0);
-  const [notificationLoading, setNotificationLoading] = useState(false);  const [workshop, setWorkshop] = useState(null);
+  const [notificationLoading, setNotificationLoading] = useState(false);
+  const [workshop, setWorkshop] = useState(null);
   const [totalPages, setTotalPages] = useState(1);
   const [workshopLoading, setWorkshopLoading] = useState(true);
   const [metricsLoading, setMetricsLoading] = useState(true);
@@ -151,6 +152,46 @@ const Home = () => {
     }
   }, [location]);
 
+    // Add useEffect to fetch unread notification count
+  useEffect(() => {
+    const fetchUnreadNotificationCount = async () => {
+      if (!user?.id || !user?.companyId) return;
+
+      try {
+        setNotificationLoading(true);
+        const response = await getUnreadNotificationCount(
+          user.id,
+          user.companyId
+        );
+
+        if (response.status && response.data) {
+          setUnreadNotificationCount(response.data.count);
+        } else {
+          // Silently fail - don't show error to user
+          console.error(
+            "Failed to fetch notification count:",
+            response.message
+          );
+          setUnreadNotificationCount(0);
+        }
+      } catch (error) {
+        // Silently fail - don't show error to user
+        console.error("Error fetching notification count:", error);
+        setUnreadNotificationCount(0);
+      } finally {
+        setNotificationLoading(false);
+      }
+    };
+
+    fetchUnreadNotificationCount();
+
+    // Set up interval to refresh count every minute (60000ms)
+    const intervalId = setInterval(fetchUnreadNotificationCount, 60000);
+
+    // Clean up interval on component unmount
+    return () => clearInterval(intervalId);
+  }, [user?.id, user?.companyId]);
+
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleDateString("en-GB", {
@@ -237,7 +278,9 @@ const Home = () => {
     if (workshop && workshop.workshop_id) {
       // Make sure to pass the schedule_id as a URL parameter
       const scheduleId = workshop.schedule_id || workshop.schedules?.[0]?.id;
-      navigate(`/workshopDetails/${workshop.workshop_id}?scheduleId=${scheduleId}`);
+      navigate(
+        `/workshopDetails/${workshop.workshop_id}?scheduleId=${scheduleId}`
+      );
     } else {
       message.error("Workshop details not available");
     }
@@ -350,7 +393,7 @@ const Home = () => {
           },
         };
         localStorage.setItem("userData", JSON.stringify(updatedUserData));
-        
+
         // Show success message only if API call was successful
         message.success("Tour preferences updated successfully");
       } else {
@@ -362,40 +405,6 @@ const Home = () => {
       message.error(error.message || "Failed to update tour status");
     }
   };
-
-    // Add useEffect to fetch unread notification count
-    useEffect(() => {
-      const fetchUnreadNotificationCount = async () => {
-        if (!user?.id || !user?.companyId) return;
-        
-        try {
-          setNotificationLoading(true);
-          const response = await getUnreadNotificationCount(user.id, user.companyId);
-          
-          if (response.status && response.data) {
-            setUnreadNotificationCount(response.data.count);
-          } else {
-            // Silently fail - don't show error to user
-            console.error("Failed to fetch notification count:", response.message);
-            setUnreadNotificationCount(0);
-          }
-        } catch (error) {
-          // Silently fail - don't show error to user
-          console.error("Error fetching notification count:", error);
-          setUnreadNotificationCount(0);
-        } finally {
-          setNotificationLoading(false);
-        }
-      };
-  
-      fetchUnreadNotificationCount();
-      
-      // Set up interval to refresh count every minute (60000ms)
-      const intervalId = setInterval(fetchUnreadNotificationCount, 60000);
-      
-      // Clean up interval on component unmount
-      return () => clearInterval(intervalId);
-    }, [user?.id, user?.companyId]);
 
   const ROIShimmer = () => (
     <div className="main-roi-card">
@@ -519,7 +528,6 @@ const Home = () => {
       >
         {" "}
         <div className="main-dashboard-left">
-          <div className="main-workshops-content">
             <motion.div
               className="main-workshop-banner"
               variants={itemVariants}
@@ -547,7 +555,10 @@ const Home = () => {
                     <p>{error}</p>
                   </div>
                 ) : (
-                  <div onClick={handleViewWorkshopDetails} style={{ cursor: "pointer" }}>
+                  <div
+                    onClick={handleViewWorkshopDetails}
+                    style={{ cursor: "pointer" }}
+                  >
                     <PresentationSlide
                       title={workshop?.title}
                       date={workshop?.start_time}
@@ -571,9 +582,14 @@ const Home = () => {
                   <h3>Announcements & Notifications</h3>
                   {!notificationLoading && unreadNotificationCount > 0 && (
                     <div className="notification-badge">
-                      <p>{unreadNotificationCount > 99 ? '99+' : unreadNotificationCount}</p>
+                      <p>
+                        {unreadNotificationCount > 99
+                          ? "99+"
+                          : unreadNotificationCount}
+                      </p>
                     </div>
-                  )}                  <img src="announcement.svg" alt="marketing icon" />
+                  )}{" "}
+                  <img src="announcement.svg" alt="marketing icon" />
                 </motion.div>
 
                 <motion.div
@@ -594,14 +610,13 @@ const Home = () => {
                 style={{ cursor: "pointer" }}
               >
                 <div className="main-rewards-content">
-                <h3>Rewards &</h3>
-                <h3>Recognition</h3>
+                  <h3>Rewards &</h3>
+                  <h3>Recognition</h3>
                 </div>
 
                 <img src="Rewards.svg" alt="Rewards and Recognition" />
               </motion.div>
             </div>
-          </div>
         </div>
         <div className="main-dashboard-right">
           <div className="main-metrics-cards">
@@ -627,7 +642,11 @@ const Home = () => {
             </motion.div>
           </div>
 
-          <motion.div variants={itemVariants} className="main-roi-card" onClick={() => navigate("/dashboard")}>
+          <motion.div
+            variants={itemVariants}
+            className="main-roi-card"
+            onClick={() => navigate("/dashboard")}
+          >
             {metricsLoading ? (
               <ROIShimmer />
             ) : (
@@ -655,7 +674,8 @@ const Home = () => {
                   <div className="main-roi-item">
                     <span>Psychological Safety Index (PSI)</span>
                     <div className="main-percentage">
-                      {Math.round(companyData?.psychological_safety_index || 0)}%{" "}
+                      {Math.round(companyData?.psychological_safety_index || 0)}
+                      %{" "}
                       <img
                         src={
                           companyData?.psi_trend === "no_change"
