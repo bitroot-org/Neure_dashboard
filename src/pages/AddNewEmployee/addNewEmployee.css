@@ -303,3 +303,108 @@
   opacity: 0.5;
   cursor: not-allowed;
 }
+
+/* Custom date input styling */
+.custom-date-input-container {
+  position: relative;
+  width: 100%;
+}
+
+.custom-date-input {
+  width: 100%;
+  height: 48px;
+  background-color: #191a20;
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  padding: 0 12px;
+  font-size: 16px;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+.date-input-icon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+/* Calendar popup styling */
+.custom-date-input::-webkit-calendar-picker-indicator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.custom-date-input:focus {
+  outline: none;
+  border-color: #00d885;
+  box-shadow: 0 0 0 2px rgba(0, 216, 133, 0.2);
+}
+
+/* Calendar popup customization */
+::-webkit-datetime-edit {
+  color: #ffffff;
+}
+
+::-webkit-datetime-edit-fields-wrapper {
+  color: #ffffff;
+}
+
+::-webkit-datetime-edit-text {
+  color: #ffffff;
+  padding: 0 2px;
+}
+
+::-webkit-datetime-edit-month-field,
+::-webkit-datetime-edit-day-field,
+::-webkit-datetime-edit-year-field {
+  color: #ffffff;
+}
+
+::-webkit-inner-spin-button {
+  display: none;
+}
+
+/* For Firefox */
+.custom-date-input::-moz-calendar-picker-indicator {
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+/* Empty state placeholder */
+.custom-date-input:not(:valid) {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.custom-date-input:not(:valid)::before {
+  content: "Select date of birth";
+  color: rgba(255, 255, 255, 0.5);
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+/* Make calendar icon white */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+}
+
+/* For Firefox */
+input[type="date"]::-moz-calendar-picker-indicator {
+  filter: invert(1);
+}

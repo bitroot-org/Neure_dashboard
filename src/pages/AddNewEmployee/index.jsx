@@ -426,37 +426,25 @@ const AddNewEmployee = () => {
               </div>
               <div className="form-item">
                 <label htmlFor="dateOfBirth">Date of Birth*</label>
-                <ConfigProvider
-                  theme={{
-                    components: {
-                      DatePicker: {
-                        colorBgContainer: "transparent",
-                        colorBgElevated: "#191A20",
-                        colorText: "#fff",
-                        colorTextPlaceholder: "rgba(255, 255, 255, 0.5)",
-                        colorBorder: "rgba(255, 255, 255, 0.1)",
-                        borderRadius: 12,
-                      },
-                    },
+                <input
+                  id="dateOfBirth"
+                  type="date"
+                  name="dateOfBirth"
+                  className="date-input"
+                  value={formData.dateOfBirth || ""}
+                  onChange={handleChange}
+                  required
+                  style={{
+                    width: '100%',
+                    height: '48px',
+                    backgroundColor: 'transparent',
+                    color: '#ffffff',
+                    border: '1px solid rgba(255, 255, 255, 0.3)',
+                    borderRadius: '8px',
+                    padding: '0 12px',
+                    fontSize: '16px'
                   }}
-                >
-                  <DatePicker
-                    id="dateOfBirth"
-                    style={{ width: '100%', height: '48px' }}
-                    value={formData.dateOfBirth ? moment(formData.dateOfBirth) : null}
-                    onChange={(date, dateString) => {
-                      handleChange({
-                        target: {
-                          name: "dateOfBirth",
-                          value: dateString,
-                        },
-                      });
-                    }}
-                    format="YYYY-MM-DD"
-                    placeholder="Select date of birth"
-                    required
-                  />
-                </ConfigProvider>
+                />
               </div>
             </div>
             {/* Row 4: Department & City */}

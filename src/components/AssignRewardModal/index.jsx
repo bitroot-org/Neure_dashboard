@@ -91,7 +91,7 @@ const AssignRewardModal = ({
 
     const companyId = localStorage.getItem('companyId');
     const userData = JSON.parse(localStorage.getItem('userData') || '{}');
-    const userId = userData.id;
+    const adminId = userData.id;
 
     if (!companyId) {
       message.error('Company ID not found');
@@ -101,17 +101,15 @@ const AssignRewardModal = ({
     setAssigningReward(true);
 
     try {
-      // For each selected user, assign the reward
-      const assignmentPromises = selectedRowKeys.map(userId =>
-        assignReward({
-          admin_id: userId,
-          company_id: companyId,
-          user_id: userId,
-          reward_id: rewardId
-        })
-      );
+      // Use the new payload format
+      const payload = {
+        company_id: companyId,
+        user_ids: selectedRowKeys,
+        reward_id: rewardId,
+        admin_id: adminId
+      };
 
-      await Promise.all(assignmentPromises);
+      await assignReward(payload);
 
       message.success(`Reward successfully assigned to ${selectedRowKeys.length} employee(s)`);
       onClose();

@@ -185,8 +185,8 @@ const Home = () => {
 
     fetchUnreadNotificationCount();
 
-    // Set up interval to refresh count every minute (60000ms)
-    const intervalId = setInterval(fetchUnreadNotificationCount, 60000);
+    // Set up interval to refresh count every 30 seconds (30000ms)
+    const intervalId = setInterval(fetchUnreadNotificationCount, 30000);
 
     // Clean up interval on component unmount
     return () => clearInterval(intervalId);
