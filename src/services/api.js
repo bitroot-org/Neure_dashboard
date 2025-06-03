@@ -377,9 +377,15 @@ export const getDepartments = async () => {
   }
 }
 
-export const getStressTrends = async (companyId) => {
+export const getStressTrends = async (companyId, startDate, endDate) => {
   try {
-    const response = await api.get(`/company/stress-trends/${companyId}`);
+    const params = {};
+    if (startDate) params.start_date = startDate;
+    if (endDate) params.end_date = endDate;
+    
+    const response = await api.get(`/company/stress-trends/${companyId}`, {
+      params
+    });
     return response.data;
   } catch (error) {
     throw error.response?.data || error;

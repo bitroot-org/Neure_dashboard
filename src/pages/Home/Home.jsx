@@ -623,7 +623,7 @@ const Home = () => {
             <motion.div variants={itemVariants} style={{ cursor: "pointer" }}>
               <CompanyHealthGauge
                 className="main-company-health-gauge"
-                value={companyData?.wellbeing_score || 0}
+                value={companyData?.wellbeing_score || 50}
                 maxValue={100}
                 title="Wellbeing Index"
                 status={getStressStatus(companyData?.wellbeing_score || 0)}
