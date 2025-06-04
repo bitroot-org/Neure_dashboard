@@ -594,5 +594,20 @@ export const getUnreadNotificationCount = async (userId, companyId) => {
   }
 };
 
+export const getCompanyWellbeingTrends = async (companyId, startDate, endDate) => {
+  try {
+    const params = {};
+    if (startDate) params.start_date = startDate;
+    if (endDate) params.end_date = endDate;
+    
+    const response = await api.get(`/company/wellbeing-trends/${companyId}`, {
+      params
+    });
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error;
+  }
+}
+
 
 

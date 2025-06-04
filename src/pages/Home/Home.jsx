@@ -65,14 +65,14 @@ const Home = () => {
   const pageSize = 1;
   const currentPage = 1;
 
-  const { companyData, isLoading } = useContext(CompanyDataContext);
+  const { companyData, isLoading: companyDataLoading } = useContext(CompanyDataContext);
   console.log("Company data:", companyData);
 
   useEffect(() => {
     // Debug log to check what data we have from context
     console.log("CompanyData from context:", companyData);
-    console.log("Is context loading:", isLoading);
-  }, [companyData, isLoading]);
+    console.log("Is context loading:", companyDataLoading); // Change isLoading to companyDataLoading
+  }, [companyData, companyDataLoading]); // Update dependency array too
 
   useEffect(() => {
     const companyId = localStorage.getItem("companyId");
@@ -545,8 +545,8 @@ const Home = () => {
               </div>
               <div
                 className="main-workshops-image-card"
-                onClick={handleViewWorkshopDetails}
-                style={{ cursor: "pointer" }}
+                onClick={workshop ? handleViewWorkshopDetails : undefined}
+                style={{ cursor: workshop ? "pointer" : "default" }}
               >
                 {workshopLoading ? (
                   <PresentationSlide isLoading={true} />
@@ -556,8 +556,8 @@ const Home = () => {
                   </div>
                 ) : (
                   <div
-                    onClick={handleViewWorkshopDetails}
-                    style={{ cursor: "pointer" }}
+                    onClick={workshop ? handleViewWorkshopDetails : undefined}
+                    style={{ cursor: workshop ? "pointer" : "default" }}
                   >
                     <PresentationSlide
                       title={workshop?.title}
@@ -623,7 +623,7 @@ const Home = () => {
             <motion.div variants={itemVariants} style={{ cursor: "pointer" }}>
               <CompanyHealthGauge
                 className="main-company-health-gauge"
-                value={companyData?.wellbeing_score || 50}
+                value={Math.round(companyData?.wellbeing_score || 0)}
                 maxValue={100}
                 title="Wellbeing Index"
                 status={getStressStatus(companyData?.wellbeing_score || 0)}
@@ -662,7 +662,7 @@ const Home = () => {
                       {Math.round(companyData?.stress_level || 0)}%{" "}
                       <img
                         src={
-                          companyData?.stress_trend === "no_change"
+                          companyData?.stress_trend === "stable"
                             ? "Upward.png"
                             : companyData?.stress_trend === "up"
                             ? "Downward.png"
@@ -678,7 +678,7 @@ const Home = () => {
                       %{" "}
                       <img
                         src={
-                          companyData?.psi_trend === "no_change"
+                          companyData?.psi_trend === "stable"
                             ? "Upward.png"
                             : companyData?.psi_trend === "up"
                             ? "Upward.png"
@@ -693,7 +693,7 @@ const Home = () => {
                       {Math.round(companyData?.retention_rate || 0)}%{" "}
                       <img
                         src={
-                          companyData?.retention_trend === "no_change"
+                          companyData?.retention_trend === "stable"
                             ? "Upward.png"
                             : companyData?.retention_trend === "up"
                             ? "Upward.png"
@@ -708,7 +708,7 @@ const Home = () => {
                       {Math.round(companyData?.engagement_score || 0)}%{" "}
                       <img
                         src={
-                          companyData?.engagement_trend === "no_change"
+                          companyData?.engagement_trend === "stable"
                             ? "Upward.png"
                             : companyData?.engagement_trend === "up"
                             ? "Upward.png"

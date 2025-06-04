@@ -3,7 +3,14 @@ import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'rec
 import { Spin } from 'antd';
 import './index.css';
 
-const MetricLineChart = ({ data, loading, period = "monthly", onPeriodChange }) => {
+const MetricLineChart = ({ 
+  data, 
+  loading, 
+  period = "monthly", 
+  onPeriodChange,
+  title = "Company Well-being Index",
+  lineColor = "#10B981" 
+}) => {
   const CustomTooltip = ({ active, payload, label }) => {
     if (active && payload && payload.length) {
       return (
@@ -34,7 +41,7 @@ const MetricLineChart = ({ data, loading, period = "monthly", onPeriodChange }) 
   return (
     <div className="chart-container">
       <div className="chart-header">
-        <h3>Company Well-being Index</h3>
+        <h3>{title}</h3>
         <select 
           className="period-selector" 
           value={period}
@@ -108,10 +115,10 @@ const MetricLineChart = ({ data, loading, period = "monthly", onPeriodChange }) 
               <Line
                 type="monotone"
                 dataKey="value"
-                stroke="#10B981"
+                stroke={lineColor}
                 strokeWidth={2}
-                dot={{ stroke: '#10B981', strokeWidth: 2, r: 4 }}
-                activeDot={{ stroke: '#10B981', strokeWidth: 2, r: 6 }}
+                dot={{ stroke: lineColor, strokeWidth: 2, r: 4 }}
+                activeDot={{ stroke: lineColor, strokeWidth: 2, r: 6 }}
               />
             </LineChart>
           </ResponsiveContainer>

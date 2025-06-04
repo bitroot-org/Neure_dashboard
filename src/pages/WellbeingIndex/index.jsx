@@ -2,13 +2,16 @@ import React, { useState, useEffect } from "react";
 import { Spin, message } from "antd";
 import MetricLineChart from "../../components/MetricLineCharts";
 import CustomHeader from "../../components/CustomHeader";
-import { getStressTrends } from "../../services/api";
+import { getCompanyWellbeingTrends, getStressTrends } from "../../services/api";
 import "./index.css";
 
 const WellbeingIndex = () => {
-  const [loading, setLoading] = useState(true);
+  const [wellbeingLoading, setWellbeingLoading] = useState(true);
+  const [stressLoading, setStressLoading] = useState(true);
+  const [wellbeingTrends, setWellbeingTrends] = useState([]);
   const [stressTrends, setStressTrends] = useState([]);
-  const [period, setPeriod] = useState("monthly");
+  const [wellbeingPeriod, setWellbeingPeriod] = useState("monthly");
+  const [stressPeriod, setStressPeriod] = useState("monthly");
   
   const getDateRange = (periodType) => {
     const endDate = new Date();
@@ -37,9 +40,36 @@ const WellbeingIndex = () => {
     };
   };
 
+  const fetchWellbeingTrends = async (periodType = "monthly") => {
+    try {
+      setWellbeingLoading(true);
+      const companyId = localStorage.getItem("companyId");
+      if (!companyId) {
+        message.error("Company ID not found");
+        return;
+      }
+
+      const { startDate, endDate } = getDateRange(periodType);
+      
+      const response = await getCompanyWellbeingTrends(companyId, startDate, endDate);
+      if (response.status) {
+        const transformedData = response.data.trends.map((trend) => ({
+          date: trend.period.substring(0, 7), // Format: "2024-05"
+          value: trend.wellbeing_score,
+        }));
+        setWellbeingTrends(transformedData);
+      }
+    } catch (error) {
+      console.error("Error fetching wellbeing trends:", error);
+      message.error("Failed to fetch wellbeing trends");
+    } finally {
+      setWellbeingLoading(false);
+    }
+  };
+
   const fetchStressTrends = async (periodType = "monthly") => {
     try {
-      setLoading(true);
+      setStressLoading(true);
       const companyId = localStorage.getItem("companyId");
       if (!companyId) {
         message.error("Company ID not found");
@@ -60,28 +90,52 @@ const WellbeingIndex = () => {
       console.error("Error fetching stress trends:", error);
       message.error("Failed to fetch stress trends");
     } finally {
-      setLoading(false);
+      setStressLoading(false);
     }
   };
 
-  const handlePeriodChange = (newPeriod) => {
-    setPeriod(newPeriod);
+  const handleWellbeingPeriodChange = (newPeriod) => {
+    setWellbeingPeriod(newPeriod);
+    fetchWellbeingTrends(newPeriod);
+  };
+
+  const handleStressPeriodChange = (newPeriod) => {
+    setStressPeriod(newPeriod);
     fetchStressTrends(newPeriod);
   };
 
   useEffect(() => {
-    fetchStressTrends(period);
+    fetchWellbeingTrends(wellbeingPeriod);
+    fetchStressTrends(stressPeriod);
   }, []);
 
   return (
     <div className="wellbeing-container">
       <CustomHeader title="Company Well-being Index" showBackButton={true} />
-      <MetricLineChart 
-        data={stressTrends} 
-        loading={loading} 
-        period={period}
-        onPeriodChange={handlePeriodChange}
-      />
+      
+      <div className="charts-container">
+        <div className="chart-wrapper">
+          <MetricLineChart 
+            data={wellbeingTrends} 
+            loading={wellbeingLoading} 
+            period={wellbeingPeriod}
+            onPeriodChange={handleWellbeingPeriodChange}
+            title="Company Well-being Index"
+            lineColor="#10B981" // Green color for wellbeing
+          />
+        </div>
+        
+        <div className="chart-wrapper">
+          <MetricLineChart 
+            data={stressTrends} 
+            loading={stressLoading} 
+            period={stressPeriod}
+            onPeriodChange={handleStressPeriodChange}
+            title="Company Stress Levels"
+            lineColor="#EF4444" // Red color for stress
+          />
+        </div>
+      </div>
     </div>
   );
 };

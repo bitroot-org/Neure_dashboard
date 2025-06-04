@@ -63,14 +63,14 @@ const EmployeeDashboard = () => {
     []
   );
 
-  const fetchEmployees = async (page = 1, pageSize = 10, searchTerm = "") => {
+  const fetchEmployees = async (page = 1, pageSize = 10, searchTerm = "", companyIdParam = null) => {
     try {
       setLoading(true);
       const response = await getTopPerformingEmployee({
-        companyId: companyData?.companyId,
+        companyId: companyIdParam || companyData?.companyId || localStorage.getItem("companyId"),
         page,
         limit: pageSize,
-        search: searchTerm, // Fix the search parameter name
+        search: searchTerm,
       });
 
       if (response.status) {
