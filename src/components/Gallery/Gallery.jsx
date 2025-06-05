@@ -246,22 +246,30 @@ const Gallery = () => {
 
   const fetchGalleryItems = async () => {
     try {
-      setLoading(true);
+      setLoading(true); // Set loading to true at the start
+      console.log("Fetching gallery items for type:", activeType);
+      
       const response = await getGalleryItems({
         type: activeType,
         page: pagination.currentPage
       });
 
       if (response.status) {
+        console.log("Gallery items fetched successfully:", response.data);
         setGalleryItems(response.data.items);
         setPagination(response.data.pagination);
       } else {
+        console.error("Failed to fetch gallery items:", response.error);
         message.error(response.error || 'Failed to fetch gallery items');
       }
     } catch (error) {
+      console.error('An error occurred while fetching gallery items:', error);
       message.error('An error occurred while fetching gallery items');
     } finally {
-      setLoading(false);
+      // Add a small delay to make the shimmer effect visible
+      setTimeout(() => {
+        setLoading(false);
+      }, 500);
     }
   };
 
@@ -401,11 +409,7 @@ const Gallery = () => {
       </div>
 
       <div className="gallery-content">
-        {loading ? (
-          <div className="loading-container">Loading...</div>
-        ) : (
-          renderGalleryItems()
-        )}
+        {renderGalleryItems()}
       </div>
     </div>
   );
