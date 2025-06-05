@@ -27,7 +27,6 @@ import { UserDataContext } from "../../context/UserContext";
 import { CompanyDataContext } from "../../context/CompanyContext";
 import PresentationSlide from "../../components/PresentationSlide";
 import {
-  logoutUser,
   getWorkshops,
   getCompanyMetrics,
   acceptTermsAndConditions,
@@ -65,7 +64,8 @@ const Home = () => {
   const pageSize = 1;
   const currentPage = 1;
 
-  const { companyData, isLoading: companyDataLoading } = useContext(CompanyDataContext);
+  const { companyData, isLoading: companyDataLoading } =
+    useContext(CompanyDataContext);
   console.log("Company data:", companyData);
 
   useEffect(() => {
@@ -152,7 +152,7 @@ const Home = () => {
     }
   }, [location]);
 
-    // Add useEffect to fetch unread notification count
+  // Add useEffect to fetch unread notification count
   useEffect(() => {
     const fetchUnreadNotificationCount = async () => {
       if (!user?.id || !user?.companyId) return;
@@ -226,28 +226,25 @@ const Home = () => {
     },
   ];
 
-  const handleLogout = async () => {
+  const handleLogout = () => {
     try {
-      const response = await logoutUser();
+      // First reset user context with empty state
+      setUser({
+        id: "",
+        email: "",
+        roleId: "",
+        userType: "",
+        fullName: {
+          firstName: "",
+          lastName: "",
+        },
+      });
 
-      if (response.status) {
-        // First reset user context with empty state
-        setUser({
-          id: "",
-          email: "",
-          roleId: "",
-          userType: "",
-          fullName: {
-            firstName: "",
-            lastName: "",
-          },
-        });
+      // Clear all localStorage data
+      localStorage.clear();
 
-        localStorage.clear();
-
-        message.success("Logged out successfully");
-        navigate("/login");
-      }
+      message.success("Logged out successfully");
+      navigate("/login");
     } catch (error) {
       console.error("Logout failed:", error);
       message.error("Failed to logout properly");
@@ -528,95 +525,92 @@ const Home = () => {
       >
         {" "}
         <div className="main-dashboard-left">
-            <motion.div
-              className="main-workshop-banner"
-              variants={itemVariants}
-            >
-              {" "}
-              <div className="main-workshops-header">
-                <h2>Upcoming Workshops</h2>
-                <Button
-                  type="link"
-                  onClick={handleViewAllWorkshops}
-                  className="view-all"
-                >
-                  View All <RightOutlined />
-                </Button>
-              </div>
-              <div
-                className="main-workshops-image-card"
-                onClick={workshop ? handleViewWorkshopDetails : undefined}
-                style={{ cursor: workshop ? "pointer" : "default" }}
+          <motion.div className="main-workshop-banner" variants={itemVariants}>
+            {" "}
+            <div className="main-workshops-header">
+              <h2>Upcoming Workshops</h2>
+              <Button
+                type="link"
+                onClick={handleViewAllWorkshops}
+                className="view-all"
               >
-                {workshopLoading ? (
-                  <PresentationSlide isLoading={true} />
-                ) : error ? (
-                  <div className="workshop-error">
-                    <p>{error}</p>
-                  </div>
-                ) : (
-                  <div
-                    onClick={workshop ? handleViewWorkshopDetails : undefined}
-                    style={{ cursor: workshop ? "pointer" : "default" }}
-                  >
-                    <PresentationSlide
-                      title={workshop?.title}
-                      date={workshop?.start_time}
-                      backgroundImage={workshop?.poster_image}
-                      endTime={workshop?.end_time}
-                      isLoading={false}
-                    />
-                  </div>
-                )}
-              </div>
-            </motion.div>
-
-            <div className="main-bottom-cards">
-              <div className="main-left-cards">
-                <motion.div
-                  variants={itemVariants}
-                  className="main-announcement-card"
-                  onClick={() => navigate("/announcements")}
-                  style={{ cursor: "pointer" }}
+                View All <RightOutlined />
+              </Button>
+            </div>
+            <div
+              className="main-workshops-image-card"
+              onClick={workshop ? handleViewWorkshopDetails : undefined}
+              style={{ cursor: workshop ? "pointer" : "default" }}
+            >
+              {workshopLoading ? (
+                <PresentationSlide isLoading={true} />
+              ) : error ? (
+                <div className="workshop-error">
+                  <p>{error}</p>
+                </div>
+              ) : (
+                <div
+                  onClick={workshop ? handleViewWorkshopDetails : undefined}
+                  style={{ cursor: workshop ? "pointer" : "default" }}
                 >
-                  <h3>Announcements & Notifications</h3>
-                  {!notificationLoading && unreadNotificationCount > 0 && (
-                    <div className="notification-badge">
-                      <p>
-                        {unreadNotificationCount > 99
-                          ? "99+"
-                          : unreadNotificationCount}
-                      </p>
-                    </div>
-                  )}{" "}
-                  <img src="announcement.svg" alt="marketing icon" />
-                </motion.div>
+                  <PresentationSlide
+                    title={workshop?.title}
+                    date={workshop?.start_time}
+                    backgroundImage={workshop?.poster_image}
+                    endTime={workshop?.end_time}
+                    isLoading={false}
+                  />
+                </div>
+              )}
+            </div>
+          </motion.div>
 
-                <motion.div
-                  variants={itemVariants}
-                  className="main-support-card"
-                  onClick={() => navigate("/support")}
-                  style={{ cursor: "pointer" }}
-                >
-                  <img src="support.svg" alt="support icon" />
-                  <h3>Help & support</h3>
-                </motion.div>
-              </div>
+          <div className="main-bottom-cards">
+            <div className="main-left-cards">
+              <motion.div
+                variants={itemVariants}
+                className="main-announcement-card"
+                onClick={() => navigate("/announcements")}
+                style={{ cursor: "pointer" }}
+              >
+                <h3>Announcements & Notifications</h3>
+                {!notificationLoading && unreadNotificationCount > 0 && (
+                  <div className="notification-badge">
+                    <p>
+                      {unreadNotificationCount > 99
+                        ? "99+"
+                        : unreadNotificationCount}
+                    </p>
+                  </div>
+                )}{" "}
+                <img src="announcement.svg" alt="marketing icon" />
+              </motion.div>
 
               <motion.div
                 variants={itemVariants}
-                className="main-rewards-card"
-                onClick={() => navigate("/rewardsAndRecognition")}
+                className="main-support-card"
+                onClick={() => navigate("/support")}
                 style={{ cursor: "pointer" }}
               >
-                <div className="main-rewards-content">
-                  <h3>Rewards &</h3>
-                  <h3>Recognition</h3>
-                </div>
-
-                <img src="Rewards.svg" alt="Rewards and Recognition" />
+                <img src="support.svg" alt="support icon" />
+                <h3>Help & support</h3>
               </motion.div>
             </div>
+
+            <motion.div
+              variants={itemVariants}
+              className="main-rewards-card"
+              onClick={() => navigate("/rewardsAndRecognition")}
+              style={{ cursor: "pointer" }}
+            >
+              <div className="main-rewards-content">
+                <h3>Rewards &</h3>
+                <h3>Recognition</h3>
+              </div>
+
+              <img src="Rewards.svg" alt="Rewards and Recognition" />
+            </motion.div>
+          </div>
         </div>
         <div className="main-dashboard-right">
           <div className="main-metrics-cards">
