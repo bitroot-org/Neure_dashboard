@@ -15,6 +15,7 @@ const MetricLineChart = ({
     if (active && payload && payload.length) {
       return (
         <div className="custom-tooltip">
+          <p>{`Date: ${label}`}</p>
           <p>{`Value: ${payload[0].value}`}</p>
         </div>
       );
@@ -30,6 +31,12 @@ const MetricLineChart = ({
       '09': 'SEP', '10': 'OCT', '11': 'NOV', '12': 'DEC'
     };
     return `${monthNames[month]} ${year.slice(2)}`;
+  };
+
+  const formatXAxis = (tickItem) => {
+    // If tickItem is undefined or null, return an empty string
+    if (!tickItem) return '';
+    return tickItem;
   };
 
   const handlePeriodChange = (e) => {
@@ -63,25 +70,8 @@ const MetricLineChart = ({
             <LineChart data={data} margin={{ top: 20, right: 30, left: 0, bottom: 20 }}>
               <XAxis
                 dataKey="date"
+                tick={{ fill: '#9CA3AF', fontSize: 11 }}
                 axisLine={{ stroke: '#4B5563' }}
-                tick={(props) => {
-                  const { x, y, payload } = props;
-                  return (
-                    <g transform={`translate(${x},${y})`}> 
-                      <text 
-                        x={0} 
-                        y={0} 
-                        dy={12} 
-                        textAnchor="middle" 
-                        fill="#9CA3AF"
-                        fontSize="11px"
-                      >
-                        {formatXAxisTick(payload.value)}
-                      </text>
-                    </g>
-                  );
-                }}
-                interval={0}
                 tickLine={false}
               />
               <YAxis

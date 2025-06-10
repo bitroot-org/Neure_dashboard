@@ -54,7 +54,7 @@ const WellbeingIndex = () => {
       const response = await getCompanyWellbeingTrends(companyId, startDate, endDate);
       if (response.status) {
         const transformedData = response.data.trends.map((trend) => ({
-          date: trend.period.substring(0, 7), // Format: "2024-05"
+          date: formatDate(trend.period), // Use the same formatting function
           value: trend.wellbeing_score,
         }));
         setWellbeingTrends(transformedData);
@@ -80,10 +80,20 @@ const WellbeingIndex = () => {
       
       const response = await getStressTrends(companyId, startDate, endDate);
       if (response.status) {
-        const transformedData = response.data.trends.map((trend) => ({
-          date: trend.period.substring(0, 7), // Format: "2024-05"
-          value: trend.stress_level,
-        }));
+        // Simplify the date format to ensure it works with the chart
+        const transformedData = response.data.trends.map((trend) => {
+          const date = new Date(trend.period);
+          // Format as simple string like "MAY 10" or "JUN 02"
+          const month = date.toLocaleString('default', { month: 'short' }).toUpperCase();
+          const day = date.getDate();
+          
+          return {
+            date: `${month} ${day}`,
+            value: trend.stress_level,
+          };
+        });
+        
+        console.log("Transformed stress data:", transformedData);
         setStressTrends(transformedData);
       }
     } catch (error) {
@@ -109,9 +119,19 @@ const WellbeingIndex = () => {
     fetchStressTrends(stressPeriod);
   }, []);
 
+  useEffect(() => {
+    console.log("Current stress trends data:", stressTrends);
+  }, [stressTrends]);
+
   return (
     <div className="wellbeing-container">
       <CustomHeader title="Company Well-being Index" showBackButton={true} />
+      
+      {stressTrends.length > 0 && (
+        <div style={{ marginBottom: '20px', color: 'white' }}>
+          <p>Debug - First data point: {JSON.stringify(stressTrends[0])}</p>
+        </div>
+      )}
       
       <div className="charts-container">
         <div className="chart-wrapper">
@@ -141,3 +161,21 @@ const WellbeingIndex = () => {
 };
 
 export default WellbeingIndex;
+
+// Updated date formatting function
+const formatDate = (dateString) => {
+  try {
+    const date = new Date(dateString);
+    // Check if date is valid
+    if (isNaN(date.getTime())) {
+      console.error("Invalid date:", dateString);
+      return "Invalid date";
+    }
+    const month = date.toLocaleString('default', { month: 'short' }).toUpperCase();
+    const day = date.getDate();
+    return `${month} ${day}`;
+  } catch (error) {
+    console.error("Error formatting date:", error);
+    return "Error";
+  }
+};
