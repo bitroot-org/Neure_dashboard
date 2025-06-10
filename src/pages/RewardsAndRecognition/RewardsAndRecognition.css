@@ -2,7 +2,8 @@
   padding: 40px 80px;
   max-width: 100%;
   margin: 0 auto;
-  
+  background: radial-gradient(108.08% 74.37% at 50% 0%, #33353F 0%, #0D0D11 99.73%);
+  min-height: 100vh;
 }
 
 .rewards-grid {

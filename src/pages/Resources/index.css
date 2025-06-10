@@ -1,6 +1,8 @@
 /* Article container styles */
 .article-section {
   padding: 40px 80px;
+  min-height: 100vh;
+  background: radial-gradient(108.08% 74.37% at 50% 0%, #33353F 0%, #0D0D11 99.73%);
 }
 
 /* Custom Tabs Styles */

@@ -4,6 +4,7 @@
   justify-content: flex-end;
   gap: 16px;
   width: 100%;
+  margin-top: 24px;
 }
 
 .pagination-button {
@@ -18,8 +19,8 @@
 
 .pagination-button:hover:not(.disabled) {
   background: #374151;
-  border-color: #00D885;
-  color: #00D885;
+  border-color: #ffffff3d;
+  color: #ffffff;
 }
 
 .pagination-button.disabled {

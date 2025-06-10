@@ -5,6 +5,7 @@
   overflow-x: hidden;
   color: white;
   width: 100%;
+  background: radial-gradient(108.08% 74.37% at 50% 0%, #33353F 0%, #0D0D11 99.73%);
 }
 
 .faq-inner {
