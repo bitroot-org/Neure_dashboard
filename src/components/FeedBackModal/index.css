@@ -88,7 +88,7 @@
   min-width: 120px !important;
   height: 48px !important;
   white-space: nowrap !important;
-  background-color: #191A20;
+  background-color: #191a20;
   color: rgb(255, 255, 255);
   border: 0.2px solid rgb(57, 55, 55);
   border-radius: 12px !important;
@@ -98,23 +98,23 @@
 .feedback-type-btn.active,
 .feedback-type-btn.active:hover,
 .feedback-type-btn.active:focus {
-  background-color: #191A20 !important;
-  border: 1px solid #00D885 !important;
-  color: #00D885 !important;
+  background-color: #191a20 !important;
+  border: 1px solid #00d885 !important;
+  color: #00d885 !important;
 }
 
 .ant-btn.feedback-type-btn:hover,
 .ant-btn.feedback-type-btn:focus {
-  background-color: #191A20 !important;
-  border-color: #00D885 !important;
-  color: #00D885 !important;
+  background-color: #191a20 !important;
+  border-color: #00d885 !important;
+  color: #00d885 !important;
 }
 
 /* Textarea Styles */
 .feedback-textarea {
   height: 120px !important;
   width: 100%;
-  background-color: #191A20 !important;
+  background-color: #191a20 !important;
   color: white !important;
   border: 0.5px solid #302e2e !important;
   border-radius: 12px !important;
@@ -167,8 +167,9 @@
 }
 
 .feedback-submit-button:hover {
-  background: rgba(255, 255, 255, 0.9) !important;
   transform: translateY(-1px);
+  box-shadow: 0 0 50px rgba(255, 255, 255, 0.5) !important;
+  border: none !important;
 }
 
 .feedback-submit-button:active {

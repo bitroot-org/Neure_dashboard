@@ -11,6 +11,7 @@ import {
   markReadAnnouncement,
   markReadNotification,
 } from "../../services/api";
+import { useNotifications } from "../../context/NotificationContext";
 
 const AnnouncementShimmer = () => (
   <List.Item className="list-item">
@@ -445,6 +446,23 @@ const AnnouncementsAndNotifications = () => {
       window.removeEventListener('beforeunload', handleBeforeUnload);
     };
   }, [activeTab, data, markItemsAsRead]);
+
+  // Add this effect to reset the notification count when this page is visited
+  useEffect(() => {
+    // Mark items as read when the component mounts
+    if (activeTab === 'announcements' && data.announcements.length > 0) {
+      markItemsAsRead(data.announcements, 'announcements');
+    } else if (activeTab === 'notifications' && data.notifications.length > 0) {
+      markItemsAsRead(data.notifications, 'notifications');
+    } else if (activeTab === 'all') {
+      if (data.announcements.length > 0) {
+        markItemsAsRead(data.announcements, 'announcements');
+      }
+      if (data.notifications.length > 0) {
+        markItemsAsRead(data.notifications, 'notifications');
+      }
+    }
+  }, [data.announcements, data.notifications, activeTab]);
 
   return (
     <div className="notifications-container">

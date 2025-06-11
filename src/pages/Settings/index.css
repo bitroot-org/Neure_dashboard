@@ -218,6 +218,12 @@
   height: 48px;
 }
 
+.settings-button:hover {
+  background: linear-gradient(to bottom, #ffffff 0%, #797b87 100%);
+  box-shadow: 0 0 50px rgba(255, 255, 255, 0.5);
+  border: none;
+}
+
 /* Add these rules at the end of your file */
 .ant-switch.ant-switch-checked {
   background-color: #00d885 !important; /* The same green color as your download link */

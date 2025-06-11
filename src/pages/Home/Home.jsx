@@ -38,12 +38,11 @@ import { motion } from "framer-motion";
 import PasswordChangeModal from "../../components/PasswordChangeModal";
 import { changePassword } from "../../services/api";
 import DashboardTour from "../../components/DashboardTour/DashboardTour";
+import { useNotifications } from "../../context/NotificationContext";
 
 const { Header, Content, Footer } = Layout;
 
 const Home = () => {
-  const [unreadNotificationCount, setUnreadNotificationCount] = useState(0);
-  const [notificationLoading, setNotificationLoading] = useState(false);
   const [workshop, setWorkshop] = useState(null);
   const [totalPages, setTotalPages] = useState(1);
   const [workshopLoading, setWorkshopLoading] = useState(true);
@@ -57,6 +56,10 @@ const Home = () => {
   const location = useLocation();
   const { user, setUser } = useContext(UserDataContext);
   const [showTour, setShowTour] = useState(false);
+  const [hasNotificationPermission, setHasNotificationPermission] = useState(false);
+  
+  // Add this line to get unreadCount from the notification context
+  const { unreadCount } = useNotifications();
 
   // Add this computed property to determine overall loading state
   const loading = workshopLoading || metricsLoading;
@@ -64,7 +67,7 @@ const Home = () => {
   const pageSize = 1;
   const currentPage = 1;
 
-  const { companyData, isLoading: companyDataLoading } =
+  const { companyData, isLoading: companyDataLoading, refreshCompanyData } =
     useContext(CompanyDataContext);
   console.log("Company data:", companyData);
 
@@ -151,46 +154,6 @@ const Home = () => {
       window.history.replaceState({}, document.title);
     }
   }, [location]);
-
-  // Add useEffect to fetch unread notification count
-  useEffect(() => {
-    const fetchUnreadNotificationCount = async () => {
-      if (!user?.id || !user?.companyId) return;
-
-      try {
-        setNotificationLoading(true);
-        const response = await getUnreadNotificationCount(
-          user.id,
-          user.companyId
-        );
-
-        if (response.status && response.data) {
-          setUnreadNotificationCount(response.data.count);
-        } else {
-          // Silently fail - don't show error to user
-          console.error(
-            "Failed to fetch notification count:",
-            response.message
-          );
-          setUnreadNotificationCount(0);
-        }
-      } catch (error) {
-        // Silently fail - don't show error to user
-        console.error("Error fetching notification count:", error);
-        setUnreadNotificationCount(0);
-      } finally {
-        setNotificationLoading(false);
-      }
-    };
-
-    fetchUnreadNotificationCount();
-
-    // Set up interval to refresh count every 30 seconds (30000ms)
-    const intervalId = setInterval(fetchUnreadNotificationCount, 30000);
-
-    // Clean up interval on component unmount
-    return () => clearInterval(intervalId);
-  }, [user?.id, user?.companyId]);
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -430,6 +393,17 @@ const Home = () => {
     </div>
   );
 
+  // Add this effect to refresh company data when the component mounts
+  useEffect(() => {
+    const refreshData = async () => {
+      if (companyData && refreshCompanyData) {
+        await refreshCompanyData();
+      }
+    };
+    
+    refreshData();
+  }, []);
+
   return (
     <Layout className="main-dashboard-layout">
       <DashboardTour run={showTour} onClose={handleTourComplete} />
@@ -468,7 +442,7 @@ const Home = () => {
             <div className="main-user-info">
               {companyData?.company_profile_url ? (
                 <img
-                  src={companyData?.company_profile_url}
+                  src={`${companyData.company_profile_url}?${new Date().getTime()}`}
                   alt="profile"
                   className="main-avatar"
                 />
@@ -574,15 +548,15 @@ const Home = () => {
                 style={{ cursor: "pointer" }}
               >
                 <h3>Announcements & Notifications</h3>
-                {!notificationLoading && unreadNotificationCount > 0 && (
+                {unreadCount > 0 && (
                   <div className="notification-badge">
                     <p>
-                      {unreadNotificationCount > 99
+                      {unreadCount > 99
                         ? "99+"
-                        : unreadNotificationCount}
+                        : unreadCount}
                     </p>
                   </div>
-                )}{" "}
+                )}
                 <img src="announcement.svg" alt="marketing icon" />
               </motion.div>
 
@@ -720,7 +694,7 @@ const Home = () => {
 
       <Footer className="main-footer">
         <div className="main-footer-content">
-          Powered by{" "}
+          Lumos by{" "}
           <img src="./neure.png" alt="Neure Icon" className="main-neure-icon" />
         </div>
       </Footer>

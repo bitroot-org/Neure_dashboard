@@ -84,6 +84,12 @@
   color: black;
 }
 
+.btn-send:hover {
+  background: linear-gradient(to bottom, #FFFFFF 0%, #797B87 100%);
+  box-shadow: 0 0 50px rgba(255, 255, 255, 0.5);
+  border: none;
+}
+
 /* Mobile Responsiveness */
 @media (max-width: 768px) {
   .rewards-grid {

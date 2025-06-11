@@ -62,8 +62,45 @@ const CompanyContext = ({ children }) => {
     fetchCompanyMetrics();
   }, []);
 
+  // Add a function to refresh company data
+  const refreshCompanyData = async () => {
+    try {
+      setIsLoading(true);
+      const companyId = localStorage.getItem('companyId');
+      if (!companyId) {
+        console.warn('Company ID not found');
+        setIsLoading(false);
+        return;
+      }
+      
+      const response = await getCompanyMetrics(companyId);
+      console.log('Refreshed API Response:', response);
+      
+      if (response.status) {
+        // Handle nested data structure
+        let metricsData;
+        
+        if (response.data && response.data.data && response.data.data.metrics) {
+          metricsData = response.data.data.metrics;
+        } else if (response.data && response.data.metrics) {
+          metricsData = response.data.metrics;
+        } else {
+          metricsData = response.data || {};
+        }
+        
+        console.log('Refreshed metrics data:', metricsData);
+        setCompanyData(metricsData);
+      }
+    } catch (error) {
+      console.error('Error refreshing company metrics:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Provide the refreshCompanyData function in the context value
   return (
-    <CompanyDataContext.Provider value={{ companyData, setCompanyData, isLoading }}>
+    <CompanyDataContext.Provider value={{ companyData, isLoading, refreshCompanyData }}>
       {children}
     </CompanyDataContext.Provider>
   );

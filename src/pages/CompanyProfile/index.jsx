@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
 import {
   Avatar,
@@ -11,6 +11,7 @@ import { CameraOutlined } from "@ant-design/icons";
 import "./index.css";
 import CustomHeader from "../../components/CustomHeader";
 import { updateCompanyInfo, getCompanyById } from "../../services/api";
+import { CompanyDataContext } from "../../context/CompanyContext";
 
 const { Text } = Typography;
 
@@ -246,6 +247,9 @@ const CompanyFormShimmer = () => (
 
 // Main CompanyProfile Component
 const CompanyProfile = () => {
+  // Add CompanyDataContext
+  const { refreshCompanyData } = useContext(CompanyDataContext);
+  
   // State variables
   const [isEditable, setIsEditable] = useState(false);
   const [formData, setFormData] = useState({
@@ -375,6 +379,9 @@ const CompanyProfile = () => {
         // Reset the uploaded file state
         setUploadedLogoFile(null);
         setPreviewLogoUrl(null);
+        
+        // Refresh company data in context
+        await refreshCompanyData();
         
         // Refresh company data
         const refreshResponse = await getCompanyById(companyId);

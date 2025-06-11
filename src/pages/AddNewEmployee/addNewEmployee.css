@@ -107,6 +107,12 @@
   cursor: pointer;
 }
 
+.submit-btn:hover {
+  background: linear-gradient(to bottom, #ffffff 0%, #797b87 100%);
+  box-shadow: 0 0 50px rgba(255, 255, 255, 0.5);
+  border: none;
+}
+
 /* Additional CSS for Bulk Upload */
 .bulk-upload-container {
   width: 100%;

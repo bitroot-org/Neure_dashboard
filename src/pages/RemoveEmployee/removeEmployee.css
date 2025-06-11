@@ -36,7 +36,8 @@
 
 
 .employee-action-buttons button:hover {
-  box-shadow: 2px 4px 4px rgba(175, 173, 173, 0.8) !important;
+  box-shadow: 0 0 50px rgba(255, 255, 255, 0.5) !important;
+  border: none !important;
 }
 
 .green-checkbox {
@@ -48,7 +49,7 @@
 
 /* When checked, set accent-color to green */
 .green-checkbox:checked {
-  accent-color: #00d885;
+  accent-color: #ffffff;
 }
 
 /* Add to your removeEmployee.css file */
@@ -58,11 +59,4 @@
   background-color: #444 !important;
   color: #000000 !important;
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
-}
-
-
-/* Add hover effect for enabled button */
-.add-employee-btn:not(.disabled-btn):hover {
-  background-color: #3DAC70;
-  box-shadow: 0 2px 8px rgba(74, 222, 128, 0.3);
 }

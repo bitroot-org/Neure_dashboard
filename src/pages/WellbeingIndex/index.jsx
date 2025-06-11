@@ -127,11 +127,11 @@ const WellbeingIndex = () => {
     <div className="wellbeing-container">
       <CustomHeader title="Company Well-being Index" showBackButton={true} />
       
-      {stressTrends.length > 0 && (
+      {/* {stressTrends.length > 0 && (
         <div style={{ marginBottom: '20px', color: 'white' }}>
           <p>Debug - First data point: {JSON.stringify(stressTrends[0])}</p>
         </div>
-      )}
+      )} */}
       
       <div className="charts-container">
         <div className="chart-wrapper">
