@@ -609,5 +609,25 @@ export const getCompanyWellbeingTrends = async (companyId, startDate, endDate) =
   }
 }
 
+export const forgotPassword = async (email) => {
+  try {
+    const response = await api.post("/user/forgotPassword", {
+      email,
+    });
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error;
+  }
+};
 
-
+export const resetPasswordWithToken = async (token, newPassword) => {
+  try {
+    const response = await api.post(`/user/resetPassword`, {
+      token,
+      new_password: newPassword,
+    });
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error;
+  }
+};

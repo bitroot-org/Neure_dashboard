@@ -7,6 +7,7 @@ import LoginPage from "./pages/Login/Login";
 // import SignUpPage from './pages/Onboarding'
 import OnboardingFlow from "./pages/Onboarding";
 import Dashboard from "./pages/Dashboard";
+import ForgotPasswordPage from "./pages/ResetPassword/ResetPassword";
 import HelpAndSupport from "./pages/HelpAndSupport";
 import AnnouncementsAndNotifications from "./pages/AnnouncementsAndNotifications/AnnouncementsAndNotifications";
 import EmployeeManagement from "./pages/EmployeeManagement";
@@ -26,6 +27,7 @@ import RewardsAndRecognition from "./pages/RewardsAndRecognition";
 import FavouriteSoundscapes from './pages/FavouriteSoundscapes/FavouriteSoundscapes';
 import { Pagination } from "antd";
 import WellbeingIndex from "./pages/WellbeingIndex";
+import SetNewPasswordPage from "./pages/ResetPassword/SetNewPassword";
 
 function App() {
   const location = useLocation();
@@ -34,12 +36,28 @@ function App() {
     <div className="main-content-wrapper">
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
-          {/* Public Route */}
+          {/* Public Routes */}
           <Route
             path="/login"
             element={
               <PageTransition>
                 <LoginPage />
+              </PageTransition>
+            }
+          />
+          <Route
+            path="/forgot-password"
+            element={
+              <PageTransition>
+                <ForgotPasswordPage />
+              </PageTransition>
+            }
+          />
+          <Route
+            path="/reset-password"
+            element={
+              <PageTransition>
+                <SetNewPasswordPage />
               </PageTransition>
             }
           />
