@@ -20,45 +20,40 @@ const SoundscapeCarousel = ({ items }) => {
   };
 
   return (
-    <div className="soundscapes-carousel-container">
+    <div className="flex h-[280px] items-center justify-center overflow-hidden">
       <button
-        className="soundscapes-carousel-button soundscapes-left"
+        className="mr-4 h-8 w-8 shrink-0 rounded-full border-0 bg-white/25 text-white"
         onClick={slideLeft}
         disabled={items.length <= 3}
       >
         <LeftOutlined />
       </button>
-      <div className="soundscapes-carousel-wrapper">
+      <div className="flex-1 overflow-hidden">
         <div
-          className="soundscapes-carousel-content"
+          className="flex transition-transform duration-300 ease-in-out"
           style={{ transform: `translateX(-${currentSlide * 33.33}%)` }}
         >
           {items.map((item) => (
-            <div key={item.id} className="soundscapes-carousel-card">
-              <div className="soundscapes-card-image">
-                <img
-                  src={item.sound_cover_image}
-                  alt={item.title}
-                  className="soundscapes-card-img"
-                  loading="lazy"
-                />
+            <div key={item.id} className="mr-4 w-[200px] overflow-hidden rounded-lg bg-transparent">
+              <div className="relative h-[200px] w-full overflow-hidden rounded-2xl">
+                <img src={item.sound_cover_image} alt={item.title} className="h-full w-full object-cover bg-white/10" loading="lazy" />
                 <div
-                  className="soundscapes-play-overlay"
+                  className="absolute left-1/2 top-1/2 flex h-10 w-10 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-black/60 p-2 text-white opacity-70 transition-opacity group-hover:opacity-100"
                   onClick={() => playTrack(item)}
                 >
                   <img src="./play.svg" alt="Play" />
                 </div>
               </div>
-              <div className="soundscapes-card-info">
-                <h3>{item.title}</h3>
-                {item.author && <p>{item.author}</p>}
+              <div className="flex flex-col items-start p-2 text-left">
+                <h3 className="m-0 text-lg font-medium text-white">{item.title}</h3>
+                {item.author && <p className="m-0 mt-1 text-base text-[#b1b3c0]">{item.author}</p>}
               </div>
             </div>
           ))}
         </div>
       </div>
       <button
-        className="soundscapes-carousel-button soundscapes-right"
+        className="ml-4 h-8 w-8 shrink-0 rounded-full border-0 bg-white/25 text-white"
         onClick={slideRight}
         disabled={items.length <= 3}
       >

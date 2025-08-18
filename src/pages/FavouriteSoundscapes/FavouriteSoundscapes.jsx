@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "./favouriteSoundscapes.css";
+// Tailwind-only: styles moved inline
 import CustomHeader from "../../components/CustomHeader";
 import { HeartOutlined, HeartFilled, EllipsisOutlined } from "@ant-design/icons";
 import PlayerModal from "../../components/PlayerModal";
@@ -114,7 +114,7 @@ const FavouriteSoundscapesContent = () => {
 
   if (loading) {
     return (
-      <div className="fav-soundscapes-container">
+      <div className="min-h-[calc(100vh-88px)] w-full px-4 pt-10 md:px-10 xl:px-24">
         <CustomHeader title="Favourite Soundscapes" />
         <div className="fav-soundscapes-loading">
           <div className="loading-spinner"></div>
@@ -134,58 +134,48 @@ const FavouriteSoundscapesContent = () => {
   }
 
   return (
-    <div className="fav-soundscapes-container">
+    <div className="min-h-[calc(100vh-88px)] w-full px-4 pt-10 md:px-10 xl:px-24">
       <CustomHeader title="Favourite Soundscapes" />
 
-      <main className="fav-soundscapes-content">
+      <main className="mt-6">
         {favourites.length === 0 ? (
-          <div className="fav-soundscapes-empty">
-            <div className="empty-state-container">
-              <div className="empty-state-icon">
-                <HeartOutlined />
+          <div className="flex min-h-[400px] items-center justify-center p-5">
+            <div className="mx-auto flex max-w-[400px] flex-col items-center rounded-2xl border border-[#4c4d52] bg-transparent p-10 text-center">
+              <div className="mb-6 flex h-24 w-24 items-center justify-center rounded-full bg-[#373945]">
+                <HeartOutlined className="text-[48px] text-[#ff4757]" />
               </div>
-              <h2>No Favourites Yet</h2>
-              <p>Start adding your favorite soundscapes to create your personal collection</p>
+              <h2 className="mb-3 bg-gradient-to-r from-[#ff4757] to-[#ff6b81] bg-clip-text text-xl font-semibold text-transparent">No Favourites Yet</h2>
+              <p className="mb-8 max-w-[300px] text-sm text-white/60">Start adding your favorite soundscapes to create your personal collection</p>
               {/* Optional: Add a CTA button if you want to direct users somewhere */}
-              <button 
-                className="explore-button"
-                onClick={() => window.location.href = '/soundscapes'} // or use your router navigation
+              <button
+                className="rounded-xl border-0 bg-gradient-to-r from-[#ff4757] to-[#ff6b81] px-8 py-3 text-white shadow-[0_4px_15px_rgba(255,71,87,0.2)] transition hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(255,71,87,0.3)]"
+                onClick={() => window.location.href = '/soundscapes'}
               >
                 Explore Soundscapes
               </button>
             </div>
           </div>
         ) : (
-          <div className="fav-soundscapes-list">
+          <div className="flex flex-col gap-4">
             {favourites.map((track) => (
-              <div key={track.id} className="fav-tune-item">
-                <div
-                  className="fav-tune-thumbnail"
-                  onClick={() => handlePlayTrack(track)}
-                >
-                  <img
-                    src={track.sound_cover_image}
-                    alt={track.title}
-                    loading="lazy"
-                  />
+              <div key={track.id} className="flex items-center rounded-xl bg-white/10 p-3 transition-colors hover:bg-white/20">
+                <div className="h-16 w-16 cursor-pointer overflow-hidden rounded-md" onClick={() => handlePlayTrack(track)}>
+                  <img className="h-full w-full object-cover" src={track.sound_cover_image} alt={track.title} loading="lazy" />
                 </div>
-                <div className="fav-tune-info">
-                  <h3>{track.title}</h3>
-                  {track.artist_name && <p>{track.artist_name}</p>}
+                <div className="ml-4 flex-1">
+                  <h3 className="m-0 text-base font-medium text-white">{track.title}</h3>
+                  {track.artist_name && <p className="m-0 mt-1 text-sm text-white/70">{track.artist_name}</p>}
                 </div>
 
-                <div className="fav-tune-controls">
-                  <div className="fav-duration">
+                <div className="ml-4 flex items-center gap-4">
+                  <div className="text-sm text-white/70">
                     {formatDuration(track.duration)}
                   </div>
-                  <button 
-                    className="fav-like-button"
-                    onClick={() => handleLike(track.id)}
-                  >
+                  <button className="rounded-full bg-white/20 p-2 text-white transition hover:scale-110" onClick={() => handleLike(track.id)}>
                     {track.is_liked_by_user === 1 ? (
                       <HeartFilled style={{ color: '#ff4757' }} />
                     ) : (
-                      <HeartOutlined />
+                      <HeartOutlined className="text-[48px] text-[#ff4757]" />
                     )}
                   </button>
                   {/* <button className="fav-more-button">

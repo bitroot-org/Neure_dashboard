@@ -60,22 +60,16 @@ const PlayerFooter = ({ onLike }) => {
   if (!currentTrack) return null;
 
   return (
-    <footer className="soundscapes-player">
-      <div className="soundscapes-player-progress">
-        <div 
-          className="progress-bar-container"
-          onClick={handleSeek}
-        >
-          <div 
-            className="progress-bar"
-            style={{ width: `${progress}%` }}
-          />
+    <footer className="fixed bottom-0 left-0 right-0 z-[1000] w-full bg-[#191A2080] backdrop-blur-md">
+      <div className="h-1 w-full cursor-pointer">
+        <div className="relative h-full w-full cursor-pointer bg-white/20" onClick={handleSeek}>
+          <div className="h-full bg-[#1DB954] transition-[width] duration-100" style={{ width: `${progress}%` }} />
         </div>
       </div>
       
-      <div className="soundscapes-footer-content">
-        <div className="soundscapes-now-playing">
-          <div className="soundscapes-track-thumbnail">
+      <div className="flex items-center justify-between border-t border-white/10 px-8 py-4">
+        <div className="min-w-[240px] flex items-center gap-4">
+          <div className="h-14 w-14 shrink-0 overflow-hidden rounded-lg">
             {currentTrack.sound_cover_image && (
               <img 
                 src={currentTrack.sound_cover_image} 
@@ -85,57 +79,39 @@ const PlayerFooter = ({ onLike }) => {
               />
             )}
           </div>
-          <div className="soundscapes-track-info">
-            <h3>{currentTrack.title || 'Unknown Title'}</h3>
-            {currentTrack.artist_name && <p>{currentTrack.artist_name}</p>}
+          <div className="min-w-0">
+            <h3 className="m-0 truncate text-base font-medium text-white">{currentTrack.title || 'Unknown Title'}</h3>
+            {currentTrack.artist_name && <p className="m-0 mt-1 truncate text-sm text-white/70">{currentTrack.artist_name}</p>}
           </div>
         </div>
 
-        <div className="soundscapes-player-controls">
-          <button 
-            className={`soundscapes-shuffle ${shuffle ? 'active' : ''}`}
-            onClick={toggleShuffle}
-          >
+        <div className="mx-auto flex max-w-[400px] flex-1 items-center justify-center gap-6">
+          <button className={`${shuffle ? 'text-[#1db954]' : ''} rounded-full p-2 text-white/70 transition hover:scale-110`} onClick={toggleShuffle}>
             <SwapOutlined />
           </button>
-          <button 
-            className="soundscapes-prev"
-            onClick={playPrevTrack}
-          >
+          <button className="rounded-full p-2 text-white/70 transition hover:scale-110" onClick={playPrevTrack}>
             <StepBackwardOutlined />
           </button>
-          <button className="soundscapes-play" onClick={togglePlay}>
+          <button className="h-10 w-10 rounded-full bg-white text-black" onClick={togglePlay}>
             {isPlaying ? <PauseCircleFilled /> : <PlayCircleFilled />}
           </button>
-          <button 
-            className="soundscapes-next"
-            onClick={playNextTrack}
-          >
+          <button className="rounded-full p-2 text-white/70 transition hover:scale-110" onClick={playNextTrack}>
             <StepForwardOutlined />
           </button>
-          <button 
-            className={`soundscapes-repeat ${repeat ? 'active' : ''}`}
-            onClick={toggleRepeat}
-          >
+          <button className={`${repeat ? 'text-[#1db954]' : ''} rounded-full p-2 text-white/70 transition hover:scale-110`} onClick={toggleRepeat}>
             <RetweetOutlined />
           </button>
         </div>
 
-        <div className="soundscapes-player-actions">
-          <button 
-            className="soundscapes-like-button"
-            onClick={(e) => {
-              e.stopPropagation();
-              onLike && onLike(currentTrack.id);
-            }}
-          >
+        <div className="min-w-[240px] flex items-center justify-end gap-4">
+          <button className="rounded-full bg-white/10 p-2 text-white transition hover:bg-white/20" onClick={(e) => { e.stopPropagation(); onLike && onLike(currentTrack.id); }}>
             {currentTrack.is_liked_by_user === 1 ? (
               <HeartFilled style={{ color: '#ff4757' }} />
             ) : (
               <HeartOutlined />
             )}
           </button>
-          <button className="soundscapes-more-button">
+          <button className="rounded-full bg-white/10 p-2 text-white transition hover:bg-white/20">
             <EllipsisOutlined />
           </button>
         </div>

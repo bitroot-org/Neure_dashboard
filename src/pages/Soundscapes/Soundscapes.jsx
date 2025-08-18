@@ -1,6 +1,6 @@
 // SoundscapeContainer.jsx
 import React, { useState, useEffect, useRef } from "react";
-import "./soundscapes.css";
+// Tailwind-only: styles moved inline
 import CustomHeader from "../../components/CustomHeader";
 import {
   RightOutlined,
@@ -173,16 +173,16 @@ const SoundscapeContent = () => {
   };
 
   return (
-    <div className="soundscape-container">
+    <div className="min-h-[calc(100vh-88px)] w-full overflow-y-auto px-0 pt-10 text-white md:px-10 xl:px-24">
       <CustomHeader title="Soundscapes" />
 
-      <main className="soundscapes-main-content">
+      <main className="flex flex-col flex-1 overflow-y-auto mb-5">
         {/* Top Picks Section */}
-        <section className="soundscapes-top-picks">
-          <div className="soundscapes-section-header">
-            <h2>Top picks for you</h2>
-            <button 
-              className="soundscapes-like-button"
+        <section className="mb-10">
+          <div className="mt-2 mb-6 flex items-center justify-between">
+            <h2 className="m-0 text-2xl font-medium">Top picks for you</h2>
+            <button
+              className="flex items-center justify-center rounded-full bg-white/25 p-2 transition hover:scale-105"
               onClick={() => navigate('/favourite-soundscapes')}
             >
               <HeartOutlined style={{ fontSize: '24px', color: '#fff' }} />
@@ -192,11 +192,11 @@ const SoundscapeContent = () => {
         </section>
 
         {/* Fresh Tunes Section */}
-        <section className="soundscapes-fresh-tunes">
-          <h2>Fresh tunes</h2>
-          <div className="soundscapes-tunes-list">
+        <section className="mb-24">
+          <h2 className="mb-6 text-2xl font-medium">Fresh tunes</h2>
+          <div className="flex flex-col lg:grid lg:grid-cols-2 lg:gap-8">
             {tunes.map((tune) => (
-              <div key={tune.id} className="soundscapes-tune-item">
+              <div key={tune.id} className="flex h-[74px] items-center rounded-lg pr-3 transition-colors">
                 <div
                   className="soundscapes-tune-thumbnail"
                   onClick={() => handlePlayTrack(tune)}
@@ -207,17 +207,17 @@ const SoundscapeContent = () => {
                     loading="lazy"
                   />
                 </div>
-                <div className="soundscapes-tune-info">
-                  <h3>{tune.title}</h3>
-                  {tune.artist_name && <p>{tune.artist_name}</p>}
+                <div className="min-w-0 flex-1">
+                  <h3 className="m-0 truncate text-base font-medium">{tune.title}</h3>
+                  {tune.artist_name && <p className="m-0 mt-1 truncate text-sm text-white/50">{tune.artist_name}</p>}
                 </div>
 
-                <div className="soundscapes-tune-controls">
-                  <div className="soundscapes-duration">
+                <div className="ml-4 flex shrink-0 items-center gap-3">
+                  <div className="text-sm text-white/70">
                     {formatDuration(tune.duration)}
                   </div>
-                  <button 
-                    className={`soundscapes-like-button ${likedTracks.has(tune.id) ? 'active' : ''}`}
+                  <button
+                    className={`flex items-center justify-center rounded-full bg-white/10 p-2 transition ${likedTracks.has(tune.id) ? 'bg-[rgba(255,71,87,0.1)]' : ''}`}
                     onClick={(e) => {
                       e.stopPropagation();
                       handleLike(tune.id);
@@ -229,7 +229,7 @@ const SoundscapeContent = () => {
                       <HeartOutlined />
                     )}
                   </button>
-                  <button className="soundscapes-more-button">
+                  <button className="flex items-center justify-center rounded-full bg-white/10 p-2">
                     <img src="/DotsThreeOutline.svg" alt="More options" />
                   </button>
                 </div>
