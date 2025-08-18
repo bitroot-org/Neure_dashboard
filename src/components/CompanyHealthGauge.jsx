@@ -18,13 +18,13 @@ const CompanyHealthGauge = ({
 
   return (
     <div
-      className="bg-[radial-gradient(108.08%_74.37%_at_50%_0%,#33353F_0%,#0D0D11_99.73%)] rounded-3xl py-6 px-0 w-full h-full border border-white/10 overflow-hidden flex flex-col items-center justify-between relative before:content-[''] before:absolute before:-bottom-[40%] before:left-1/2 before:-translate-x-1/2 before:w-[43.75rem] before:h-48 before:bg-[radial-gradient(circle_at_center,rgba(var(--glow-color),0.3)_0%,rgba(var(--glow-color),0.15)_25%,rgba(var(--glow-color),0.05)_50%,transparent_70%)] before:blur-[1.25rem] before:pointer-events-none before:z-0"
+      className="bg-[radial-gradient(108.08%_74.37%_at_50%_0%,#33353F_0%,#0D0D11_99.73%)] rounded-3xl py-4 px-0 w-full h-full border border-white/10 overflow-hidden flex flex-col items-center justify-between relative before:content-[''] before:absolute before:-bottom-[40%] before:left-1/2 before:-translate-x-1/2 before:w-[43.75rem] before:h-48 before:bg-[radial-gradient(circle_at_center,rgba(var(--glow-color),0.3)_0%,rgba(var(--glow-color),0.15)_25%,rgba(var(--glow-color),0.05)_50%,transparent_70%)] before:blur-[1.25rem] before:pointer-events-none before:z-0"
       onClick={onClick}
       style={{
         "--glow-color": glowColor,
       }}
     >
-      <h2 className="text-white text-[1.4rem] font-normal text-center">{title}</h2>
+      <h2 className="text-white text-2xl font-normal text-center">{title}</h2>
 
       <GaugeComponent
         value={value}

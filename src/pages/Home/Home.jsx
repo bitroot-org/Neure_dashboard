@@ -17,11 +17,10 @@ import {
   DownOutlined,
   UserOutlined,
   LogoutOutlined,
-  MenuOutlined, // Add this import
+  MenuOutlined,
 } from "@ant-design/icons";
 import { Dropdown } from "antd";
 import { useNavigate, useLocation } from "react-router-dom";
-import "./index.css";
 import CompanyHealthGauge from "../../components/CompanyHealthGauge";
 import { UserDataContext } from "../../context/UserContext";
 import { CompanyDataContext } from "../../context/CompanyContext";
@@ -56,26 +55,27 @@ const Home = () => {
   const location = useLocation();
   const { user, setUser } = useContext(UserDataContext);
   const [showTour, setShowTour] = useState(false);
-  const [hasNotificationPermission, setHasNotificationPermission] = useState(false);
-  
-  // Add this line to get unreadCount from the notification context
+  const [hasNotificationPermission, setHasNotificationPermission] =
+    useState(false);
+
   const { unreadCount } = useNotifications();
 
-  // Add this computed property to determine overall loading state
   const loading = workshopLoading || metricsLoading;
 
   const pageSize = 1;
   const currentPage = 1;
 
-  const { companyData, isLoading: companyDataLoading, refreshCompanyData } =
-    useContext(CompanyDataContext);
+  const {
+    companyData,
+    isLoading: companyDataLoading,
+    refreshCompanyData,
+  } = useContext(CompanyDataContext);
   console.log("Company data:", companyData);
 
   useEffect(() => {
-    // Debug log to check what data we have from context
     console.log("CompanyData from context:", companyData);
-    console.log("Is context loading:", companyDataLoading); // Change isLoading to companyDataLoading
-  }, [companyData, companyDataLoading]); // Update dependency array too
+    console.log("Is context loading:", companyDataLoading);
+  }, [companyData, companyDataLoading]);
 
   useEffect(() => {
     const companyId = localStorage.getItem("companyId");
@@ -92,9 +92,7 @@ const Home = () => {
         console.log("getWorkshops response:", data);
         if (data.status) {
           if (data.data.length === 0) {
-            // Set workshop to null to trigger empty state in PresentationSlide
             setWorkshop(null);
-            // Don't set an error message
             setError(null);
           } else {
             setWorkshop(data.data[0]);
@@ -142,7 +140,6 @@ const Home = () => {
   useEffect(() => {
     if (location.state?.showTerms) {
       setIsTermsModalVisible(true);
-      // Clean up the state to prevent modal from showing on refresh
       window.history.replaceState({}, document.title);
     }
   }, [location]);
@@ -150,7 +147,6 @@ const Home = () => {
   useEffect(() => {
     if (location.state?.showTour) {
       setShowTour(true);
-      // Clean up the state to prevent tour from showing on refresh
       window.history.replaceState({}, document.title);
     }
   }, [location]);
@@ -191,7 +187,6 @@ const Home = () => {
 
   const handleLogout = () => {
     try {
-      // First reset user context with empty state
       setUser({
         id: "",
         email: "",
@@ -203,7 +198,6 @@ const Home = () => {
         },
       });
 
-      // Clear all localStorage data
       localStorage.clear();
 
       message.success("Logged out successfully");
@@ -236,7 +230,6 @@ const Home = () => {
 
   const handleViewWorkshopDetails = () => {
     if (workshop && workshop.workshop_id) {
-      // Make sure to pass the schedule_id as a URL parameter
       const scheduleId = workshop.schedule_id || workshop.schedules?.[0]?.id;
       navigate(
         `/workshopDetails/${workshop.workshop_id}?scheduleId=${scheduleId}`
@@ -249,7 +242,6 @@ const Home = () => {
     try {
       await acceptTermsAndConditions();
 
-      // Update user context
       const updatedUser = {
         ...user,
         profile: {
@@ -259,7 +251,6 @@ const Home = () => {
       };
       setUser(updatedUser);
 
-      // Update localStorage
       localStorage.setItem("userData", JSON.stringify(updatedUser));
 
       setIsTermsModalVisible(false);
@@ -275,7 +266,6 @@ const Home = () => {
     message.info("Please accept the terms to continue");
   };
 
-  // Add this handler function along with your other handlers
   const handleSettingsClick = () => {
     navigate("/settings");
   };
@@ -302,7 +292,7 @@ const Home = () => {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.2, // adds delay between children animations
+        staggerChildren: 0.2,
       },
     },
   };
@@ -331,10 +321,8 @@ const Home = () => {
 
       console.log("Tour status update response:", response);
 
-      // Check if the response is successful before proceeding
       if (response && response.status) {
         setShowTour(false);
-        // Update user context
         const updatedUser = {
           ...user,
           profile: {
@@ -342,9 +330,8 @@ const Home = () => {
             has_seen_dashboard_tour: 1,
           },
         };
-        setUser(updatedUser); // Changed from updateUser to setUser
+        setUser(updatedUser);
 
-        // Update localStorage
         const updatedUserData = {
           ...userData,
           profile: {
@@ -354,10 +341,8 @@ const Home = () => {
         };
         localStorage.setItem("userData", JSON.stringify(updatedUserData));
 
-        // Show success message only if API call was successful
         message.success("Tour preferences updated successfully");
       } else {
-        // Only show error if the API response indicates failure
         throw new Error(response?.message || "Failed to update tour status");
       }
     } catch (error) {
@@ -367,97 +352,137 @@ const Home = () => {
   };
 
   const ROIShimmer = () => (
-    <div className="main-roi-card">
-      <div className="main-roi-header">
-        <div className="shimmer-title shimmer-effect"></div>
-        <div className="shimmer-subtitle shimmer-effect"></div>
+    <div
+      style={{
+        background:
+          "radial-gradient(108.08% 74.37% at 50% 0%, #33353F 0%, #0D0D11 99.73%)",
+      }}
+      className="rounded-2xl border border-[#3f3c3c] p-4 flex flex-col gap-4"
+    >
+      <div className="flex items-center justify-between">
+        <div className="h-6 w-28 rounded-md bg-gray-700 animate-pulse"></div>
+        <div className="h-4 w-40 rounded-md bg-gray-700 animate-pulse"></div>
       </div>
-      <div className="main-roi-metrics">
-        <div className="main-roi-item shimmer-container">
-          <div className="shimmer-label shimmer-effect"></div>
-          <div className="shimmer-value shimmer-effect"></div>
-        </div>
-        <div className="main-roi-item shimmer-container">
-          <div className="shimmer-label shimmer-effect"></div>
-          <div className="shimmer-value shimmer-effect"></div>
-        </div>
-        <div className="main-roi-item shimmer-container">
-          <div className="shimmer-label shimmer-effect"></div>
-          <div className="shimmer-value shimmer-effect"></div>
-        </div>
-        <div className="main-roi-item shimmer-container">
-          <div className="shimmer-label shimmer-effect"></div>
-          <div className="shimmer-value shimmer-effect"></div>
-        </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+        {Array.from({ length: 4 }).map((_, i) => (
+          <div
+            key={i}
+            className="rounded-xl p-3 bg-[rgba(255,255,255,0.02)] border border-[rgba(255,255,255,0.03)]"
+          >
+            <div className="h-3 w-24 rounded bg-gray-700 mb-2 animate-pulse"></div>
+            <div className="h-6 w-3/5 rounded bg-gray-700 animate-pulse"></div>
+          </div>
+        ))}
       </div>
     </div>
   );
 
-  // Add this effect to refresh company data when the component mounts
   useEffect(() => {
     const refreshData = async () => {
       if (companyData && refreshCompanyData) {
         await refreshCompanyData();
       }
     };
-    
+
     refreshData();
   }, []);
 
   return (
-    <Layout className="main-dashboard-layout">
+    <div className="flex flex-col gap-3 h-screen w-full px-6 lg:px-28 py-2">
+      
       <DashboardTour run={showTour} onClose={handleTourComplete} />
-      <div className="main-header">
-        <div className="main-company-title">{metricsData?.companyName}</div>
-        <div className="main-header-right">
-          <div
-            className="main-header-button"
-            onClick={() => navigate("/soundscapes")}
-          >
-            <img src="/MusicNotes.png" />
-            <h3>Soundscapes</h3>
-          </div>
-          <div
-            className="main-header-button"
-            onClick={() => navigate("/employeesManagement")}
-          >
-            <img src="/UserGear.png" style={{ cursor: "pointer" }} />
-            <h3>Employess</h3>
-          </div>
-          <div
-            className="main-header-button"
-            onClick={handleSettingsClick}
-            style={{ cursor: "pointer" }}
-          >
-            <img src="/GearSix.png" />
-            <h3>Settings</h3>
+      <header className="w-full border border-slate-600 border-1 rounded-3xl">
+        <div className="px-4 py-2 flex items-center justify-between">
+          <div className="flex items-center gap-4 min-w-0">
+            <div className="text-white text-2xl font-medium truncate max-w-xs">
+              {metricsData?.companyName}
+            </div>
           </div>
 
-          <Dropdown
-            menu={{ items: menuItems, onClick: handleMenuClick }}
-            placement="bottomRight"
-            trigger={["click"]}
-            overlayStyle={{ minWidth: "160px" }}
-          >
-            <div className="main-user-info">
-              {companyData?.company_profile_url ? (
-                <img
-                  src={`${companyData.company_profile_url}?${new Date().getTime()}`}
-                  alt="profile"
-                  className="main-avatar"
-                />
-              ) : (
-                <div className="main-avatar">{getInitial()}</div>
-              )}
-              <h3 className="main-user-name">
-                {truncateName(`${user.fullName.firstName}`, 15)}
-                <DownOutlined style={{ marginLeft: 18 }} />
-              </h3>
-            </div>
-          </Dropdown>
-          <MenuOutlined className="hamburger-menu" onClick={toggleMenu} />
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => navigate("/soundscapes")}
+              className="flex items-center gap-2 px-4 py-2 rounded-[110px] h-[52px] text-base text-white transition hover:opacity-95"
+              style={{
+                background:
+                  "radial-gradient(85.53% 85.53% at 50% 14.47%, rgba(255,255,255,0.20) 0%, rgba(255,255,255,0.10) 100%)",
+              }}
+            >
+              <img
+                src="/MusicNotes.png"
+                className="w-8 h-8"
+                alt="Soundscapes"
+              />
+              <span className="hidden sm:inline">Soundscapes</span>
+            </button>
+
+            <button
+              onClick={() => navigate("/employeesManagement")}
+              className="flex items-center gap-2 px-4 py-2 rounded-[110px] h-[52px] text-base text-white transition hover:opacity-95"
+              style={{
+                background:
+                  "radial-gradient(85.53% 85.53% at 50% 14.47%, rgba(255,255,255,0.20) 0%, rgba(255,255,255,0.10) 100%)",
+              }}
+            >
+              <img src="/UserGear.png" className="w-8 h-8" alt="Employees" />
+              <span className="hidden sm:inline">Employees</span>
+            </button>
+
+            <button
+              onClick={handleSettingsClick}
+              className="flex items-center gap-2 px-4 py-2 rounded-[110px] h-[52px] text-base text-white transition hover:opacity-95"
+              style={{
+                background:
+                  "radial-gradient(85.53% 85.53% at 50% 14.47%, rgba(255,255,255,0.20) 0%, rgba(255,255,255,0.10) 100%)",
+              }}
+            >
+              <img src="/GearSix.png" className="w-8 h-8" alt="Settings" />
+              <span className="hidden sm:inline">Settings</span>
+            </button>
+
+            <Dropdown
+              menu={{ items: menuItems, onClick: handleMenuClick }}
+              placement="bottomRight"
+              trigger={["click"]}
+            >
+              <div
+                className="flex items-center gap-3 cursor-pointer px-3 py-2 rounded-[110px] h-[52px] transition hover:opacity-95"
+                style={{
+                  background:
+                    "radial-gradient(85.53% 85.53% at 50% 14.47%, rgba(255,255,255,0.20) 0%, rgba(255,255,255,0.10) 100%)",
+                }}
+              >
+                {companyData?.company_profile_url ? (
+                  <img
+                    src={`${
+                      companyData.company_profile_url
+                    }?${new Date().getTime()}`}
+                    alt="profile"
+                    className="w-8 h-8 rounded-full object-cover"
+                  />
+                ) : (
+                  <div className="w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center text-white font-semibold">
+                    {getInitial()}
+                  </div>
+                )}
+
+                <div className="flex items-center gap-2 min-w-0">
+                  <span className="text-white text-base truncate max-w-[120px]">
+                    {truncateName(`${user.fullName.firstName}`, 15)}
+                  </span>
+                  <DownOutlined className="text-white/70" />
+                </div>
+              </div>
+            </Dropdown>
+
+            <MenuOutlined
+              className="text-white text-xl sm:hidden ml-2"
+              onClick={toggleMenu}
+            />
+          </div>
         </div>
-      </div>
+      </header>
 
       {isMenuOpen && (
         <div className="mobile-menu">
@@ -492,105 +517,136 @@ const Home = () => {
       )}
 
       <motion.div
-        className="main-content"
+        className="flex flex-col md:flex-row gap-4 h-full"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
       >
-        {" "}
-        <div className="main-dashboard-left">
-          <motion.div className="main-workshop-banner" variants={itemVariants}>
-            {" "}
-            <div className="main-workshops-header">
-              <h2>Upcoming Workshops</h2>
-              <Button
+        {/* Left column */}
+        <div className="w-full md:w-1/2 flex flex-col gap-4">
+          <motion.div
+            variants={itemVariants}
+            className="relative rounded-[24px] overflow-hidden h-[55%]"
+            style={{
+              border: "1px solid rgba(255,255,255,0.10)",
+              background:
+                "radial-gradient(61.93% 100% at 50% 0%, #33353F 0%, #191A20 100%)",
+              boxShadow: "0 12px 8px -8px rgba(0,0,0,0.40)",
+            }}
+          >
+            <div className="flex items-center justify-between px-6 py-4">
+              <h2 className="text-white text-2xl font-medium">
+                Upcoming Workshops
+              </h2>
+              <button
                 type="link"
                 onClick={handleViewAllWorkshops}
-                className="view-all"
+                className="text-white"
               >
                 View All <RightOutlined />
-              </Button>
+              </button>
             </div>
             <div
-              className="main-workshops-image-card"
+              className="px-4 pb-4"
               onClick={workshop ? handleViewWorkshopDetails : undefined}
               style={{ cursor: workshop ? "pointer" : "default" }}
             >
               {workshopLoading ? (
                 <PresentationSlide isLoading={true} />
               ) : error ? (
-                <div className="workshop-error">
-                  <p>{error}</p>
+                <div className="flex items-center justify-center h-40">
+                  <p className="text-red-400">{error}</p>
                 </div>
               ) : (
-                <div
-                  onClick={workshop ? handleViewWorkshopDetails : undefined}
-                  style={{ cursor: workshop ? "pointer" : "default" }}
-                >
-                  <PresentationSlide
-                    title={workshop?.title}
-                    date={workshop?.start_time}
-                    backgroundImage={workshop?.poster_image}
-                    endTime={workshop?.end_time}
-                    isLoading={false}
-                  />
-                </div>
+                <PresentationSlide
+                  title={workshop?.title}
+                  date={workshop?.start_time}
+                  backgroundImage={workshop?.poster_image}
+                  endTime={workshop?.end_time}
+                  isLoading={false}
+                />
               )}
             </div>
           </motion.div>
 
-          <div className="main-bottom-cards">
-            <div className="main-left-cards">
+          <div className="flex gap-4 h-[45%] ">
+            <div className="flex flex-col gap-4 w-1/2">
               <motion.div
                 variants={itemVariants}
-                className="main-announcement-card"
                 onClick={() => navigate("/announcements")}
-                style={{ cursor: "pointer" }}
+                className="relative rounded-[24px] p-4 cursor-pointer h-1/2"
+                style={{
+                  border: "1px solid rgba(255,255,255,0.10)",
+                  background:
+                    "radial-gradient(61.93% 100% at 50% 0%, #33353F 0%, #191A20 100%)",
+                  boxShadow: "0 12px 8px -8px rgba(0,0,0,0.40)",
+                }}
               >
-                <h3>Announcements & Notifications</h3>
                 {unreadCount > 0 && (
-                  <div className="notification-badge">
-                    <p>
-                      {unreadCount > 99
-                        ? "99+"
-                        : unreadCount}
-                    </p>
+                  <div className="absolute top-3 right-3 z-10 bg-red-500 text-white rounded-full px-2 py-0.5 text-xs font-semibold shadow">
+                    {unreadCount > 99 ? "99+" : unreadCount}
                   </div>
                 )}
-                <img src="announcement.svg" alt="marketing icon" />
+                <div className="flex items-center justify-between">
+                  <h3 className="text-white text-2xl">
+                    Announcements & Notifications
+                  </h3>
+                  <img
+                    src="announcement.svg"
+                    className="w-24 h-24 object-contain"
+                    alt="announcement"
+                  />
+                </div>
               </motion.div>
 
               <motion.div
                 variants={itemVariants}
-                className="main-support-card"
                 onClick={() => navigate("/support")}
-                style={{ cursor: "pointer" }}
+                className="rounded-[24px] p-4 flex items-center gap-4 cursor-pointer  h-1/2"
+                style={{
+                  border: "1px solid rgba(255,255,255,0.10)",
+                  background:
+                    "radial-gradient(61.93% 100% at 50% 0%, #33353F 0%, #191A20 100%)",
+                  boxShadow: "0 12px 8px -8px rgba(0,0,0,0.40)",
+                }}
               >
-                <img src="support.svg" alt="support icon" />
-                <h3>Help & support</h3>
+                <img src="support.svg" className="w-24 h-24 object-contain" alt="support" />
+                <h3 className="text-white text-2xl">Help & support</h3>
               </motion.div>
             </div>
 
             <motion.div
               variants={itemVariants}
-              className="main-rewards-card"
               onClick={() => navigate("/rewardsAndRecognition")}
-              style={{ cursor: "pointer" }}
+              className="flex-1 rounded-[24px] p-4 flex flex-col items-center justify-between cursor-pointer"
+              style={{
+                border: "1px solid rgba(255,255,255,0.10)",
+                background:
+                  "radial-gradient(61.93% 100% at 50% 0%, #33353F 0%, #191A20 100%)",
+                boxShadow: "0 12px 8px -8px rgba(0,0,0,0.40)",
+              }}
             >
-              <div className="main-rewards-content">
-                <h3>Rewards &</h3>
-                <h3>Recognition</h3>
+              <div className="text-center">
+                <h3 className="text-white text-2xl">Rewards & Recognition</h3>
+                {/* <h3 className="text-white text-lg">Recognition</h3> */}
               </div>
-
-              <img src="Rewards.svg" alt="Rewards and Recognition" />
+              <img
+                src="Rewards.svg"
+                className="w-4/4 h-4/4 mt-2"
+                alt="Rewards"
+              />
             </motion.div>
           </div>
         </div>
-        <div className="main-dashboard-right">
-          <div className="main-metrics-cards">
-            <motion.div variants={itemVariants} style={{ cursor: "pointer" }}>
+
+        {/* Right column */}
+        <div className="w-full md:w-1/2 flex flex-col gap-4">
+          <div className="flex gap-4">
+            <motion.div
+              variants={itemVariants}
+              className="flex-1 cursor-pointer"
+            >
               <CompanyHealthGauge
-                className="main-company-health-gauge"
                 value={Math.round(companyData?.wellbeing_score || 0)}
                 maxValue={100}
                 title="Wellbeing Index"
@@ -601,110 +657,124 @@ const Home = () => {
 
             <motion.div
               variants={itemVariants}
-              className="main-resource-card"
               onClick={() => navigate("/resources")}
-              style={{ cursor: "pointer" }}
+              className="flex-1 rounded-[24px] p-4 flex flex-col items-center justify-between cursor-pointer"
+              style={{
+                border: "1px solid rgba(255,255,255,0.10)",
+                background:
+                  "radial-gradient(61.93% 100% at 50% 0%, #33353F 0%, #191A20 100%)",
+                boxShadow: "0 12px 8px -8px rgba(0,0,0,0.40)",
+              }}
             >
-              <h3>Resources</h3>
-              <img src="./resources.svg" alt="Rewards and Recognition" />
+              <h3 className="text-white text-2xl">Resources</h3>
+              <img
+                src="./resources.svg"
+                className="w-3/4 h-3/4 mt-2"
+                alt="Resources"
+              />
             </motion.div>
           </div>
 
+          {/* ROI should grow to fill remaining height — use flex-1 instead of percentage height */}
           <motion.div
             variants={itemVariants}
-            className="main-roi-card"
             onClick={() => navigate("/dashboard")}
+            className="cursor-pointer flex-1"
           >
             {metricsLoading ? (
               <ROIShimmer />
             ) : (
-              <>
-                <div className="main-roi-header">
-                  <h3>ROI</h3>
-                  <span>Compare to prev. month</span>
+              <div
+                className="rounded-[24px] p-4 h-full flex flex-col"
+                style={{
+                  border: "1px solid rgba(255,255,255,0.10)",
+                  background:
+                    "radial-gradient(61.93% 100% at 50% 0%, #33353F 0%, #191A20 100%)",
+                  boxShadow: "0 12px 8px -8px rgba(0,0,0,0.40)",
+                }}
+              >
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="text-white text-2xl">ROI</h3>
+                  <span className="text-sm text-gray-300">
+                    Compare to prev. month
+                  </span>
                 </div>
-                <div className="main-roi-metrics">
-                  <div className="main-roi-item">
-                    <span>Stress Levels</span>
-                    <div className="main-percentage">
-                      {Math.round(companyData?.stress_level || 0)}%{" "}
-                      <img
-                        src={
-                          companyData?.stress_trend === "stable"
-                            ? "Upward.png"
-                            : companyData?.stress_trend === "up"
-                            ? "Downward.png"
-                            : "/Upward.png"
-                        }
-                      />
+
+                {/* Make grid and internal cards stretch to fill available height */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 h-full">
+                  {[
+                    {
+                      label: "Stress Levels",
+                      value: Math.round(companyData?.stress_level || 0),
+                      trend: companyData?.stress_trend,
+                    },
+                    {
+                      label: "Psychological Safety Index (PSI)",
+                      value: Math.round(
+                        companyData?.psychological_safety_index || 0
+                      ),
+                      trend: companyData?.psi_trend,
+                    },
+                    {
+                      label: "Employee Retention",
+                      value: Math.round(companyData?.retention_rate || 0),
+                      trend: companyData?.retention_trend,
+                    },
+                    {
+                      label: "Employee Engagement",
+                      value: Math.round(companyData?.engagement_score || 0),
+                      trend: companyData?.engagement_trend,
+                    },
+                  ].map((item, i) => (
+                    <div
+                      key={i}
+                      className="rounded-[24px] p-4 flex flex-col justify-center h-full"
+                      style={{
+                        border: "1px solid rgba(255,255,255,0.10)",
+                        background:
+                          "radial-gradient(61.93% 100% at 50% 0%, #33353F 0%, #191A20 100%)",
+                        boxShadow: "0 12px 8px -8px rgba(0,0,0,0.40)",
+                      }}
+                    >
+                      <span className="text-sm text-gray-300">{item.label}</span>
+                      <div className="mt-2 flex items-center gap-3">
+                        <div className="text-white font-semibold text-2xl">
+                          {item.value}%
+                        </div>
+                        <img
+                          src={
+                            item.trend === "stable"
+                              ? "Upward.png"
+                              : item.trend === "up"
+                              ? "Upward.png"
+                              : "/Downward.png"
+                          }
+                          className="h-4 w-4"
+                          alt="trend"
+                        />
+                      </div>
                     </div>
-                  </div>
-                  <div className="main-roi-item">
-                    <span>Psychological Safety Index (PSI)</span>
-                    <div className="main-percentage">
-                      {Math.round(companyData?.psychological_safety_index || 0)}
-                      %{" "}
-                      <img
-                        src={
-                          companyData?.psi_trend === "stable"
-                            ? "Upward.png"
-                            : companyData?.psi_trend === "up"
-                            ? "Upward.png"
-                            : "/Downward.png"
-                        }
-                      />
-                    </div>
-                  </div>
-                  <div className="main-roi-item">
-                    <span>Employee Retention</span>
-                    <div className="main-percentage">
-                      {Math.round(companyData?.retention_rate || 0)}%{" "}
-                      <img
-                        src={
-                          companyData?.retention_trend === "stable"
-                            ? "Upward.png"
-                            : companyData?.retention_trend === "up"
-                            ? "Upward.png"
-                            : "/Downward.png"
-                        }
-                      />
-                    </div>
-                  </div>
-                  <div className="main-roi-item">
-                    <span>Employee Engagement</span>
-                    <div className="main-percentage">
-                      {Math.round(companyData?.engagement_score || 0)}%{" "}
-                      <img
-                        src={
-                          companyData?.engagement_trend === "stable"
-                            ? "Upward.png"
-                            : companyData?.engagement_trend === "up"
-                            ? "Upward.png"
-                            : "/Downward.png"
-                        }
-                      />
-                    </div>
-                  </div>
+                  ))}
                 </div>
-              </>
+              </div>
             )}
           </motion.div>
         </div>
       </motion.div>
 
-      <Footer className="main-footer">
-        <div className="main-footer-content">
-          Lumos by{" "}
-          <img src="./neure.png" alt="Neure Icon" className="main-neure-icon" />
+      <footer className="w-full">
+        <div className="max-w-6xl mx-auto px-4 py-2 flex items-center justify-center gap-2 text-sm text-gray-300">
+          <span className="text-gray-300">Lumos by</span>
+          <img src="./neure.png" alt="Neure Icon" className="h-6 ml-1" />
         </div>
-      </Footer>
+      </footer>
 
       <TermsModal
         isOpen={isTermsModalVisible}
         onClose={() => setIsTermsModalVisible(false)}
         onAccept={handleTermsAccept}
       />
-    </Layout>
+    </div>
   );
 };
 

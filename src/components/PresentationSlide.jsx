@@ -30,7 +30,7 @@ const PresentationSlide = ({ title, date, backgroundImage, endTime, isLoading })
   if (!title) {
     return (
       <div className="w-full min-h-[230px] h-full border border-[#585151] rounded-[14px] bg-gradient-to-br from-[#2d2f39] to-[#252731] shadow-inner flex items-center justify-center overflow-hidden relative">
-        <div className="w-full p-8 text-center bg-gradient-to-b from-transparent to-black/60 backdrop-blur-sm rounded-md">
+        <div className="w-full p-8 text-center  backdrop-blur-sm rounded-md">
           <h2 className="text-white text-lg font-semibold mb-2 bg-clip-text text-transparent bg-gradient-to-r from-white to-[#b3b3b3]">
             No Upcoming Workshop
           </h2>
