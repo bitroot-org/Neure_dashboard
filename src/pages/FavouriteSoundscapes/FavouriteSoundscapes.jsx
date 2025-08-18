@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import "./favouriteSoundscapes.css";
 import CustomHeader from "../../components/CustomHeader";
 import { HeartOutlined, HeartFilled, EllipsisOutlined } from "@ant-design/icons";
-import PlayerModal from "../../components/PlayerModal/PlayerModal";
-import { AudioProvider, useAudio } from "../../components/AudioPlayer/AudioContext";
-import PlayerFooter from "../../components/Player/PlayerFooter";
+import PlayerModal from "../../components/PlayerModal";
+import { AudioProvider, useAudio } from "../../context/AudioContext";
+import PlayerFooter from "../../components/PlayerFooter";
 import { getLikedSoundscapes, likeSoundscape, unlikeSoundscape } from "../../services/api";
 import { message } from 'antd';
 

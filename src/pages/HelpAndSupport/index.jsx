@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Collapse, Card, Button, Space, Spin } from "antd";
-import FeedbackModal from "../../components/FeedBackModal/FeedbackModal";
+import FeedbackModal from "../../components/FeedBackModal";
 import "./index.css";
 import CustomHeader from "../../components/CustomHeader";
 import { getQna } from "../../services/api";

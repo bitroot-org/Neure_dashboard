@@ -20,7 +20,7 @@ html {
 body {
   min-height: 100%;
   width: 100%;
-  background: radial-gradient(108.08% 74.37% at 50% 0%, #33353F 0%, #0D0D11 99.73%);
+  background-color: black;
   font-family: 'Satoshi', sans-serif;
   scroll-behavior: smooth;
   overflow-y: auto;

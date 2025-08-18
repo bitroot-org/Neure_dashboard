@@ -8,14 +8,14 @@ import {
   HeartFilled,
   EllipsisOutlined,
 } from "@ant-design/icons";
-import PlayerModal from "../../components/PlayerModal/PlayerModal";
+import PlayerModal from "../../components/PlayerModal";
 import { getSoundscapesByUserId, likeSoundscape, unlikeSoundscape } from "../../services/api";
 import {
   AudioProvider,
   useAudio,
-} from "../../components/AudioPlayer/AudioContext";
-import SoundscapeCarousel from "../../components/Carousel/SoundscapeCarousel";
-import PlayerFooter from "../../components/Player/PlayerFooter";
+} from "../../context/AudioContext";
+import SoundscapeCarousel from "../../components/Carousel";
+import PlayerFooter from "../../components/PlayerFooter";
 import { useNavigate } from 'react-router-dom';
 import { message } from 'antd';
 

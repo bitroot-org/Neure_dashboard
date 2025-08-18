@@ -7,9 +7,9 @@ import CustomHeader from "../../components/CustomHeader";
 import CustomPagination from "../../components/CustomPagination";
 import ArticleCard from "../../components/ArticleCard";
 import { getArticles } from "../../services/api";
-import Gallery from '../../components/Gallery/Gallery';
+import Gallery from '../../components/Gallery';
 import { ToolOutlined } from '@ant-design/icons';
-import ArticleModal from "../../components/ArticleModal/ArticleModal";
+import ArticleModal from "../../components/ArticleModal";
 
 
 const ArticleShimmer = () => (

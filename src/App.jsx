@@ -1,7 +1,7 @@
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import "./index.css";
-import PageTransition from "./components/PageTransition/PageTransition";
+import PageTransition from "./utils/PageTransition";
 
 import LoginPage from "./pages/Login/Login";
 // import SignUpPage from './pages/Onboarding'

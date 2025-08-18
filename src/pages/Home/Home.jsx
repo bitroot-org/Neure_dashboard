@@ -37,7 +37,7 @@ import TermsModal from "../../components/TermsModal";
 import { motion } from "framer-motion";
 import PasswordChangeModal from "../../components/PasswordChangeModal";
 import { changePassword } from "../../services/api";
-import DashboardTour from "../../components/DashboardTour/DashboardTour";
+import DashboardTour from "../../components/DashboardTour";
 import { useNotifications } from "../../context/NotificationContext";
 
 const { Header, Content, Footer } = Layout;

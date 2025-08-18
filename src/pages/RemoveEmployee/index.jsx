@@ -3,7 +3,7 @@ import { Table, Card, Empty, message, Modal } from "antd";
 import { SearchOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
 import CustomHeader from "../../components/CustomHeader";
 import { getTopPerformingEmployee, removeEmployee, searchEmployees } from "../../services/api";
-import ErrorBoundary from "../../components/ErrorBoundary";
+import ErrorBoundary from "../../utils/ErrorBoundary";
 import "./removeEmployee.css";
 
 const { confirm } = Modal;
